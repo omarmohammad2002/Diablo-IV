@@ -1,9 +1,49 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: efdd579aaee8f5848a9cf230677d3ef5
+=======
+<<<<<<<< HEAD:Assets/Models/Demon/Demon Props/the-z-bomb/source/bomb.fbx.meta
+guid: fe1920b261bfff14596a2fdbba510b68
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Base
+    second: {fileID: 2100000, guid: 72280278ffd093e4db9369e1d9cbb424, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wick
+    second: {fileID: 2100000, guid: d86396d40d2f1914e8667bde2a52b071, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ball
+    second: {fileID: 2100000, guid: f366b3a98208aa04897fea5760d07369, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: BlueMetalSolid_diffuseOriginal
+    second: {fileID: 2800000, guid: 875f733d99dc00f42a72abd7b829905c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: rope
+    second: {fileID: 2800000, guid: a8d8c44a45a802b4bb187f5e1d884293, type: 3}
+========
+guid: 58fcc7db224da8449b967b6c1daae614
+>>>>>>> e6f2e41bcedeff849db6b305eb01890a9a558698
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
   externalObjects: {}
+<<<<<<< HEAD
+=======
+>>>>>>>> e6f2e41bcedeff849db6b305eb01890a9a558698:Assets/Models/blood spike/source/OPM0041.fbx.meta
+>>>>>>> e6f2e41bcedeff849db6b305eb01890a9a558698
   materials:
     materialImportMode: 2
     materialName: 0

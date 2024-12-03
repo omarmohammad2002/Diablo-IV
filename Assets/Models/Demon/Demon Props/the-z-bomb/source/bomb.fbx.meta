@@ -1,4 +1,5 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Models/Demon/Demon Props/the-z-bomb/source/bomb.fbx.meta
 guid: fe1920b261bfff14596a2fdbba510b68
 ModelImporter:
   serializedVersion: 22200
@@ -29,6 +30,13 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: rope
     second: {fileID: 2800000, guid: a8d8c44a45a802b4bb187f5e1d884293, type: 3}
+========
+guid: 58fcc7db224da8449b967b6c1daae614
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects: {}
+>>>>>>>> e6f2e41bcedeff849db6b305eb01890a9a558698:Assets/Models/blood spike/source/OPM0041.fbx.meta
   materials:
     materialImportMode: 2
     materialName: 0
