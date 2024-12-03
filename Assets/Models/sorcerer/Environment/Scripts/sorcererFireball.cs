@@ -24,6 +24,10 @@ public class sorcererFireball : MonoBehaviour
 
             if (Physics.Raycast(ray, out rayhit))
             {
+                Vector3 direction = (rayhit.point - transform.position).normalized;
+                direction.y = 0; 
+                transform.rotation = Quaternion.LookRotation(direction);
+
                 GetComponent<Animation>().CrossFade("attack_short_001", 0.0f);
                 GetComponent<Animation>().CrossFadeQueued("idle_combat");
 
