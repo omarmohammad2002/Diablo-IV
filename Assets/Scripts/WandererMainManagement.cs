@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WandererMainManagement : MonoBehaviour
-{ 
+{
     // Wanderer's Health
     private int currentHealth;
-    private int maxHealth ;
+    private int maxHealth;
     // Wanderer Character class
     private string characterName;
     // Wanderer's Level and XP
     private int currentLevel;
+    private int maxLevel = 4;
     private int XP;
+    private int maxXP = 100;
     // Wanderer's Inventory
     private int healingPotions;
     private int abilityPoints;
@@ -20,7 +22,7 @@ public class WandererMainManagement : MonoBehaviour
     private bool isInvincible = false;
     private bool isSlowMotion = false;
     // abilties 
-    private bool ability1Unlock = false; 
+    private bool ability1Unlock = false;
     private bool ability2Unlock = false;
     private bool ability3Unlock = false;
     // Game Over Screen
@@ -44,7 +46,7 @@ public class WandererMainManagement : MonoBehaviour
     void Start()
     {
         currentLevel = 1;
-        maxHealth = 100 * currentLevel; 
+        maxHealth = 100 * currentLevel;
         currentHealth = maxHealth;
         abilityPoints = 0;
         healingPotions = 0;
@@ -105,10 +107,10 @@ public class WandererMainManagement : MonoBehaviour
             addXP(100);
         }
     }
-    void DealDamage (int amount)
+    void DealDamage(int amount)
     {
         // This function deals damage to the player by a specific amount, to be used in enemy attack logic scrip
-       if(!isInvincible)
+        if (!isInvincible)
         {
             currentHealth -= amount;
             if (currentHealth <= 0)
@@ -124,17 +126,17 @@ public class WandererMainManagement : MonoBehaviour
         // This function just heals the player by a specific amount, to be used in health potions logic script
         currentHealth += amount;
         currentHealth = Mathf.Min(currentHealth, maxHealth);
-        Debug.Log("healed"); 
+        Debug.Log("healed");
     }
-    void addHealingPotion ()
+    void addHealingPotion()
     {
         healingPotions++;
     }
-    void useHealingPotion ()
+    void useHealingPotion()
     {
         // This just deducts the healing potion from the inventory, healing to be added in health potions logic script
         healingPotions--;
-      
+
     }
     void addRuneFragment()
     {
@@ -175,14 +177,31 @@ public class WandererMainManagement : MonoBehaviour
     void addXP(int amount)
     {
         // This function just adds XP to the player's XP variable, to be used in The Wanderer gaining XP points script
-        XP += amount;
+        if (currentLevel < maxLevel)
+        {
+            XP += amount;
+            if (XP + amount >= maxXP) { 
+
+                if (XP + amount > maxXP)
+                    XP = XP + amount - maxXP;
+                else if (XP + amount == maxXP)
+                    XP = 0;
+
+                increaseLevel();
+                updateMaxHealth(100 * currentLevel);
+                updatecurrentHealth(maxHealth);
+                updatemaxXP(100 * currentLevel);
+                addabilityPoints();
+            }
+    }
+}
+    void updatemaxXP(int amount)
+    {
+        //This function just updates the max XP of the player to a specific amount, to be used in character leveling up script
+        maxXP = amount;
     }
 
-    void updateXP (int amount)
-    {
-        // This function just updates the XP of the player to a specific amount, to be used in character leveling up script
-        XP = amount;
-    }
+
     void unlockAbility1()
     {
         // This function just unlocks the first ability variable of the player, to be used in ability logic script
