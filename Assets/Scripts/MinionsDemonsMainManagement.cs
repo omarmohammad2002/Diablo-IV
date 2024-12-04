@@ -37,6 +37,8 @@ public class MinionsDemonsMainManagement : MonoBehaviour
     public void enemyDeath()
     {
         // add xp to the player, play death animation and destroy the game object
+        WandererMainManagement.WandererMM.addXP(xpReward);
+        Destroy(gameObject);
     }
 
   
