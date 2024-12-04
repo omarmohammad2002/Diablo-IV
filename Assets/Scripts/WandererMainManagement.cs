@@ -59,49 +59,49 @@ public class WandererMainManagement : MonoBehaviour
     }
     void HandleCheatInputs()
     {
-        // Heal: Increases the Wanderer’s health by 20 health points by pressing “H”
+        // Heal: Increases the Wandererï¿½s health by 20 health points by pressing ï¿½Hï¿½
         if (Input.GetKeyDown(KeyCode.H))
         {
             Heal(20);
         }
 
-        // Decrement Health: Decreases the Wanderer’s health by 20 health points by pressing “D”
+        // Decrement Health: Decreases the Wandererï¿½s health by 20 health points by pressing ï¿½Dï¿½
         if (Input.GetKeyDown(KeyCode.D))
         {
             DealDamage(20);
         }
-        // Toggle Invincibility: Prevents the Wanderer from taking damage by pressing “I”
+        // Toggle Invincibility: Prevents the Wanderer from taking damage by pressing ï¿½Iï¿½
         if (Input.GetKeyDown(KeyCode.I))
         {
             isInvincible = !isInvincible;
         }
 
-        // Toggle Slow Motion: Makes the gameplay in half speed by pressing “M”
+        // Toggle Slow Motion: Makes the gameplay in half speed by pressing ï¿½Mï¿½
         if (Input.GetKeyDown(KeyCode.M))
         {
             isSlowMotion = !isSlowMotion;
             Time.timeScale = isSlowMotion ? 0.5f : 1f;
         }
 
-        // Toggle Cool Down: Sets the cool down time for all the abilities to 0 by pressing “C”
+        // Toggle Cool Down: Sets the cool down time for all the abilities to 0 by pressing ï¿½Cï¿½
         if (Input.GetKeyDown(KeyCode.C))
         {
             // Add your ability cooldown logic here and set cooldown to 0, probably in the ability script
         }
 
-        // Unlock Abilities: Unlocks all locked abilities by pressing “U”
+        // Unlock Abilities: Unlocks all locked abilities by pressing ï¿½Uï¿½
         if (Input.GetKeyDown(KeyCode.U))
         {
             // Add logic here to unlock all abilities, probably in the ability script
         }
 
-        // Gain Ability Points: Increments the ability points by 1 point by pressing “A”
+        // Gain Ability Points: Increments the ability points by 1 point by pressing ï¿½Aï¿½
         if (Input.GetKeyDown(KeyCode.A))
         {
             addabilityPoints();
         }
 
-        // Gain XP: Increments the XP by 100 points by pressing “X”
+        // Gain XP: Increments the XP by 100 points by pressing ï¿½Xï¿½
         if (Input.GetKeyDown(KeyCode.X))
         {
             addXP(100);
@@ -174,7 +174,7 @@ public class WandererMainManagement : MonoBehaviour
         maxHealth = amount;
     }
 
-    void addXP(int amount)
+    public void addXP(int amount)
     {
         // This function just adds XP to the player's XP variable, to be used in The Wanderer gaining XP points script
         if (currentLevel < maxLevel)
