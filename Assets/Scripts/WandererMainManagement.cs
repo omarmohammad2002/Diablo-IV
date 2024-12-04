@@ -19,6 +19,26 @@ public class WandererMainManagement : MonoBehaviour
     // Cheats and Gameplay Modifiers
     private bool isInvincible = false;
     private bool isSlowMotion = false;
+    // abilties 
+    private bool ability1Unlock = false; 
+    private bool ability2Unlock = false;
+    private bool ability3Unlock = false;
+    // Game Over Screen
+    public GameObject gameOverScreen;
+
+    public static WandererMainManagement WandererMM;
+    private void Awake()
+    {
+        if (WandererMM == null)
+        {
+            WandererMM = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -91,8 +111,12 @@ public class WandererMainManagement : MonoBehaviour
        if(!isInvincible)
         {
             currentHealth -= amount;
-            currentHealth = Mathf.Max(currentHealth, 0);
-            //GameOver logic to be added in game over script
+            if (currentHealth <= 0)
+            {
+                Time.timeScale = 0;
+                gameOverScreen.SetActive(true);
+                // more gameover logic to be added here if needed, stop/change audio etc
+            }
         }
     }
     void Heal(int amount)
@@ -100,6 +124,7 @@ public class WandererMainManagement : MonoBehaviour
         // This function just heals the player by a specific amount, to be used in health potions logic script
         currentHealth += amount;
         currentHealth = Mathf.Min(currentHealth, maxHealth);
+        Debug.Log("healed"); 
     }
     void addHealingPotion ()
     {
@@ -158,5 +183,22 @@ public class WandererMainManagement : MonoBehaviour
         // This function just updates the XP of the player to a specific amount, to be used in character leveling up script
         XP = amount;
     }
+    void unlockAbility1()
+    {
+        // This function just unlocks the first ability variable of the player, to be used in ability logic script
+        ability1Unlock = true;
+    }
+    void unlockAbility2()
+    {
+        // This function just unlocks the second ability variable of the player, to be used in ability logic script
+        ability2Unlock = true;
+    }
+    void unlockAbility3()
+    {
+        // This function just unlocks the third ability variable of the player, to be used in ability logic script
+        ability3Unlock = true;
+    }
+
+
 }
 
