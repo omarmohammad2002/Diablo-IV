@@ -180,11 +180,11 @@ public class WandererMainManagement : MonoBehaviour
         if (currentLevel < maxLevel)
         {
             XP += amount;
-            if (XP + amount >= maxXP) { 
+            if (XP >= maxXP) { 
 
-                if (XP + amount > maxXP)
-                    XP = XP + amount - maxXP;
-                else if (XP + amount == maxXP)
+                if (XP > maxXP)
+                    XP = XP - maxXP;
+                else if (XP  == maxXP)
                     XP = 0;
 
                 increaseLevel();
