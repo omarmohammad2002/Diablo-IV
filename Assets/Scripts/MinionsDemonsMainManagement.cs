@@ -25,6 +25,7 @@ public class MinionsDemonsMainManagement : MonoBehaviour
      public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        Debug.Log(currentHealth.ToString());    
         currentHealth = Mathf.Max(currentHealth, 0);
         if (currentHealth == 0)
         {

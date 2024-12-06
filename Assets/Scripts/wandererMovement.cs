@@ -7,10 +7,12 @@ public class wandererMovement : MonoBehaviour
 {
     [SerializeField] Camera camera;
     private NavMeshAgent agent;
+    private Animator animator;
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -23,13 +25,18 @@ public class wandererMovement : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 agent.SetDestination(hit.point);
+                animator.SetBool("isRunning", true);
             }
-
         }
 
-        if (Input.GetMouseButtonUp(0))
+        // Update animator parameter
+        if (agent.remainingDistance > agent.stoppingDistance + 1)
         {
-            agent.ResetPath();
+            
+        }
+        else
+        {
+            animator.SetBool("isRunning", false);
         }
     }
 }
