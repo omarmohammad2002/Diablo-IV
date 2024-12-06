@@ -7,6 +7,9 @@ TagManager:
   - Enemy
   - HealthPotion
   - RuneFragment
+  - Barbarian
+  - Sorcerer
+  - Erika
   layers:
   - Default
   - TransparentFX
