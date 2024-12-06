@@ -2,24 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinionsMainManagement : MinionsDemonsMainManagement
+public class MinionsMainManagement : MonoBehaviour
 {
-    // Start is called before the first frame update
-    new void Start()
+
+    public int maxHealth;     
+    public int currentHealth; 
+    public int attackPower;   
+    public int xpReward;      
+    public enum MinionState { Idle, Aggressive }
+    public MinionState currentState;
+
+    void Awake()
     {
-        enemyType = "Minion";
         maxHealth = 20;
+        currentHealth = maxHealth;
         attackPower = 5;
         xpReward = 10;
-        moveSpeed = 2f;
-        currentState = EnemyState.Idle;
-        base.Start();
+        currentState = MinionState.Idle;
         
     }
 
-    // Update is called once per frame
-    void Update()
+    void TakeDamage(int damage)
     {
-        
+        currentHealth -= damage;
+        currentHealth = Mathf.Max(currentHealth, 0);
+        if (currentHealth == 0)
+        {
+            EnemyDeath();
+        }
+
+       
     }
+
+    void EnemyDeath()
+    {
+        WandererMainManagement.WandererMM.addXP(xpReward);
+        Destroy(gameObject);
+    }
+
 }

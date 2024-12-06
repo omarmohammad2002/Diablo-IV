@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 929b3999b2174d3408fff46da6c3d9ec
+guid: 2d982b304d418fc45aa1e142503815fe
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Demon Idle
+      name: Wheelbarrow Walk
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 263
+      lastFrame: 29
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
