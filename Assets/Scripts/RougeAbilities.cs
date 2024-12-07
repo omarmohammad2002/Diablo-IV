@@ -62,7 +62,15 @@ public class RougeAbilities : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.W) && mainManagement.getAbility1Unlock()) // Defensive Ability
         {
-
+            if (currentTime >= lastUsedTime["Defensive"] + defensiveCooldown)
+            {
+                DefensiveAbility();
+                lastUsedTime["Defensive"] = currentTime;
+            }
+            else
+            {
+                Debug.Log("Defensive ability is on cooldown.");
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Q) && mainManagement.getAbility2Unlock() && !isBasicActive && !isUltimateActive) // Wildcard Ability
@@ -140,14 +148,7 @@ public class RougeAbilities : MonoBehaviour
 
     private void DefensiveAbility()
     {
-        Debug.Log("Shield activated. Defensive ability triggered.");
 
-        // Check if the main management script is available
-        if (mainManagement != null)
-        {
-            // Start the coroutine to activate the shield
-            StartCoroutine(ActivateShieldForDuration(3f)); // Shield lasts for 3 seconds
-        }
     }
 
     private IEnumerator ActivateShieldForDuration(float duration)
