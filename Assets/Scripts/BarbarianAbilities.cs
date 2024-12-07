@@ -105,6 +105,7 @@ public class BarbarianAbilities2 : MonoBehaviour
             {
                 isCharging = true;
                 isUltimateActive = true;
+                lastUsedTime["Ultimate"] = currentTime;
             }
         }
         if (isCharging && isLocked)
