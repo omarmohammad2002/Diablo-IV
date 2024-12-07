@@ -165,7 +165,6 @@ public class sorcererAbilities : MonoBehaviour
 
             if (targetHit != null)
             {
-
                 hitPos = hitPos + Vector3.up * clone.transform.localScale.y / 2;
                 GameObject spawn = Instantiate(clone, hitPos, Quaternion.identity);
                 Destroy(spawn, 5);

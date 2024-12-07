@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - HealthPotion
   - RuneFragment
+  - enemy
   layers:
   - Default
   - TransparentFX

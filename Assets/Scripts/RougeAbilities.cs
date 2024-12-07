@@ -37,11 +37,6 @@ public class RougeAbilities : MonoBehaviour
     // for cooldown
     private Dictionary<string, float> lastUsedTime = new Dictionary<string, float>();
 
-    // Shield prefab
-    public GameObject shieldPrefab; // Reference to the shield prefab
-    private GameObject activeShield; // To keep track of the instantiated shield
-    
-
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -107,8 +102,22 @@ public class RougeAbilities : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E) && !isDashing && mainManagement.getAbility3Unlock()) // Activate Ultimate Targeting
         {
-
+            if (currentTime >= lastUsedTime["Ultimate"] + ultimateCooldown)
+            {
+                Debug.Log("ultimate");
+                isUltimateActive = true;
+            }
+            else
+            {
+                Debug.Log("Ultimate ability is on cooldown.");
+            }
         }
+        if (Input.GetMouseButtonDown(1) && isUltimateActive)
+        {
+            lastUsedTime["Ultimate"] = currentTime;
+            UltimateAbility();
+        }
+    
         if (isDashing && isLocked)
         {
             DashTowardsTarget();
@@ -116,7 +125,6 @@ public class RougeAbilities : MonoBehaviour
     }
     void BasicAbility()
     {
-        // Start the coroutine for delayed fireball throw
         StartCoroutine(ThrowFireballWithDelay());
     }
 
@@ -208,42 +216,6 @@ public class RougeAbilities : MonoBehaviour
     {
 
     }
-
-    private IEnumerator ActivateShieldForDuration(float duration)
-    {
-        Debug.Log("Shield activated. Barbarian is invincible.");
-
-        // Set isInvincible to true
-        mainManagement.setisInvincible(true);
-        Debug.Log("mainManagement.isInvincible: " + mainManagement.getisInvincible());
-
-        // Instantiate the shield prefab as a child of the player
-        if (shieldPrefab != null)
-        {
-            activeShield = Instantiate(shieldPrefab, transform.position, Quaternion.identity, transform);
-            Debug.Log("Shield prefab instantiated.");
-        }
-        else
-        {
-            Debug.LogError("Shield prefab is not assigned!");
-        }
-
-        // Wait for the shield's duration
-        yield return new WaitForSeconds(duration);
-
-        // Reset isInvincible to false
-        mainManagement.setisInvincible(false);
-        Debug.Log("mainManagement.isInvincible: " + mainManagement.getisInvincible());
-        Debug.Log("Shield deactivated. Barbarian is no longer invincible.");
-
-        // Destroy the shield prefab
-        if (activeShield != null)
-        {
-            Destroy(activeShield);
-            Debug.Log("Shield prefab destroyed.");
-        }
-    }
-
     private void WildcardAbility()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
@@ -304,5 +276,31 @@ public class RougeAbilities : MonoBehaviour
         animator.SetBool("isDashing", false);
         // Enable other actions here if needed
     }
+    
+    void UltimateAbility()
+    {
+        Debug.Log("ultimate ability");
+        
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit rayhit;
 
+        if (Physics.Raycast(ray, out rayhit))
+        {
+            Vector3 direction = (rayhit.point - transform.position).normalized;
+            direction.y = 0;
+            transform.rotation = Quaternion.LookRotation(direction);
+
+            GameObject targetHit = rayhit.transform.gameObject;
+            Vector3 hitPos = rayhit.point;
+            if (targetHit != null)
+            {
+                hitPos = hitPos + (Vector3.up * inferno.transform.localScale.y / 2) + (Vector3.right * 15);
+                GameObject spawn = Instantiate(inferno, hitPos, Quaternion.identity);
+
+                Destroy(spawn, 5);
+            }
+        }
+
+        isUltimateActive = false;
+    }
 }
