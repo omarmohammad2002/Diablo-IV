@@ -6,6 +6,13 @@ using UnityEngine.AI;
 
 public class RougeAbilities : MonoBehaviour
 {
+
+    [SerializeField] GameObject fireball;
+    [SerializeField] Transform fireballPosition;
+    [SerializeField] float fireballSpeed = 10f;
+    Rigidbody rb;
+    [SerializeField] GameObject inferno;
+
     public Camera camera;
     private NavMeshAgent agent;
     private Animator animator;
@@ -16,6 +23,7 @@ public class RougeAbilities : MonoBehaviour
     private bool isWildcardActive = false;
     private bool isUltimateActive = false;
 
+    bool isDefensiveAbility = false;
     // Dashing state
     private bool isDashing = false;
     private Vector3 targetPosition;
@@ -53,7 +61,18 @@ public class RougeAbilities : MonoBehaviour
 
         if (!isUltimateActive && !isWildcardActive && Input.GetMouseButtonDown(1)) // Basic Ability
         {
-
+            if (currentTime >= lastUsedTime["Basic"] + basicCooldown)
+            {
+                rotateToAttack();
+                animator.SetTrigger("Basic");
+                isBasicActive = true;
+                lastUsedTime["Basic"] = currentTime;
+                BasicAbility();
+            }
+            else          
+            {
+                Debug.Log("Basic ability is on cooldown.");
+            }
         }
         else if (isDashing && Input.GetMouseButtonDown(1)) // Ultimate Ability
         {
@@ -95,11 +114,50 @@ public class RougeAbilities : MonoBehaviour
             DashTowardsTarget();
         }
     }
-    
     void BasicAbility()
     {
-        rotateToAttack();
-        StartCoroutine(AttackWithDelay(0.5f));
+        // Start the coroutine for delayed fireball throw
+        StartCoroutine(ThrowFireballWithDelay());
+    }
+
+    IEnumerator ThrowFireballWithDelay()
+    {
+        // Wait for 3 seconds before throwing the fireball
+        yield return new WaitForSeconds(3f);
+
+        // Perform raycast to determine where the fireball should go
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit rayhit;
+
+        if (Physics.Raycast(ray, out rayhit))
+        {
+            // Calculate the direction to the point the ray hit
+            Vector3 direction = (rayhit.point - transform.position).normalized;
+            direction.y = 0.2f; // Adjust this value for more or less upward angle
+            
+            // Rotate the character to face the target direction
+            // transform.rotation = Quaternion.LookRotation(direction); 
+
+            // Instantiate the fireball at the specified position and rotation
+            GameObject spawn = Instantiate(fireball, fireballPosition.position, fireballPosition.rotation);
+            
+            // Calculate the target position for the fireball to move towards
+            Vector3 hitPos = rayhit.point;
+            Vector3 targetPos = (hitPos - transform.position).normalized;
+
+            // Adjust the fireball's trajectory by adding an upward component
+            targetPos.y = 0.2f; // This ensures the fireball has an upward trajectory as well.
+
+            // Set the fireball velocity
+            Rigidbody rb = spawn.GetComponent<Rigidbody>();
+            rb.velocity = targetPos * fireballSpeed;
+
+            // Destroy the fireball after 2 seconds
+            Destroy(spawn, 2f);
+        }
+
+        // Deactivate ability so it cannot be triggered again immediately
+        isBasicActive = false;
     }
 
     void rotateToAttack()
@@ -112,7 +170,7 @@ public class RougeAbilities : MonoBehaviour
             Vector3 targetPosition = hit.point;
             Vector3 direction = targetPosition - transform.position;
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 400 * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 600 * Time.deltaTime);
         }
     }
 
