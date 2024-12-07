@@ -25,16 +25,12 @@ public class wandererMovement : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 agent.SetDestination(hit.point);
-                animator.SetBool("isRunning", true);
+                animator.SetBool("isRunning", true); // every wanderer should have a boolean value in his animator to run
             }
         }
 
         // Update animator parameter
-        if (agent.remainingDistance > agent.stoppingDistance + 1)
-        {
-            
-        }
-        else
+        if (agent.remainingDistance < agent.stoppingDistance + 1f)
         {
             animator.SetBool("isRunning", false);
         }
