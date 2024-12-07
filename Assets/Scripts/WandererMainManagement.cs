@@ -22,9 +22,9 @@ public class WandererMainManagement : MonoBehaviour
     private bool isInvincible = false;
     private bool isSlowMotion = false;
     // abilties 
-    private bool ability1Unlock = false;
-    private bool ability2Unlock = false;
-    private bool ability3Unlock = false;
+    private bool ability1Unlock = true;
+    private bool ability2Unlock = true;
+    private bool ability3Unlock = true;
     // Game Over Screen
     public GameObject gameOverScreen;
 
@@ -217,7 +217,68 @@ public class WandererMainManagement : MonoBehaviour
         // This function just unlocks the third ability variable of the player, to be used in ability logic script
         ability3Unlock = true;
     }
+    public int getCurrentHealth()
+    {
+        return currentHealth;
+    }
+    public int getMaxHealth()
+    {
+        return maxHealth;
+    }
+    public int getCurrentLevel()
+    {
+        return currentLevel;
+    }
+    public int getXP()
+    {
+        return XP;
+    }
+    public int getMaxXP()
+    {
+        return maxXP;
+    }
+    public int getHealingPotions()
+    {
+        return healingPotions;
+    }
+    public int getAbilityPoints()
+    {
+        return abilityPoints;
+    }
+    public int getRuneFragments()
+    {
+        return runeFragments;
+    }
+    public bool getIsInvincible()
+    {
+        return isInvincible;
+    }
+    public bool getIsSlowMotion()
+    {
+        return isSlowMotion;
+    }
+    public bool getAbility1Unlock()
+    {
+        return ability1Unlock;
+    }
+    public bool getAbility2Unlock()
+    {
+        return ability2Unlock;
+    }
 
+    public bool getAbility3Unlock()
+    {
+        return ability3Unlock;
+    }
+
+    public void setisInvincible(bool X)
+    {
+        isInvincible = X;
+    }
+    public bool getisInvincible()
+    {
+        return isInvincible;
+    }
 
 }
 

@@ -7,7 +7,7 @@ public class MinionsDemonsMainManagement : MonoBehaviour
 {
     public string enemyType;  
     public int maxHealth;     
-    private int currentHealth; 
+    private int currentHealth = 10; 
     public int attackPower;   
     public int xpReward;      
     public float moveSpeed; 
@@ -24,7 +24,9 @@ public class MinionsDemonsMainManagement : MonoBehaviour
 
      public void TakeDamage(int damage)
     {
+        print(currentHealth);
         currentHealth -= damage;
+        print(currentHealth);
         currentHealth = Mathf.Max(currentHealth, 0);
         if (currentHealth == 0)
         {
