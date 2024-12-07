@@ -228,6 +228,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wizard_weapon_legacy DEMO
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010252498714, guid: a967089208f523246bbb4911dd5cde5c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4000013314187654, guid: a967089208f523246bbb4911dd5cde5c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.873275

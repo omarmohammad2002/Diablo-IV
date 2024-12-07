@@ -324,13 +324,5 @@ public class WandererMainManagement : MonoBehaviour
         return isInvincible;
     }
 
-    public void setisInvincible (bool X)
-    {
-        isInvincible = X;
-    }
-    public bool getisInvincible ()
-    {
-        return isInvincible;
-    }
 }
 
