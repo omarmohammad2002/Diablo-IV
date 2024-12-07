@@ -15,9 +15,9 @@ public class fireballScript : MonoBehaviour
                     print("damage 5");
                     enemyScript.TakeDamage(5);
             }
-            Destroy(gameObject);
+            
         }
-        
+        Destroy(gameObject);
     }
 
 }
