@@ -26,7 +26,6 @@ public class MinionsDemonsMainManagement : MonoBehaviour
     {
         print(currentHealth);
         currentHealth -= damage;
-        print(currentHealth);
         currentHealth = Mathf.Max(currentHealth, 0);
         if (currentHealth == 0)
         {

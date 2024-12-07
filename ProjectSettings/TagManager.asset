@@ -4,7 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - enemy
+  - Enemy
+  - HealthPotion
+  - RuneFragment
   layers:
   - Default
   - TransparentFX
