@@ -152,21 +152,21 @@ public class BarbarianAbilities : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2f);
         foreach (Collider hitCollider in hitColliders)
         {
-            //if (hitCollider.CompareTag("Boss"))
-            //{
-            //    MinionsDemonsMainManagement enemyScript = hitCollider.GetComponent<MinionsDemonsMainManagement>();
-            //    if (enemyScript != null)
-            //    {
-            //        Vector3 directionToEnemy = (hitCollider.transform.position - transform.position).normalized;
-            //        float dotProduct = Vector3.Dot(transform.forward, directionToEnemy);
-            //        if (dotProduct > 0.5f)
-            //        {
-            //            Debug.Log("Enemy detected in front: " + hitCollider.name);
-            //            enemyScript.TakeDamage(5);
-            //            break;
-            //        }
-            //    }
-            //}
+            if (hitCollider.CompareTag("Boss"))
+            {
+                MinionsDemonsMainManagement enemyScript = hitCollider.GetComponent<MinionsDemonsMainManagement>();
+                if (enemyScript != null)
+                {
+                    Vector3 directionToEnemy = (hitCollider.transform.position - transform.position).normalized;
+                    float dotProduct = Vector3.Dot(transform.forward, directionToEnemy);
+                    if (dotProduct > 0.5f)
+                    {
+                        Debug.Log("Enemy detected in front: " + hitCollider.name);
+                        enemyScript.TakeDamage(5);
+                        break;
+                    }
+                }
+            }
             if (hitCollider.CompareTag("Minion"))
             {
                 MinionsMainManagement enemyScript = hitCollider.GetComponent<MinionsMainManagement>();
@@ -254,15 +254,15 @@ public class BarbarianAbilities : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2f);
         foreach (Collider hitCollider in hitColliders)
         {
-            //if (hitCollider.CompareTag("Boss"))
-            //{
-            //    MinionsDemonsMainManagement enemyScript = hitCollider.GetComponent<MinionsDemonsMainManagement>();
-            //    if (enemyScript != null)
-            //    {
-            //        enemyScript.TakeDamage(10);
-            //        Debug.Log("Enemy hit by Iron Maelstorm: " + hitCollider.name);
-            //    }
-            //}
+            if (hitCollider.CompareTag("Boss"))
+            {
+                MinionsDemonsMainManagement enemyScript = hitCollider.GetComponent<MinionsDemonsMainManagement>();
+                if (enemyScript != null)
+                {
+                    enemyScript.TakeDamage(10);
+                    Debug.Log("Enemy hit by Iron Maelstorm: " + hitCollider.name);
+                }
+            }
             if (hitCollider.CompareTag("Minion"))
             {
                 MinionsMainManagement enemyScript = hitCollider.GetComponent<MinionsMainManagement>();
@@ -320,15 +320,15 @@ public class BarbarianAbilities : MonoBehaviour
         Collider[] hitEnemies = Physics.OverlapSphere(transform.position, 1f);
         foreach (Collider hitCollider in hitEnemies)
         {
-            //if (hitCollider.CompareTag("Boss"))
-            //{
-            //    DemonsMainManagement enemyScript = hitCollider.GetComponent<DemonsMainManagement>();
-            //    if (enemyScript != null)
-            //    {
-            //        enemyScript.TakeDamage(enemyScript.currentHealth);
+            if (hitCollider.CompareTag("Boss"))
+            {
+                DemonsMainManagement enemyScript = hitCollider.GetComponent<DemonsMainManagement>();
+                if (enemyScript != null)
+                {
+                    enemyScript.TakeDamage(enemyScript.currentHealth);
 
-            //    }
-            //}
+                }
+            }
             if (hitCollider.CompareTag("Minion"))
             {
                 MinionsMainManagement enemyScript = hitCollider.GetComponent<MinionsMainManagement>();

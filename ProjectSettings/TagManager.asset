@@ -10,6 +10,9 @@ TagManager:
   - Sorcerer
   - Erika
   - Demon
+  - Minion
+  - Enemy
+  - Boss
   layers:
   - Default
   - TransparentFX
