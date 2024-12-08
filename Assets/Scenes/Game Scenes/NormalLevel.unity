@@ -283,7 +283,7 @@ GameObject:
   - component: {fileID: 41602714}
   m_Layer: 0
   m_Name: NormalInst
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -300,8 +300,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bfec4248f32b8546acf9679b1f4d0f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minionPrefab: {fileID: 919132149155446097, guid: 5cb8c143baa92cc4499c4a291f041b1f, type: 3}
-  demonPrefab: {fileID: 4900514533364829526, guid: 9f8d3788ccce67847a63078b9157dfdd, type: 3}
+  minionPrefab: {fileID: 6488226982083608195, guid: 2c7c246291187ce4682686bd09c736b7, type: 3}
+  demonPrefab: {fileID: 2544139645671837158, guid: 3be2cede3448c7b4b837f4143cc911d9, type: 3}
+  demonPatrolPointsPrefab: {fileID: 8930586552052031072, guid: 32ea3a583eb63974880cae0a7615b75b, type: 3}
+  minionIdlePointPrefab: {fileID: 2232925058051892433, guid: 128c08828a47aa841a6dfdcee41ae1e5, type: 3}
   healingPotionPrefab: {fileID: 1021588353636906, guid: f75e1608d9f1e4f06a5027de3c813b5d, type: 3}
   runeFragmentPrefab: {fileID: 1305883699301654, guid: 093a44e6b1a384df88fabf2976ac0055, type: 3}
   enemyCampsPrefab:
@@ -867,7 +869,7 @@ PrefabInstance:
       objectReference: {fileID: 466439069}
     - target: {fileID: 5348461488137086475, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 220.4
+      value: 307.5
       objectReference: {fileID: 0}
     - target: {fileID: 5348461488137086475, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
       propertyPath: m_LocalPosition.y
@@ -875,7 +877,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5348461488137086475, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 41.1
+      value: 170.5
       objectReference: {fileID: 0}
     - target: {fileID: 5348461488137086475, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3335,7 +3337,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8948739698727456157, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 220.4
+      value: 307.5
       objectReference: {fileID: 0}
     - target: {fileID: 8948739698727456157, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3343,7 +3345,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8948739698727456157, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 45.1
+      value: 174.5
       objectReference: {fileID: 0}
     - target: {fileID: 8948739698727456157, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4405,7 +4407,7 @@ Transform:
   m_GameObject: {fileID: 1260370892}
   serializedVersion: 2
   m_LocalRotation: {x: 0.26171124, y: -0.000000017803165, z: 0.0000000048275464, w: 0.96514624}
-  m_LocalPosition: {x: 220.4, y: 2.9, z: 41.1}
+  m_LocalPosition: {x: 307.5, y: 2.9, z: 170.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
