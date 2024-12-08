@@ -6,16 +6,40 @@ public class fireballScript : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("enemy"))
+        if (other.CompareTag("Minion"))
         {
 
-            MinionsDemonsMainManagement enemyScript = other.GetComponent<MinionsDemonsMainManagement>();
-            if (enemyScript != null) 
+            MinionsMainManagement minionScript = other.GetComponent<MinionsMainManagement>();
+            if (minionScript != null) 
             {
-                    print("damage 5");
-                    enemyScript.TakeDamage(5);
+                print("damage 5");
+                minionScript.TakeDamage(5);
             }
             
+        }
+
+        if (other.CompareTag("Demon"))
+        {
+
+            DemonsMainManagement demonScript = other.GetComponent<DemonsMainManagement>();
+            if (demonScript != null)
+            {
+                print("damage 5");
+                demonScript.TakeDamage(5);
+            }
+
+        }
+
+        if (other.CompareTag("Boss"))
+        {
+
+            BossMainManagement bossScript = other.GetComponent<BossMainManagement>();
+            if (bossScript != null)
+            {
+                print("damage 5");
+                bossScript.TakeDamage(5);
+            }
+
         }
         Destroy(gameObject);
     }

@@ -193,17 +193,49 @@ public class RougeAbilities : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
         foreach (Collider hitCollider in hitColliders)
         {
-            if (hitCollider.CompareTag("Enemy"))
+            if (hitCollider.CompareTag("Minion"))
             {
-                MinionsDemonsMainManagement enemyScript = hitCollider.GetComponent<MinionsDemonsMainManagement>();
-                if (enemyScript != null)
+                MinionsMainManagement minionScript = hitCollider.GetComponent<MinionsMainManagement>();
+                if (minionScript != null)
                 {
                     Vector3 directionToEnemy = (hitCollider.transform.position - transform.position).normalized;
                     float dotProduct = Vector3.Dot(transform.forward, directionToEnemy);
                     if (dotProduct > 0.5f)
                     {
                         Debug.Log("Enemy detected in front: " + hitCollider.name);
-                        enemyScript.TakeDamage(5);
+                        minionScript.TakeDamage(5);
+                        break;
+                    }
+                }
+            }
+
+            if (hitCollider.CompareTag("Demon"))
+            {
+                DemonsMainManagement demonScript = hitCollider.GetComponent<DemonsMainManagement>();
+                if (demonScript != null)
+                {
+                    Vector3 directionToEnemy = (hitCollider.transform.position - transform.position).normalized;
+                    float dotProduct = Vector3.Dot(transform.forward, directionToEnemy);
+                    if (dotProduct > 0.5f)
+                    {
+                        Debug.Log("Enemy detected in front: " + hitCollider.name);
+                        demonScript.TakeDamage(5);
+                        break;
+                    }
+                }
+            }
+
+            if (hitCollider.CompareTag("Boss"))
+            {
+                BossMainManagement bossScript = hitCollider.GetComponent<BossMainManagement>();
+                if (bossScript != null)
+                {
+                    Vector3 directionToEnemy = (hitCollider.transform.position - transform.position).normalized;
+                    float dotProduct = Vector3.Dot(transform.forward, directionToEnemy);
+                    if (dotProduct > 0.5f)
+                    {
+                        Debug.Log("Enemy detected in front: " + hitCollider.name);
+                        bossScript.TakeDamage(5);
                         break;
                     }
                 }
@@ -221,12 +253,32 @@ public class RougeAbilities : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
         foreach (Collider hitCollider in hitColliders)
         {
-            if (hitCollider.CompareTag("Enemy"))
+            if (hitCollider.CompareTag("Minion"))
             {
-                MinionsDemonsMainManagement enemyScript = hitCollider.GetComponent<MinionsDemonsMainManagement>();
-                if (enemyScript != null)
+                MinionsMainManagement minionScript = hitCollider.GetComponent<MinionsMainManagement>();
+                if (minionScript != null)
                 {
-                    enemyScript.TakeDamage(10);
+                    minionScript.TakeDamage(10);
+                    Debug.Log("Enemy hit by Iron Maelstorm: " + hitCollider.name);
+                }
+            }
+
+            if (hitCollider.CompareTag("Demon"))
+            {
+                DemonsMainManagement demonScript = hitCollider.GetComponent<DemonsMainManagement>();
+                if (demonScript != null)
+                {
+                    demonScript.TakeDamage(10);
+                    Debug.Log("Enemy hit by Iron Maelstorm: " + hitCollider.name);
+                }
+            }
+
+            if (hitCollider.CompareTag("Boss"))
+            {
+                BossMainManagement bossScript = hitCollider.GetComponent<BossMainManagement>();
+                if (bossScript != null)
+                {
+                    bossScript.TakeDamage(10);
                     Debug.Log("Enemy hit by Iron Maelstorm: " + hitCollider.name);
                 }
             }
