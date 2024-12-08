@@ -33,9 +33,12 @@ public class wandererMovement : MonoBehaviour
         }
 
         // Update animator parameter
-        if (animator != null && agent.remainingDistance < agent.stoppingDistance + 1f)
+        if (animator != null && agent.enabled)
         {
-            animator.SetBool("isRunning", false);
+            if (agent.remainingDistance < agent.stoppingDistance + 1f)
+            {
+                animator.SetBool("isRunning", false);
+            }
         }
     }
 }

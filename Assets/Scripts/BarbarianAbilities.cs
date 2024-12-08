@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class BarbarianAbilities2 : MonoBehaviour
+public class BarbarianAbilities : MonoBehaviour
 {
     public Camera camera;
     private NavMeshAgent agent;
@@ -107,6 +107,10 @@ public class BarbarianAbilities2 : MonoBehaviour
                 isUltimateActive = true;
                
             }
+            else
+            {
+                Debug.Log("Ultimate ability is on cooldown.");
+            }
         }
         if (isCharging && isLocked)
         {
@@ -145,7 +149,7 @@ public class BarbarianAbilities2 : MonoBehaviour
 
     void bash()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2f);
         foreach (Collider hitCollider in hitColliders)
         {
             if (hitCollider.CompareTag("Enemy"))
@@ -217,7 +221,7 @@ public class BarbarianAbilities2 : MonoBehaviour
 
     private void WildcardAbility()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2f);
         foreach (Collider hitCollider in hitColliders)
         {
             if (hitCollider.CompareTag("Enemy"))
@@ -246,6 +250,10 @@ public class BarbarianAbilities2 : MonoBehaviour
     //Ultimate Ability, charging towards target and killing enemies
     void ChargeTowardsTarget()
     {
+        // Disable the NavMeshAgent while charging
+        if (agent.enabled)
+            agent.enabled = false;
+
         // Calculate the direction to the target
         Vector3 direction = targetPosition - transform.position;
         direction.y = 0; // Ensure the player stays upright
@@ -276,14 +284,20 @@ public class BarbarianAbilities2 : MonoBehaviour
             StopCharging();
         }
     }
-    //Ultimate ability ending
+
     void StopCharging()
     {
         isCharging = false;
         isLocked = false;
         isUltimateActive = false;
         animator.SetBool("isCharging", false);
-        // Enable other actions here if needed
+
+        // Re-enable the NavMeshAgent after charging
+        if (!agent.enabled)
+            agent.enabled = true;
+
+        // Optional: Reset the NavMeshAgent destination to the current position
+        agent.SetDestination(transform.position);
     }
 
 }
