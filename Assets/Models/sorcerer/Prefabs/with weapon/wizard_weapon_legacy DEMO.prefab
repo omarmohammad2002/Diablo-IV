@@ -41,10 +41,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4000013314187654}
   - component: {fileID: 111000010215138216}
-  - component: {fileID: -200237599752152440}
-  - component: {fileID: -70124296959421807}
-  - component: {fileID: -9094866865727774144}
-  - component: {fileID: 1850614558427963830}
+  - component: {fileID: -3015279372542914471}
+  - component: {fileID: -4480726602571045591}
+  - component: {fileID: -8417788628368876058}
+  - component: {fileID: 2808185266603952743}
   m_Layer: 0
   m_Name: wizard_weapon_legacy DEMO
   m_TagString: Untagged
@@ -95,61 +95,73 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!114 &-200237599752152440
+--- !u!114 &-3015279372542914471
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000010252498714}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a210954e776fe140a3ab4175480e93a, type: 3}
+  m_Script: {fileID: 11500000, guid: 7a9933732466f6241834fba4f5efbc0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clone: {fileID: 0}
---- !u!114 &-70124296959421807
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000010252498714}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 091e4740cc222a3438f6f8442b11f2b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireball: {fileID: 0}
-  fireballPosition: {fileID: 0}
+  fireball: {fileID: 1947871717301538, guid: df6421bf29a671e489e2828275664ff4, type: 3}
+  fireballPosition: {fileID: 3115345654280297170}
   fireballSpeed: 10
---- !u!114 &-9094866865727774144
+  inferno: {fileID: 5215231338370126180, guid: 28e3595dc42d6804bb45739ee0b76174, type: 3}
+  sorcerer: {fileID: 1000010252498714}
+  clone: {fileID: 1000010252498714, guid: 07def2aa6501a3941bf820e0b94f1d2f, type: 3}
+  smoke: {fileID: 115974, guid: f893250a1cfda44e68ef6b2bf7c06b3f, type: 3}
+--- !u!114 &-4480726602571045591
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000010252498714}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2836a622530bceb48baf1ef1ce270be8, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b111613825bd9e4994bf7b67c4db312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sorcerer: {fileID: 0}
---- !u!114 &1850614558427963830
+  gameOverScreen: {fileID: 0}
+--- !u!195 &-8417788628368876058
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000010252498714}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &2808185266603952743
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000010252498714}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4688fb4fa3d1ff946ab544361d1022e4, type: 3}
+  m_Script: {fileID: 11500000, guid: 0eb912ccf4d68dd48bcaac32c9f3f4dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddRunSpeed: 1
-  AddWalkSpeed: 1
+  camera: {fileID: 0}
 --- !u!1 &1000010307727294
 GameObject:
   m_ObjectHideFlags: 0
@@ -31940,7 +31952,7 @@ Transform:
   m_GameObject: {fileID: 6326050697394347936}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.02, y: 0.52, z: 1.1}
+  m_LocalPosition: {x: -0.02, y: 2.1, z: 1.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

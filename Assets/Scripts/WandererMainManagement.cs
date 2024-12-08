@@ -315,14 +315,14 @@ public class WandererMainManagement : MonoBehaviour
     {
         return ability3Unlock;
     }
-
-    public void setisInvincible (bool X)
+    public void setisInvincible(bool X)
     {
         isInvincible = X;
     }
-    public bool getisInvincible ()
+    public bool getisInvincible()
     {
         return isInvincible;
     }
+
 }
 
