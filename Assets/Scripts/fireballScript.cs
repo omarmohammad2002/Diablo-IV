@@ -30,7 +30,7 @@ public class fireballScript : MonoBehaviour
 
         }
 
-        /*if (other.CompareTag("Boss"))
+        if (other.CompareTag("Boss"))
         {
 
             BossMainManagement bossScript = other.GetComponent<BossMainManagement>();
@@ -40,7 +40,7 @@ public class fireballScript : MonoBehaviour
                 bossScript.TakeDamage(5);
             }
 
-        }*/
+        }
         Destroy(gameObject);
     }
 

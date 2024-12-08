@@ -23,11 +23,11 @@ public class infernoScript : MonoBehaviour
                 demonScript.TakeDamage(10);
             }
 
-            /*if (hitCollider.CompareTag("Boss"))
+            if (hitCollider.CompareTag("Boss"))
             {
                 BossMainManagement bossScript = hitCollider.GetComponent<BossMainManagement>();
                 bossScript.TakeDamage(10);
-            }*/
+            }
         }
     }
 
@@ -54,11 +54,11 @@ public class infernoScript : MonoBehaviour
                     demonScript.TakeDamage(2);
                 }
 
-                /*if (hitCollider.CompareTag("Boss"))
+                if (hitCollider.CompareTag("Boss"))
                 {
                     BossMainManagement bossScript = hitCollider.GetComponent<BossMainManagement>();
                     bossScript.TakeDamage(2);
-                }*/
+                }
             }
         }
         
