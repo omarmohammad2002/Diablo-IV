@@ -190,7 +190,8 @@ public class BarbarianAbilities2 : MonoBehaviour
         // Instantiate the shield prefab as a child of the player
         if (shieldPrefab != null)
         {
-            activeShield = Instantiate(shieldPrefab, transform.position, Quaternion.identity, transform);
+            Vector3 shieldSpawnPosition = transform.position + new Vector3(0, 1f, 0); // Adjust 1f to your desired height
+            activeShield = Instantiate(shieldPrefab, shieldSpawnPosition, Quaternion.identity, transform);
             Debug.Log("Shield prefab instantiated.");
         }
         else
