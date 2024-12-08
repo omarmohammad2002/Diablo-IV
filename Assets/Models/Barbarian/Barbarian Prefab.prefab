@@ -52,6 +52,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Barbarian Prefab
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: dfc33f3febaf3fa4ab432772180939a4, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: dfc33f3febaf3fa4ab432772180939a4, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: dfc33f3febaf3fa4ab432772180939a4, type: 3}
       propertyPath: m_Controller
       value: 

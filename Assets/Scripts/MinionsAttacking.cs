@@ -34,12 +34,12 @@ public class MinionsAttacking : MonoBehaviour
     }
 }
 
-    void EnableAttackCollider()
+    void EnablePunchCollider()
     {
         punchCollider.enabled = true;
     }
 
-    void DisableAttackCollider()
+    void DisablePunchCollider()
     {
         punchCollider.enabled = false;
     }

@@ -6,6 +6,8 @@ public class NormalLevelInstantiation : MonoBehaviour
 {
     public GameObject minionPrefab;
     public GameObject demonPrefab;
+    public Transform demonPatrolPointsPrefab;
+    public Transform minionIdlePointPrefab;
     public GameObject healingPotionPrefab;
     public GameObject runeFragmentPrefab;
     public GameObject[] enemyCampsPrefab;
@@ -16,26 +18,15 @@ public class NormalLevelInstantiation : MonoBehaviour
     public GameObject terrainObject; // Reference to the GameObject representing the terrain
     public float randomizationRangeScale = 0.5f; // Reduce range to 50% of the camp bounds
 
-    private Vector3[] campPositions = new Vector3[]
-    {
-        new Vector3(-300, 0.1f, 250),
-        new Vector3(-80, 0.1f, -50),
-        new Vector3(300, 0.1f, 130),
-        new Vector3(-215, 0.1f, -375),
-        new Vector3(220, 0.1f, -300)
-    };
-
-
     void Start()
     {
         GenerateEnemyCamps();
-         
     }
 
     void GenerateEnemyCamps()
     {
-        int remainingMinions = Random.Range(45, 51); // Total minions: 45�50
-        int remainingDemons = Random.Range(5, 11);   // Total demons: 5�10
+        int remainingMinions = Random.Range(45, 51); // Total minions: 45–50
+        int remainingDemons = Random.Range(5, 11);   // Total demons: 5–10
 
         for (int i = 0; i < enemyCampsPrefab.Length; i++)
         {
@@ -65,15 +56,36 @@ public class NormalLevelInstantiation : MonoBehaviour
         {
             Vector3 spawnPosition = GetRandomPositionWithinScaledBounds(campCollider);
             spawnPosition.y = 0; // Fix Y position to 0 for minions
+
+            // Instantiate minion
             GameObject minion = Instantiate(minionPrefab, spawnPosition, Quaternion.identity);
             minion.transform.SetParent(parent);
+
+            // Instantiate idle point and assign to MinionsChasingPlayer script
+            Transform idlePoint = Instantiate(minionIdlePointPrefab, spawnPosition, Quaternion.identity);
+            MinionsChasingPlayer minionScript = minion.GetComponent<MinionsChasingPlayer>();
+            if (minionScript != null)
+            {
+                minionScript.idlePoint = idlePoint;
+            }
         }
+
         for (int i = 0; i < demons; i++)
         {
             Vector3 spawnPosition = GetRandomPositionWithinScaledBounds(campCollider);
             spawnPosition.y = 0; // Fix Y position to 0 for demons
+
+            // Instantiate demon
             GameObject demon = Instantiate(demonPrefab, spawnPosition, Quaternion.identity);
             demon.transform.SetParent(parent);
+
+            // Instantiate patrol point and assign to DemonsChasingPlayer script
+            Transform patrolPoint = Instantiate(demonPatrolPointsPrefab, spawnPosition, Quaternion.identity);
+            DemonsChasingPlayer demonScript = demon.GetComponent<DemonsChasingPlayer>();
+            if (demonScript != null)
+            {
+                demonScript.patrolPoints = patrolPoint;
+            }
         }
     }
 
