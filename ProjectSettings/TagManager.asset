@@ -3,7 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
+  - HealthPotion
+  - RuneFragment
+<<<<<<< HEAD
+  - NavMeshSurface
+=======
+  - enemy
+>>>>>>> 9b1483952539a8b1fa575d480d583d9a28f3a952
   layers:
   - Default
   - TransparentFX

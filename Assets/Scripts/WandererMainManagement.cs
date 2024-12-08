@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WandererMainManagement : MonoBehaviour
-{ 
+{
     // Wanderer's Health
     private int currentHealth;
-    private int maxHealth ;
+    private int maxHealth;
     // Wanderer Character class
     private string characterName;
     // Wanderer's Level and XP
     private int currentLevel;
+    private int maxLevel = 4;
     private int XP;
+    private int maxXP = 100;
     // Wanderer's Inventory
     private int healingPotions;
     private int abilityPoints;
@@ -20,11 +22,15 @@ public class WandererMainManagement : MonoBehaviour
     private bool isInvincible = false;
     private bool isSlowMotion = false;
     // abilties 
-    private bool ability1Unlock = false; 
-    private bool ability2Unlock = false;
-    private bool ability3Unlock = false;
+    private bool ability1Unlock = true;
+    private bool ability2Unlock = true;
+    private bool ability3Unlock = true;
     // Game Over Screen
     public GameObject gameOverScreen;
+    // Pause Game
+    private bool isGamePaused = false;
+    public GameObject pauseScreen;
+
 
     public static WandererMainManagement WandererMM;
     private void Awake()
@@ -44,7 +50,7 @@ public class WandererMainManagement : MonoBehaviour
     void Start()
     {
         currentLevel = 1;
-        maxHealth = 100 * currentLevel; 
+        maxHealth = 100 * currentLevel;
         currentHealth = maxHealth;
         abilityPoints = 0;
         healingPotions = 0;
@@ -54,6 +60,46 @@ public class WandererMainManagement : MonoBehaviour
     void Update()
     {
         HandleCheatInputs();
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            ConsumeHealingPotion();
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            TogglePauseGame();
+        }
+    }
+    void TogglePauseGame()
+    {
+        isGamePaused = !isGamePaused;
+
+        if (isGamePaused)
+        {
+            Time.timeScale = 0; // Pause the game
+            // Open the pause screen
+            pauseScreen.SetActive(true);
+            Debug.Log("Game Paused");
+        }
+        else
+        {
+            Time.timeScale = 1; // Resume the game
+            // Close the pause screen
+            pauseScreen.SetActive(false);
+            Debug.Log("Game Resumed");
+        }
+    }
+        public void ConsumeHealingPotion()
+    {
+        if( (healingPotions > 0) && (currentHealth < maxHealth) )
+        {
+            Heal(50/100 * maxHealth); // Heal by 50 health points (adjust as needed)
+            useHealingPotion(); // Reduce potion count
+            Debug.Log("Used a healing potion. Remaining potions: " + healingPotions);
+        }
+        else
+        {
+            Debug.Log("No healing potions available!");
+        }
     }
     void HandleCheatInputs()
     {
@@ -105,10 +151,10 @@ public class WandererMainManagement : MonoBehaviour
             addXP(100);
         }
     }
-    void DealDamage (int amount)
+    public void DealDamage(int amount)
     {
         // This function deals damage to the player by a specific amount, to be used in enemy attack logic scrip
-       if(!isInvincible)
+        if (!isInvincible)
         {
             currentHealth -= amount;
             if (currentHealth <= 0)
@@ -119,54 +165,55 @@ public class WandererMainManagement : MonoBehaviour
             }
         }
     }
-    void Heal(int amount)
+    public void Heal(int amount)
     {
         // This function just heals the player by a specific amount, to be used in health potions logic script
         currentHealth += amount;
         currentHealth = Mathf.Min(currentHealth, maxHealth);
-        Debug.Log("healed"); 
+        Debug.Log("healed");
     }
-    void addHealingPotion ()
+    public void addHealingPotion()
     {
         healingPotions++;
+        Debug.Log("Health potion added to inventory. Total potions: " + healingPotions);    
     }
-    void useHealingPotion ()
+    public void useHealingPotion()
     {
         // This just deducts the healing potion from the inventory, healing to be added in health potions logic script
         healingPotions--;
-      
+
     }
-    void addRuneFragment()
+    public void addRuneFragment()
     {
         // This function just adds a rune fragment to the player's inventory, to be used in rune fragments logic script
         runeFragments++;
     }
-    void useRuneFragment()
+    public void useRuneFragment()
     {
         // This just deducts the rune fragment from the inventory,  to be used in rune fragments logic script
         runeFragments--;
     }
-    void addabilityPoints()
+    public void addabilityPoints()
     {
         // This function just adds an ability point to the player's inventory, to be used in ability points logic script
         abilityPoints++;
     }
-    void useabilityPoints()
+    public void useabilityPoints()
     {
         // This just deducts the ability point from the inventory,  to be used in ability points logic script
         abilityPoints--;
     }
-    void increaseLevel()
+    public void increaseLevel()
     {
         // This function just increases the level variable of the player, level up logic to be handled in character leveling up script
         currentLevel++;
     }
-    void updatecurrentHealth(int amount)
+    public void updatecurrentHealth(int amount)
     {
         //This function just updates the current health of the player to a specific amount, to be used in character leveling up script
         currentHealth = amount;
     }
-    void updateMaxHealth(int amount)
+    public void updateMaxHealth(int amount)
     {
         //This function just updates the max health of the player to a specific amount, to be used in character leveling up script
         maxHealth = amount;
@@ -175,30 +222,107 @@ public class WandererMainManagement : MonoBehaviour
     public void addXP(int amount)
     {
         // This function just adds XP to the player's XP variable, to be used in The Wanderer gaining XP points script
-        XP += amount;
+        if (currentLevel < maxLevel)
+        {
+            XP += amount;
+            if (XP >= maxXP) { 
+
+                if (XP > maxXP)
+                    XP = XP - maxXP;
+                else if (XP  == maxXP)
+                    XP = 0;
+
+                increaseLevel();
+                updateMaxHealth(100 * currentLevel);
+                updatecurrentHealth(maxHealth);
+                updatemaxXP(100 * currentLevel);
+                addabilityPoints();
+            }
+    }
+}
+    public void updatemaxXP(int amount)
+    {
+        //This function just updates the max XP of the player to a specific amount, to be used in character leveling up script
+        maxXP = amount;
     }
 
-    void updateXP (int amount)
-    {
-        // This function just updates the XP of the player to a specific amount, to be used in character leveling up script
-        XP = amount;
-    }
-    void unlockAbility1()
+
+    public void unlockAbility1()
     {
         // This function just unlocks the first ability variable of the player, to be used in ability logic script
         ability1Unlock = true;
     }
-    void unlockAbility2()
+    public void unlockAbility2()
     {
         // This function just unlocks the second ability variable of the player, to be used in ability logic script
         ability2Unlock = true;
     }
-    void unlockAbility3()
+    public void unlockAbility3()
     {
         // This function just unlocks the third ability variable of the player, to be used in ability logic script
         ability3Unlock = true;
     }
+    public int getCurrentHealth()
+    {
+        return currentHealth;
+    }
+    public int getMaxHealth()
+    {
+        return maxHealth;
+    }
+    public int getCurrentLevel()
+    {
+        return currentLevel;
+    }
+    public int getXP()
+    {
+        return XP;
+    }
+    public int getMaxXP()
+    {
+        return maxXP;
+    }
+    public int getHealingPotions()
+    {
+        return healingPotions;
+    }
+    public int getAbilityPoints()
+    {
+        return abilityPoints;
+    }
+    public int getRuneFragments()
+    {
+        return runeFragments;
+    }
+    public bool getIsInvincible()
+    {
+        return isInvincible;
+    }
+    public bool getIsSlowMotion()
+    {
+        return isSlowMotion;
+    }
+    public bool getAbility1Unlock()
+    {
+        return ability1Unlock;
+    }
+    public bool getAbility2Unlock()
+    {
+        return ability2Unlock;
+    }
 
+    public bool getAbility3Unlock()
+    {
+        return ability3Unlock;
+    }
+    public void setisInvincible(bool X)
+    {
+        isInvincible = X;
+    }
+    public bool getisInvincible()
+    {
+        return isInvincible;
+    }
 
 }
 
