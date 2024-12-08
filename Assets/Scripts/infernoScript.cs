@@ -11,12 +11,23 @@ public class infernoScript : MonoBehaviour
 
         foreach (Collider hitCollider in hitColliders)
         {
-            if (hitCollider.CompareTag("enemy"))
+            if (hitCollider.CompareTag("Minion"))
             {
-                MinionsDemonsMainManagement enemyScript = hitCollider.GetComponent<MinionsDemonsMainManagement>();
-                        Debug.Log("Enemy detected in front: " + hitCollider.name);
-                enemyScript.TakeDamage(10);
+                MinionsMainManagement minionScript = hitCollider.GetComponent<MinionsMainManagement>();
+                minionScript.TakeDamage(10);
             }
+
+            if (hitCollider.CompareTag("Demon"))
+            {
+                DemonsMainManagement demonScript = hitCollider.GetComponent<DemonsMainManagement>();
+                demonScript.TakeDamage(10);
+            }
+
+            /*if (hitCollider.CompareTag("Boss"))
+            {
+                BossMainManagement bossScript = hitCollider.GetComponent<BossMainManagement>();
+                bossScript.TakeDamage(10);
+            }*/
         }
     }
 
@@ -31,12 +42,23 @@ public class infernoScript : MonoBehaviour
 
             foreach (Collider hitCollider in hitColliders)
             {
-                if (hitCollider.CompareTag("enemy"))
+                if (hitCollider.CompareTag("Minion"))
                 {
-                    MinionsDemonsMainManagement enemyScript = hitCollider.GetComponent<MinionsDemonsMainManagement>();
-                    Debug.Log("Enemy detected in front: " + hitCollider.name);
-                    enemyScript.TakeDamage(2);
+                    MinionsMainManagement minionScript = hitCollider.GetComponent<MinionsMainManagement>();
+                    minionScript.TakeDamage(2);
                 }
+
+                if (hitCollider.CompareTag("Demon"))
+                {
+                    DemonsMainManagement demonScript = hitCollider.GetComponent<DemonsMainManagement>();
+                    demonScript.TakeDamage(2);
+                }
+
+                /*if (hitCollider.CompareTag("Boss"))
+                {
+                    BossMainManagement bossScript = hitCollider.GetComponent<BossMainManagement>();
+                    bossScript.TakeDamage(2);
+                }*/
             }
         }
         
