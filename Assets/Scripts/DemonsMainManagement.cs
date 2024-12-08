@@ -39,9 +39,33 @@ public class DemonsMainManagement : MonoBehaviour
 
     public void enemyDeath()
     {
-        // add xp to the player, play death animation and destroy the game object
-        WandererMainManagement.WandererMM.addXP(xpReward);
+        // Search for the player object using the Player tag
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player != null)
+        {
+            // Get the WandererMainManagement component
+            WandererMainManagement wandererMM = player.GetComponent<WandererMainManagement>();
+
+            if (wandererMM != null)
+            {
+                // Add XP to the player
+                wandererMM.addXP(xpReward);
+            }
+            else
+            {
+                Debug.LogError("WandererMainManagement component not found on the player!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Player object with tag 'Player' not found!");
+        }
+        //might add death animation before destruction
+
+        // Play death animation and destroy the game object
         Destroy(gameObject);
     }
+
 
 }

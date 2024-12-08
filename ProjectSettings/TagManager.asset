@@ -4,13 +4,12 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Enemy
   - HealthPotion
   - RuneFragment
   - Barbarian
   - Sorcerer
   - Erika
-  tags: []
+  - Demon
   layers:
   - Default
   - TransparentFX

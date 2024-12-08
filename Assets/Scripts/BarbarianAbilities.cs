@@ -152,9 +152,39 @@ public class BarbarianAbilities : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2f);
         foreach (Collider hitCollider in hitColliders)
         {
-            if (hitCollider.CompareTag("Enemy"))
+            //if (hitCollider.CompareTag("Boss"))
+            //{
+            //    MinionsDemonsMainManagement enemyScript = hitCollider.GetComponent<MinionsDemonsMainManagement>();
+            //    if (enemyScript != null)
+            //    {
+            //        Vector3 directionToEnemy = (hitCollider.transform.position - transform.position).normalized;
+            //        float dotProduct = Vector3.Dot(transform.forward, directionToEnemy);
+            //        if (dotProduct > 0.5f)
+            //        {
+            //            Debug.Log("Enemy detected in front: " + hitCollider.name);
+            //            enemyScript.TakeDamage(5);
+            //            break;
+            //        }
+            //    }
+            //}
+            if (hitCollider.CompareTag("Minion"))
             {
-                MinionsDemonsMainManagement enemyScript = hitCollider.GetComponent<MinionsDemonsMainManagement>();
+                MinionsMainManagement enemyScript = hitCollider.GetComponent<MinionsMainManagement>();
+                if (enemyScript != null)
+                {
+                    Vector3 directionToEnemy = (hitCollider.transform.position - transform.position).normalized;
+                    float dotProduct = Vector3.Dot(transform.forward, directionToEnemy);
+                    if (dotProduct > 0.5f)
+                    {
+                        Debug.Log("Enemy detected in front: " + hitCollider.name);
+                        enemyScript.TakeDamage(5);
+                        break;
+                    }
+                }
+            }
+            if (hitCollider.CompareTag("Demon"))
+            {
+                DemonsMainManagement enemyScript = hitCollider.GetComponent<DemonsMainManagement>();
                 if (enemyScript != null)
                 {
                     Vector3 directionToEnemy = (hitCollider.transform.position - transform.position).normalized;
@@ -224,9 +254,27 @@ public class BarbarianAbilities : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2f);
         foreach (Collider hitCollider in hitColliders)
         {
-            if (hitCollider.CompareTag("Enemy"))
+            //if (hitCollider.CompareTag("Boss"))
+            //{
+            //    MinionsDemonsMainManagement enemyScript = hitCollider.GetComponent<MinionsDemonsMainManagement>();
+            //    if (enemyScript != null)
+            //    {
+            //        enemyScript.TakeDamage(10);
+            //        Debug.Log("Enemy hit by Iron Maelstorm: " + hitCollider.name);
+            //    }
+            //}
+            if (hitCollider.CompareTag("Minion"))
             {
-                MinionsDemonsMainManagement enemyScript = hitCollider.GetComponent<MinionsDemonsMainManagement>();
+                MinionsMainManagement enemyScript = hitCollider.GetComponent<MinionsMainManagement>();
+                if (enemyScript != null)
+                {
+                    enemyScript.TakeDamage(10);
+                    Debug.Log("Enemy hit by Iron Maelstorm: " + hitCollider.name);
+                }
+            }
+            if (hitCollider.CompareTag("Demon"))
+            {
+                DemonsMainManagement enemyScript = hitCollider.GetComponent<DemonsMainManagement>();
                 if (enemyScript != null)
                 {
                     enemyScript.TakeDamage(10);
@@ -270,11 +318,34 @@ public class BarbarianAbilities : MonoBehaviour
 
         // Check for collisions with enemies
         Collider[] hitEnemies = Physics.OverlapSphere(transform.position, 1f);
-        foreach (Collider enemy in hitEnemies)
+        foreach (Collider hitCollider in hitEnemies)
         {
-            if (enemy.CompareTag("Enemy"))
+            //if (hitCollider.CompareTag("Boss"))
+            //{
+            //    DemonsMainManagement enemyScript = hitCollider.GetComponent<DemonsMainManagement>();
+            //    if (enemyScript != null)
+            //    {
+            //        enemyScript.TakeDamage(enemyScript.currentHealth);
+
+            //    }
+            //}
+            if (hitCollider.CompareTag("Minion"))
             {
-                Destroy(enemy.gameObject); // Destroy enemy
+                MinionsMainManagement enemyScript = hitCollider.GetComponent<MinionsMainManagement>();
+                if (enemyScript != null)
+                {
+                    enemyScript.TakeDamage(enemyScript.currentHealth);
+
+                }
+            }
+            if (hitCollider.CompareTag("Demon"))
+            {
+                DemonsMainManagement enemyScript = hitCollider.GetComponent<DemonsMainManagement>();
+                if (enemyScript != null)
+                {
+                    enemyScript.TakeDamage(enemyScript.currentHealth);
+                    
+                }
             }
         }
 

@@ -22,7 +22,7 @@ public class MinionsMainManagement : MonoBehaviour
         
     }
 
-    void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         currentHealth -= damage;
         currentHealth = Mathf.Max(currentHealth, 0);
@@ -34,10 +34,34 @@ public class MinionsMainManagement : MonoBehaviour
        
     }
 
-    void EnemyDeath()
+    public void EnemyDeath()
+{
+    // Search for the player object using the Player tag
+    GameObject player = GameObject.FindGameObjectWithTag("Player");
+    
+    if (player != null)
     {
-        WandererMainManagement.WandererMM.addXP(xpReward);
-        Destroy(gameObject);
+        // Get the WandererMainManagement component
+        WandererMainManagement wandererMM = player.GetComponent<WandererMainManagement>();
+        
+        if (wandererMM != null)
+        {
+            // Add XP to the player
+            wandererMM.addXP(xpReward);
+        }
+        else
+        {
+            Debug.LogError("WandererMainManagement component not found on the player!");
+        }
     }
+    else
+    {
+        Debug.LogError("Player object with tag 'Player' not found!");
+    }
+        //might add death animation before destroying the game object
+        // Play death animation and destroy the game object
+        Destroy(gameObject);
+}
+
 
 }

@@ -34,20 +34,6 @@ public class WandererMainManagement : MonoBehaviour
     // Enemies Following
     private int enemiesFollowing = 0; 
 
-    public static WandererMainManagement WandererMM;
-    private void Awake()
-    {
-        if (WandererMM == null)
-        {
-            WandererMM = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
     // Start is called before the first frame update
     void Start()
     {
