@@ -8,7 +8,7 @@ public class NormalLevelInstantiation : MonoBehaviour
     public GameObject demonPrefab;
     public GameObject healingPotionPrefab;
     public GameObject runeFragmentPrefab;
-    public GameObject enemyCampPrefab;
+    public GameObject[] enemyCampsPrefab;
 
     public int totalMinions = 50;
     public int totalDemons = 10;
@@ -18,31 +18,28 @@ public class NormalLevelInstantiation : MonoBehaviour
 
     private Vector3[] campPositions = new Vector3[]
     {
-        new Vector3(-300, 0, 250),
-        new Vector3(-80, 0, -50),
-        new Vector3(300, 0, 130),
-        new Vector3(-215, 0, -375),
-        new Vector3(220, 0, -300)
+        new Vector3(-300, 0.1f, 250),
+        new Vector3(-80, 0.1f, -50),
+        new Vector3(300, 0.1f, 130),
+        new Vector3(-215, 0.1f, -375),
+        new Vector3(220, 0.1f, -300)
     };
+
 
     void Start()
     {
         GenerateEnemyCamps();
+         
     }
 
     void GenerateEnemyCamps()
     {
-        int remainingMinions = Random.Range(45, 51); // Total minions: 45–50
-        int remainingDemons = Random.Range(5, 11);   // Total demons: 5–10
+        int remainingMinions = Random.Range(45, 51); // Total minions: 45ï¿½50
+        int remainingDemons = Random.Range(5, 11);   // Total demons: 5ï¿½10
 
-        for (int i = 0; i < campPositions.Length; i++)
+        for (int i = 0; i < enemyCampsPrefab.Length; i++)
         {
-            Vector3 campPosition = campPositions[i];
-
-            // Instantiate the enemy camp prefab
-            GameObject enemyCamp = Instantiate(enemyCampPrefab, campPosition, Quaternion.identity);
-            enemyCamp.name = $"EnemyCamp_{i + 1}";
-
+            GameObject enemyCamp = enemyCampsPrefab[i];
             // Randomly determine the number of enemies and potions for this camp
             int enemiesInCamp = Random.Range(5, 16); // Between 5 and 15 enemies per camp
             int minionsInCamp = Mathf.Min(remainingMinions, Random.Range(1, enemiesInCamp));
