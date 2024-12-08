@@ -31,6 +31,8 @@ public class WandererMainManagement : MonoBehaviour
     private bool isGamePaused = false;
     public GameObject pauseScreen;
 
+    // Enemies Following
+    private int enemiesFollowing = 0; 
 
     public static WandererMainManagement WandererMM;
     private void Awake()
@@ -324,5 +326,17 @@ public class WandererMainManagement : MonoBehaviour
         return isInvincible;
     }
 
+    public void addEnemyFollowing ()
+    {
+        enemiesFollowing++;
+    }
+    public void removeEnemyFollowing()
+    {
+        enemiesFollowing--;
+    }
+    public int getEnemiesFollowing()
+    {
+        return enemiesFollowing;
+    }
 }
 
