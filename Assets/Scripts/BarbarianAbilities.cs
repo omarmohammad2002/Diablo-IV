@@ -154,7 +154,7 @@ public class BarbarianAbilities : MonoBehaviour
         {
             if (hitCollider.CompareTag("Boss"))
             {
-                MinionsDemonsMainManagement enemyScript = hitCollider.GetComponent<MinionsDemonsMainManagement>();
+                BossMainManagement enemyScript = hitCollider.GetComponent<BossMainManagement>();
                 if (enemyScript != null)
                 {
                     Vector3 directionToEnemy = (hitCollider.transform.position - transform.position).normalized;
@@ -256,7 +256,7 @@ public class BarbarianAbilities : MonoBehaviour
         {
             if (hitCollider.CompareTag("Boss"))
             {
-                MinionsDemonsMainManagement enemyScript = hitCollider.GetComponent<MinionsDemonsMainManagement>();
+                BossMainManagement enemyScript = hitCollider.GetComponent<BossMainManagement>();
                 if (enemyScript != null)
                 {
                     enemyScript.TakeDamage(10);
