@@ -18,6 +18,8 @@ public class wandererMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
         if (Input.GetMouseButton(0))
         {
             Ray ray = camera.ScreenPointToRay(Input.mousePosition);
@@ -25,18 +27,18 @@ public class wandererMovement : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 agent.SetDestination(hit.point);
-                animator.SetBool("isRunning", true);
+                if (animator != null)
+                    animator.SetBool("isRunning", true); // every wanderer should have a boolean value in his animator to run
             }
         }
 
         // Update animator parameter
-        if (agent.remainingDistance > agent.stoppingDistance + 1)
+        if (animator != null && agent.enabled)
         {
-            
-        }
-        else
-        {
-            animator.SetBool("isRunning", false);
+            if (agent.remainingDistance < agent.stoppingDistance + 1f)
+            {
+                animator.SetBool("isRunning", false);
+            }
         }
     }
 }

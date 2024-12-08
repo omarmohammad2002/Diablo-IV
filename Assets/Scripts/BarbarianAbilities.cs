@@ -4,25 +4,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class BarbarianAbilities2 : MonoBehaviour
+public class BarbarianAbilities : MonoBehaviour
 {
     public Camera camera;
     private NavMeshAgent agent;
     private Animator animator;
     private WandererMainManagement mainManagement; // Reference to the main management script
 
+    // Ability states
     private bool isBasicActive = false;
     private bool isWildcardActive = false;
     private bool isUltimateActive = false;
+
+    // Charging state
     private bool isCharging = false;
+    private Vector3 targetPosition;
+    private bool isLocked = false;
 
     // Cooldown timers
     private float basicCooldown = 1f;
     private float defensiveCooldown = 10f;
     private float wildcardCooldown = 5f;
     private float ultimateCooldown = 10f;
-
+    // for cooldown
     private Dictionary<string, float> lastUsedTime = new Dictionary<string, float>();
+
+    // Shield prefab
+    public GameObject shieldPrefab; // Reference to the shield prefab
+    private GameObject activeShield; // To keep track of the instantiated shield
+    
 
     void Start()
     {
@@ -55,14 +65,9 @@ public class BarbarianAbilities2 : MonoBehaviour
                 Debug.Log("Basic ability is on cooldown.");
             }
         }
-        else if (isUltimateActive && Input.GetMouseButtonDown(1)) // Ultimate Ability
+        else if (isCharging && Input.GetMouseButtonDown(1)) // Ultimate Ability
         {
-            animator.SetBool("isCharging", true);
-            Debug.Log(animator.GetBool("isCharging"));
-            isCharging = true;
-            lastUsedTime["Ultimate"] = currentTime;
-            UltimateAbility();
-          
+           SetChargeTarget();
         }
 
         if (Input.GetKeyDown(KeyCode.W) && mainManagement.getAbility1Unlock()) // Defensive Ability
@@ -94,24 +99,28 @@ public class BarbarianAbilities2 : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && mainManagement.getAbility3Unlock()) // Activate Ultimate Targeting
+        if (Input.GetKeyDown(KeyCode.E) && !isCharging && mainManagement.getAbility3Unlock()) // Activate Ultimate Targeting
         {
             if (currentTime >= lastUsedTime["Ultimate"] + ultimateCooldown)
             {
-                Debug.Log("Ultimate ability activated. Select a target location.");
+                isCharging = true;
                 isUltimateActive = true;
+               
+            }
+            else
+            {
+                Debug.Log("Ultimate ability is on cooldown.");
             }
         }
-
-        if (isCharging && agent.remainingDistance < agent.stoppingDistance + 1f) // Stop Charging Animation
+        if (isCharging && isLocked)
         {
-
-            animator.SetBool("isCharging", false);
-            Debug.Log(animator.GetBool("isCharging"));  
-            isCharging = false;
+            lastUsedTime["Ultimate"] = currentTime;
+            ChargeTowardsTarget();
         }
-    }
 
+
+    }
+    
     void BasicAbility()
     {
         rotateToAttack();
@@ -140,7 +149,7 @@ public class BarbarianAbilities2 : MonoBehaviour
 
     void bash()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2f);
         foreach (Collider hitCollider in hitColliders)
         {
             if (hitCollider.CompareTag("Enemy"))
@@ -165,12 +174,15 @@ public class BarbarianAbilities2 : MonoBehaviour
     private void DefensiveAbility()
     {
         Debug.Log("Shield activated. Defensive ability triggered.");
-        // Add defensive ability logic here (e.g., temporary invincibility or damage reduction)
+
+        // Check if the main management script is available
         if (mainManagement != null)
         {
+            // Start the coroutine to activate the shield
             StartCoroutine(ActivateShieldForDuration(3f)); // Shield lasts for 3 seconds
         }
     }
+
     private IEnumerator ActivateShieldForDuration(float duration)
     {
         Debug.Log("Shield activated. Barbarian is invincible.");
@@ -178,6 +190,19 @@ public class BarbarianAbilities2 : MonoBehaviour
         // Set isInvincible to true
         mainManagement.setisInvincible(true);
         Debug.Log("mainManagement.isInvincible: " + mainManagement.getisInvincible());
+
+        // Instantiate the shield prefab as a child of the player
+        if (shieldPrefab != null)
+        {
+            Vector3 shieldSpawnPosition = transform.position + new Vector3(0, 1f, 0); // Adjust 1f to your desired height
+            activeShield = Instantiate(shieldPrefab, shieldSpawnPosition, Quaternion.identity, transform);
+            Debug.Log("Shield prefab instantiated.");
+        }
+        else
+        {
+            Debug.LogError("Shield prefab is not assigned!");
+        }
+
         // Wait for the shield's duration
         yield return new WaitForSeconds(duration);
 
@@ -185,11 +210,18 @@ public class BarbarianAbilities2 : MonoBehaviour
         mainManagement.setisInvincible(false);
         Debug.Log("mainManagement.isInvincible: " + mainManagement.getisInvincible());
         Debug.Log("Shield deactivated. Barbarian is no longer invincible.");
+
+        // Destroy the shield prefab
+        if (activeShield != null)
+        {
+            Destroy(activeShield);
+            Debug.Log("Shield prefab destroyed.");
+        }
     }
 
     private void WildcardAbility()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2f);
         foreach (Collider hitCollider in hitColliders)
         {
             if (hitCollider.CompareTag("Enemy"))
@@ -204,59 +236,68 @@ public class BarbarianAbilities2 : MonoBehaviour
         }
         isWildcardActive = false;
     }
-
-    private void UltimateAbility()
+    //Ultimate Ability, getting target position
+    void SetChargeTarget()
     {
-        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit))
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            agent.SetDestination(hit.point);
-            Vector3 targetPosition = hit.point;
-            Vector3 startPosition = transform.position;
-            Debug.Log("Ultimate ability triggered, charging towards: " + targetPosition);
-            StartCoroutine(DamageEnemiesAlongPath(startPosition, targetPosition, 1f));
-            isUltimateActive = false;
+            targetPosition = hit.point;
+            animator.SetBool("isCharging", true);
+            isLocked = true;
         }
     }
-
-    IEnumerator DamageEnemiesAlongPath(Vector3 startPosition, Vector3 targetPosition, float radius)
+    //Ultimate Ability, charging towards target and killing enemies
+    void ChargeTowardsTarget()
     {
-        float stepDistance = 1f;
-        Vector3 direction = (targetPosition - startPosition).normalized;
-        float distance = Vector3.Distance(startPosition, targetPosition);
+        // Disable the NavMeshAgent while charging
+        if (agent.enabled)
+            agent.enabled = false;
 
-        for (float step = 0; step <= distance; step += stepDistance)
+        // Calculate the direction to the target
+        Vector3 direction = targetPosition - transform.position;
+        direction.y = 0; // Ensure the player stays upright
+
+        // Rotate the player to face the target direction
+        if (direction != Vector3.zero)
         {
-            // Calculate the current position along the path
-            Vector3 currentPosition = startPosition + direction * step;
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10 * Time.deltaTime);
+        }
 
-            // Check for enemies within the radius at the current position
-            Collider[] hitColliders = Physics.OverlapSphere(currentPosition, radius);
+        // Move towards the target position
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5 * Time.deltaTime);
 
-            foreach (Collider hitCollider in hitColliders)
+        // Check for collisions with enemies
+        Collider[] hitEnemies = Physics.OverlapSphere(transform.position, 1f);
+        foreach (Collider enemy in hitEnemies)
+        {
+            if (enemy.CompareTag("Enemy"))
             {
-                if (hitCollider.CompareTag("Enemy"))
-                {
-                    MinionsDemonsMainManagement enemyScript = hitCollider.GetComponent<MinionsDemonsMainManagement>();
-
-                    if (enemyScript != null)
-                    {
-                        // Wait until the player is close to the enemy
-                        Debug.Log("player position" + transform.position);
-                        Debug.Log("enemy position" + hitCollider.transform.position);
-                        while (Vector3.Distance(transform.position, hitCollider.transform.position) > radius)
-                        {
-                            yield return null; // Wait for the next frame
-                        }
-
-                        // Destroy the enemy after reaching it
-                        Destroy(hitCollider.gameObject);
-                        Debug.Log("Enemy destroyed after player reached: " + hitCollider.name);
-                    }
-                }
+                Destroy(enemy.gameObject); // Destroy enemy
             }
         }
+
+        // Stop charging if reached the target
+        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+        {
+            StopCharging();
+        }
     }
+
+    void StopCharging()
+    {
+        isCharging = false;
+        isLocked = false;
+        isUltimateActive = false;
+        animator.SetBool("isCharging", false);
+
+        // Re-enable the NavMeshAgent after charging
+        if (!agent.enabled)
+            agent.enabled = true;
+
+        // Optional: Reset the NavMeshAgent destination to the current position
+        agent.SetDestination(transform.position);
+    }
+
 }

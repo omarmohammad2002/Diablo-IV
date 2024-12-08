@@ -10,6 +10,7 @@ TagManager:
   - Barbarian
   - Sorcerer
   - Erika
+  tags: []
   layers:
   - Default
   - TransparentFX
