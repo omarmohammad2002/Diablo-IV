@@ -325,7 +325,7 @@ public class BarbarianAbilities : MonoBehaviour
                 DemonsMainManagement enemyScript = hitCollider.GetComponent<DemonsMainManagement>();
                 if (enemyScript != null)
                 {
-                    enemyScript.TakeDamage(enemyScript.currentHealth);
+                    enemyScript.TakeDamage(20);
 
                 }
             }
