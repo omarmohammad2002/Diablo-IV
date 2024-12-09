@@ -385,4 +385,33 @@ public class BarbarianAbilities : MonoBehaviour
         agent.SetDestination(transform.position);
     }
 
+    // Method to get the remaining cooldown time for Basic Ability
+    public float GetBasicCooldownRemaining() 
+    {
+        float remainingTime = Mathf.Max(0, (lastUsedTime["Basic"] + basicCooldown) - Time.time);
+        return remainingTime;
+    }
+
+    // Method to get the remaining cooldown time for Defensive Ability
+    public float GetDefensiveCooldownRemaining() // ability 1
+    {
+        float remainingTime = Mathf.Max(0, (lastUsedTime["Defensive"] + defensiveCooldown) - Time.time);
+        return remainingTime;
+    }
+
+    // Method to get the remaining cooldown time for Wildcard Ability
+    public float GetWildcardCooldownRemaining() // ability 2
+    {
+        float remainingTime = Mathf.Max(0, (lastUsedTime["Wildcard"] + wildcardCooldown) - Time.time);
+        return remainingTime;
+    }
+
+    // Method to get the remaining cooldown time for Ultimate Ability
+    public float GetUltimateCooldownRemaining() //ability 3
+    {
+        float remainingTime = Mathf.Max(0, (lastUsedTime["Ultimate"] + ultimateCooldown) - Time.time);
+        return remainingTime;
+    }
+
+
 }
