@@ -34,6 +34,15 @@ public class BossMainManagement : MonoBehaviour
     private GameObject Player;
     private GameObject activeAura;
 
+    public AudioClip summonSound;
+    public AudioClip diveBombSound;
+    public AudioClip spikesSound;
+    public AudioClip auraSound;
+    public AudioClip dyingSound;
+
+    private AudioSource audioSource;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +50,31 @@ public class BossMainManagement : MonoBehaviour
         currentPhase = 1;
         animator = GetComponent<Animator>();
         Player = GameObject.FindGameObjectWithTag("Player");
+        audioSource = GetComponent<AudioSource>();
+    }
+    public void PlaySound(string soundName)
+    {
+        switch (soundName)
+        {
+            case "Summon":
+                audioSource.PlayOneShot(summonSound);
+                break;
+            case "DiveBomb":
+                audioSource.PlayOneShot(diveBombSound);
+                break;
+            case "Spikes":
+                audioSource.PlayOneShot(spikesSound);
+                break;
+            case "Aura":
+                audioSource.PlayOneShot(auraSound);
+                break;
+            case "Dying":
+                audioSource.PlayOneShot(dyingSound);
+                break;
+            default:
+                Debug.LogWarning("Sound not found: " + soundName);
+                break;
+        }
     }
 
     // Update is called once per frame
