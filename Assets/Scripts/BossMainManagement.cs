@@ -24,10 +24,15 @@ public class BossMainManagement : MonoBehaviour
     //prefabs
     public GameObject minionPrefab;  // Assuming minions are a GameObject prefab.
     public GameObject shieldPrefab; // Assuming shield is a GameObject prefab.
+    public GameObject bloodSpikesPrefab; // Assign the Blood Spikes prefab in the Inspector
+    public GameObject reflectiveAuraPrefab;
+
+
     private GameObject activeShield;
     private Animator animator;
     private bool inPhase;
     private GameObject Player;
+    private GameObject activeAura;
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +52,13 @@ public class BossMainManagement : MonoBehaviour
             inPhase = true;
 
         }
+        // for debugging purposes
+        //if (!inPhase)
+        //{
+        //    inPhase = true; 
+        //    InvokeRepeating("Phase2Behavior", 0f, 15f);
+        //}
+
 
         // check for alive minions
         GameObject minion = GameObject.FindGameObjectWithTag("Minion");
@@ -55,8 +67,26 @@ public class BossMainManagement : MonoBehaviour
             minionsAlive = false;
             minionsSummoned = false;
         }
-       
+        // Rotate to face the player
+        FacePlayer();
     }
+
+    private void FacePlayer()
+    {
+        if (Player == null) return; // Ensure the player exists
+
+        // Calculate the direction to the player
+        Vector3 directionToPlayer = Player.transform.position - transform.position;
+        directionToPlayer.y = 0; // Ignore height differences
+
+        // Rotate the boss to face the player
+        if (directionToPlayer != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f); // Adjust rotation speed with 5f
+        }
+    }
+
     public void StartCombat()
     {
         InvokeRepeating("Phase1Behavior", 0f, 30f);
@@ -119,31 +149,73 @@ public class BossMainManagement : MonoBehaviour
     }
     private void Phase2Behavior()
     {
-        int randomInt = UnityEngine.Random.Range(0, 2); 
+        int randomInt = UnityEngine.Random.Range(0, 2);
 
         if (randomInt == 0 && !reflectiveAuraActive)
         {
-            reflectiveAuraActive = true;
-            animator.SetTrigger("Aura");
+            StartCoroutine(InstantiateAuraWithDelay(2f)); // Hardcoded delay for Aura instantiation
         }
-        else if (!reflectiveAuraActive) {
-        
-            BloodSpikesAttack();
-        }
-
-    }
-
-    private void BloodSpikesAttack()
-    {
-        // Logic for Blood Spikes attack
-        animator.SetTrigger("Spikes");
-        Debug.Log("Lilith performs Blood Spikes!");
-        // Simulate attack (area of effect)
-        if (Vector3.Distance(transform.position, Player.transform.position) < 10f)
+        else if (!reflectiveAuraActive)
         {
-            Player.GetComponent<WandererMainManagement>().DealDamage(bloodSpikesDamage);
+            StartCoroutine(InstantiateSpikesWithDelay(2f)); // Hardcoded delay for Blood Spikes instantiation
         }
     }
+    private IEnumerator InstantiateAuraWithDelay(float delay)
+    {
+        // Trigger the Aura animation
+        animator.SetTrigger("Aura");
+        Debug.Log("Lilith prepares Aura!");
+
+        // Wait for the hardcoded delay
+        yield return new WaitForSeconds(delay);
+
+        // Instantiate the Aura
+        reflectiveAuraActive = true;
+        activeAura = Instantiate(reflectiveAuraPrefab, transform.position + new Vector3(0, 1f, 0), Quaternion.identity, transform);
+        Debug.Log("Aura instantiated!");
+    }
+
+
+    private IEnumerator InstantiateSpikesWithDelay(float delay)
+    {
+        // Trigger the Blood Spikes animation
+        animator.SetTrigger("Spikes");
+        Debug.Log("Lilith prepares Blood Spikes!");
+
+        // Wait for the hardcoded delay
+        yield return new WaitForSeconds(delay);
+
+        // Logic for Blood Spikes instantiation
+        Vector3 spawnPosition = transform.position + transform.forward * 2 + new Vector3(0, 1f, 0);
+
+        if (bloodSpikesPrefab != null)
+        {
+            GameObject bloodSpikes = Instantiate(bloodSpikesPrefab, spawnPosition, Quaternion.identity);
+
+            Collider[] hitColliders = Physics.OverlapSphere(bloodSpikes.transform.position, 5);
+            foreach (Collider hitCollider in hitColliders)
+            {
+                if (hitCollider.CompareTag("Player"))
+                {
+                    WandererMainManagement player = hitCollider.GetComponent<WandererMainManagement>();
+                    if (player != null)
+                    {
+                        player.DealDamage(bloodSpikesDamage);
+                        Debug.Log("Blood Spikes damaged the player!");
+                    }
+                }
+            }
+
+            // Destroy the spikes object after a delay
+            Destroy(bloodSpikes, 5f); // Adjust the delay as needed
+            Debug.Log("Blood Spikes instantiated!");
+        }
+        else
+        {
+            Debug.LogError("Blood Spikes prefab is not assigned!");
+        }
+    }
+
 
     public void TakeDamage(int damage)
     {
@@ -151,6 +223,7 @@ public class BossMainManagement : MonoBehaviour
         {
             Player.GetComponent<WandererMainManagement>().DealDamage(reflectiveAuraDamage);
             reflectiveAuraActive = false;
+            Destroy(activeAura);
         }
         else
         {
