@@ -93,6 +93,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minionPrefab: {fileID: 6488226982083608195, guid: 2c7c246291187ce4682686bd09c736b7, type: 3}
   shieldPrefab: {fileID: 1793982429218652532, guid: 3fda834412a80054195b0f95e21b3717, type: 3}
+  bloodSpikesPrefab: {fileID: 2777689315911429711, guid: 87983401e9777f74f8fbfd6896e4088e, type: 3}
+  reflectiveAuraPrefab: {fileID: 3081362037621676516, guid: 0e1cda1849280884a99fa85ea45ffbbc, type: 3}
 --- !u!54 &5598565709312416803
 Rigidbody:
   m_ObjectHideFlags: 0
