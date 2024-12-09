@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Game Scenes/NormalLevel Ziad.unity
+    guid: 13fd4f3a9304a714683558e54cdeadbc
   m_configObjects: {}

@@ -13,6 +13,8 @@ TagManager:
   - Minion
   - Enemy
   - Boss
+  - NavMeshSurface
+  - Gate
   layers:
   - Default
   - TransparentFX
