@@ -5,21 +5,21 @@ using UnityEngine;
 public class WandererMainManagement : MonoBehaviour
 {
     // Wanderer's Health
-    private int currentHealth;
-    private int maxHealth;
+    public int currentHealth;
+    public int maxHealth;
     // Wanderer Character class
     private string characterName;
     // Wanderer's Level and XP
-    private int currentLevel;
+    public int currentLevel;
     private int maxLevel = 4;
     public int XP;
     private int maxXP = 100;
     // Wanderer's Inventory
-    private int healingPotions;
+    public int healingPotions;
     private int abilityPoints;
     private int runeFragments;
     // Cheats and Gameplay Modifiers
-    private bool isInvincible = false;
+    public bool isInvincible = false;
     private bool isSlowMotion = false;
     // abilties 
     private bool ability1Unlock = true;
@@ -32,18 +32,45 @@ public class WandererMainManagement : MonoBehaviour
     public GameObject pauseScreen;
 
     // Enemies Following
-    private int enemiesFollowing = 0; 
+    private int enemiesFollowing = 0;
 
+    private Animator Animator;
+
+    //audio
+    private AudioSource AudioSource;
+    public AudioClip drinkingSound ;
+    public AudioClip dyingSound;
+    public AudioClip damagedSound ;
     // Start is called before the first frame update
     void Start()
     {
         currentLevel = 1;
         maxHealth = 100 * currentLevel;
-        currentHealth = maxHealth;
+        currentHealth = maxHealth ;
         abilityPoints = 0;
-        healingPotions = 0;
+        healingPotions = 1;
         runeFragments = 0;
         XP = 0;
+        Animator = GetComponent<Animator>();
+        AudioSource = GetComponent<AudioSource>();
+    }
+    public void PlaySound(string soundName)
+    {
+        switch (soundName)
+        {
+            case "Drinking":
+                AudioSource.PlayOneShot(drinkingSound);
+                break;
+            case "Dying":
+                AudioSource.PlayOneShot(dyingSound);
+                break;
+            case "Damaged":
+                AudioSource.PlayOneShot(damagedSound);
+                break;
+            default:
+                Debug.LogWarning("Sound not found: " + soundName);
+                break;
+        }
     }
     void Update()
     {
@@ -80,7 +107,9 @@ public class WandererMainManagement : MonoBehaviour
     {
         if( (healingPotions > 0) && (currentHealth < maxHealth) )
         {
-            Heal(50/100 * maxHealth); // Heal by 50 health points (adjust as needed)
+            Animator.SetTrigger("Drinking"); 
+
+            Heal((int)((50f / 100f) * maxHealth)); // Heal by 50 health points (adjust as needed)
             useHealingPotion(); // Reduce potion count
             Debug.Log("Used a healing potion. Remaining potions: " + healingPotions);
         }
@@ -106,6 +135,7 @@ public class WandererMainManagement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             isInvincible = !isInvincible;
+            
         }
 
         // Toggle Slow Motion: Makes the gameplay in half speed by pressing �M�
@@ -147,7 +177,8 @@ public class WandererMainManagement : MonoBehaviour
             currentHealth -= amount;
             if (currentHealth <= 0)
             {
-                Time.timeScale = 0;
+                //Time.timeScale = 0;
+                Animator.SetTrigger("Dead");
                 gameOverScreen.SetActive(true);
                 // more gameover logic to be added here if needed, stop/change audio etc
             }
@@ -158,7 +189,7 @@ public class WandererMainManagement : MonoBehaviour
         // This function just heals the player by a specific amount, to be used in health potions logic script
         currentHealth += amount;
         currentHealth = Mathf.Min(currentHealth, maxHealth);
-        Debug.Log("healed");
+       
     }
     public void addHealingPotion()
     {
