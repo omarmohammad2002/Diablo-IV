@@ -86,11 +86,11 @@ public class BossMainManagement : MonoBehaviour
             inPhase = true;
 
         }
-        // for debugging purposes
+        //for debugging purposes
         //if (!inPhase)
         //{
-        //    inPhase = true; 
-        //    InvokeRepeating("Phase2Behavior", 0f, 15f);
+        //    inPhase = true;
+        //    InvokeRepeating("Phase1Behavior", 0f, 15f);
         //}
 
 

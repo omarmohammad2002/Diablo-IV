@@ -30,7 +30,8 @@ public class MinionsAttacking : MonoBehaviour
 {
     if (punchCollider.enabled && other.CompareTag("Player"))
     {
-        Debug.Log("Player hit By Minion");
+            player.GetComponent<WandererMainManagement>().DealDamage(managementScript.attackPower);
+            Debug.Log("Player hit By Minion");
     }
 }
 

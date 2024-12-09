@@ -126,9 +126,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b111613825bd9e4994bf7b67c4db312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHealth: 0
+  maxHealth: 0
+  currentLevel: 0
   XP: 0
+  healingPotions: 0
+  isInvincible: 0
   gameOverScreen: {fileID: 0}
   pauseScreen: {fileID: 0}
+  drinkingSound: {fileID: 8300000, guid: 6f6710944de458c43871c5898df0bad4, type: 3}
+  dyingSound: {fileID: 8300000, guid: 5f84bf4365456fb4c96ab29bd5f2b23a, type: 3}
+  damagedSound: {fileID: 0}
 --- !u!114 &8240539341964832337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,7 +167,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
