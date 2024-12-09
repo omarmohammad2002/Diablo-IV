@@ -282,7 +282,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 689038002384967452, guid: 777813b15b217e84b9c4fbf2a53a058d, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3438591036925616590, guid: 777813b15b217e84b9c4fbf2a53a058d, type: 3}
       propertyPath: m_LocalScale.x
@@ -354,7 +354,6 @@ MonoBehaviour:
   fireballSpeed: 10
   inferno: {fileID: 5215231338370126180, guid: 28e3595dc42d6804bb45739ee0b76174, type: 3}
   camera: {fileID: 2040628286}
-  shieldPrefab: {fileID: 0}
 --- !u!114 &505273295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -568,7 +567,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1000010252498714, guid: a967089208f523246bbb4911dd5cde5c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4000013314187654, guid: a967089208f523246bbb4911dd5cde5c, type: 3}
       propertyPath: m_LocalPosition.x

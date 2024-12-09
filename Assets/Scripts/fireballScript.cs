@@ -15,7 +15,7 @@ public class fireballScript : MonoBehaviour
                 print("damage 5");
                 minionScript.TakeDamage(5);
             }
-            
+            Destroy(gameObject);
         }
 
         if (other.CompareTag("Demon"))
@@ -27,7 +27,7 @@ public class fireballScript : MonoBehaviour
                 print("damage 5");
                 demonScript.TakeDamage(5);
             }
-
+            Destroy(gameObject);
         }
 
         if (other.CompareTag("Boss"))
@@ -39,9 +39,14 @@ public class fireballScript : MonoBehaviour
                 print("damage 5");
                 bossScript.TakeDamage(5);
             }
-
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
+
+        if (other.CompareTag("Untagged"))
+        {
+            Destroy(gameObject);
+        }
+        
     }
 
 }
