@@ -12,7 +12,7 @@ public class WandererMainManagement : MonoBehaviour
     // Wanderer's Level and XP
     private int currentLevel;
     private int maxLevel = 4;
-    private int XP;
+    public int XP;
     private int maxXP = 100;
     // Wanderer's Inventory
     private int healingPotions;

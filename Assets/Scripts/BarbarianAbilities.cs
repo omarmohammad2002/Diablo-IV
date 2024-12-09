@@ -32,8 +32,9 @@ public class BarbarianAbilities : MonoBehaviour
     // Shield prefab
     public GameObject shieldPrefab; // Reference to the shield prefab
     private GameObject activeShield; // To keep track of the instantiated shield
-    
 
+    private AudioSource AudioSource; 
+    public AudioClip chargeSound;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -45,6 +46,19 @@ public class BarbarianAbilities : MonoBehaviour
         lastUsedTime["Defensive"] = -defensiveCooldown;
         lastUsedTime["Wildcard"] = -wildcardCooldown;
         lastUsedTime["Ultimate"] = -ultimateCooldown;
+        AudioSource = GetComponent<AudioSource>();
+    }
+    public void PlaySound(string soundName)
+    {
+        switch (soundName)
+        {
+            case "Charge":
+                AudioSource.PlayOneShot(chargeSound);
+                break;
+            default:
+                Debug.LogWarning("Sound not found: " + soundName);
+                break;
+        }
     }
 
     void Update()

@@ -123,6 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b111613825bd9e4994bf7b67c4db312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  XP: 0
   gameOverScreen: {fileID: 0}
   pauseScreen: {fileID: 0}
 --- !u!114 &8240539341964832337
@@ -139,6 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 0}
   shieldPrefab: {fileID: 1793982429218652532, guid: 3fda834412a80054195b0f95e21b3717, type: 3}
+  chargeSound: {fileID: 8300000, guid: 861732a2452f7da48b6d154271c9880a, type: 3}
 --- !u!65 &4835398029704341498
 BoxCollider:
   m_ObjectHideFlags: 0
