@@ -22,10 +22,10 @@ public class BarbarianAbilities : MonoBehaviour
     private bool isLocked = false;
 
     // Cooldown timers
-    private float basicCooldown = 1f;
-    private float defensiveCooldown = 10f;
-    private float wildcardCooldown = 5f;
-    private float ultimateCooldown = 10f;
+    public float basicCooldown = 1f;
+    public float defensiveCooldown = 10f;
+    public float wildcardCooldown = 5f; //update
+    public float ultimateCooldown = 10f;
     // for cooldown
     private Dictionary<string, float> lastUsedTime = new Dictionary<string, float>();
 
@@ -310,6 +310,8 @@ public class BarbarianAbilities : MonoBehaviour
         }
     }
     //Ultimate Ability, charging towards target and killing enemies
+    private HashSet<GameObject> damagedEnemies = new HashSet<GameObject>(); // Tracks damaged enemies
+
     void ChargeTowardsTarget()
     {
         // Disable the NavMeshAgent while charging
@@ -334,31 +336,38 @@ public class BarbarianAbilities : MonoBehaviour
         Collider[] hitEnemies = Physics.OverlapSphere(transform.position, 1f);
         foreach (Collider hitCollider in hitEnemies)
         {
-            if (hitCollider.CompareTag("Boss"))
+            // Ensure the enemy hasn't been damaged already
+            if (!damagedEnemies.Contains(hitCollider.gameObject))
             {
-                DemonsMainManagement enemyScript = hitCollider.GetComponent<DemonsMainManagement>();
-                if (enemyScript != null)
+                if (hitCollider.CompareTag("Boss"))
                 {
-                    enemyScript.TakeDamage(20);
-
+                    BossMainManagement enemyScript = hitCollider.GetComponent<BossMainManagement>();
+                    if (enemyScript != null)
+                    {
+                        Debug.Log("Enemy hit by Charge: " + hitCollider.name);
+                        enemyScript.TakeDamage(20);
+                        damagedEnemies.Add(hitCollider.gameObject); // Mark as damaged
+                    }
                 }
-            }
-            if (hitCollider.CompareTag("Minion"))
-            {
-                MinionsMainManagement enemyScript = hitCollider.GetComponent<MinionsMainManagement>();
-                if (enemyScript != null)
-                {
-                    enemyScript.TakeDamage(enemyScript.currentHealth);
 
-                }
-            }
-            if (hitCollider.CompareTag("Demon"))
-            {
-                DemonsMainManagement enemyScript = hitCollider.GetComponent<DemonsMainManagement>();
-                if (enemyScript != null)
+                if (hitCollider.CompareTag("Minion"))
                 {
-                    enemyScript.TakeDamage(enemyScript.currentHealth);
-                    
+                    MinionsMainManagement enemyScript = hitCollider.GetComponent<MinionsMainManagement>();
+                    if (enemyScript != null)
+                    {
+                        enemyScript.TakeDamage(enemyScript.currentHealth);
+                        damagedEnemies.Add(hitCollider.gameObject); // Mark as damaged
+                    }
+                }
+
+                if (hitCollider.CompareTag("Demon"))
+                {
+                    DemonsMainManagement enemyScript = hitCollider.GetComponent<DemonsMainManagement>();
+                    if (enemyScript != null)
+                    {
+                        enemyScript.TakeDamage(enemyScript.currentHealth);
+                        damagedEnemies.Add(hitCollider.gameObject); // Mark as damaged
+                    }
                 }
             }
         }
@@ -381,9 +390,13 @@ public class BarbarianAbilities : MonoBehaviour
         if (!agent.enabled)
             agent.enabled = true;
 
+        // Clear the damaged enemies list for the next charge
+        damagedEnemies.Clear();
+
         // Optional: Reset the NavMeshAgent destination to the current position
         agent.SetDestination(transform.position);
     }
+
 
     // Method to get the remaining cooldown time for Basic Ability
     public float GetBasicCooldownRemaining() 

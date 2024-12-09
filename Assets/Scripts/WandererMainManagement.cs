@@ -149,12 +149,21 @@ public class WandererMainManagement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C))
         {
             // Add your ability cooldown logic here and set cooldown to 0, probably in the ability script
+            BarbarianAbilities script = GetComponent<BarbarianAbilities>();
+            script.basicCooldown = 0;
+            script.wildcardCooldown = 0;
+            script.defensiveCooldown = 0;
+            script.ultimateCooldown = 0;
+
         }
 
         // Unlock Abilities: Unlocks all locked abilities by pressing �U�
         if (Input.GetKeyDown(KeyCode.U))
         {
             // Add logic here to unlock all abilities, probably in the ability script
+            ability1Unlock = true;
+            ability2Unlock = true;
+            ability3Unlock = true;
         }
 
         // Gain Ability Points: Increments the ability points by 1 point by pressing �A�

@@ -7,13 +7,13 @@ using UnityEngine;
 public class BossMainManagement : MonoBehaviour
 {
     private int maxHealth = 50 ;
-    private int currentHealth;
-    private bool minionsSummoned = false;
-    private bool minionsAlive = false;
+    public int currentHealth;
+    public bool minionsSummoned = false;
+    public bool minionsAlive = false;
 
     private int shieldHealth = 50;
-    private bool shieldActive = false;
-    private bool reflectiveAuraActive = false;
+    public bool shieldActive = false;
+    public bool reflectiveAuraActive = false;
     private int currentPhase;
 
     // Attacks damagee
@@ -220,7 +220,7 @@ public class BossMainManagement : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         // Logic for Blood Spikes instantiation
-        Vector3 spawnPosition = transform.position + transform.forward * 2 + new Vector3(0, 1f, 0);
+        Vector3 spawnPosition = transform.position + transform.forward * 3 + new Vector3(0, 1f, 0);
 
         if (bloodSpikesPrefab != null)
         {
