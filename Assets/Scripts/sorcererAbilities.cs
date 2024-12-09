@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class sorcererAbilities : MonoBehaviour
@@ -28,9 +29,11 @@ public class sorcererAbilities : MonoBehaviour
     // for cooldown
     private Dictionary<string, float> lastUsedTime = new Dictionary<string, float>();
 
-    private AudioSource audioSource; 
-    public AudioClip fireballThrow;
-    public AudioClip explode;
+    private AudioSource audioSource;
+    [SerializeField] AudioClip fireballThrow;
+    [SerializeField] AudioClip explode;
+    [SerializeField] AudioClip cloneAudio;
+    [SerializeField] AudioClip infernoAudio;
 
     [SerializeField] GameObject smoke;
 
@@ -158,6 +161,7 @@ public class sorcererAbilities : MonoBehaviour
             rb = spawn.GetComponent<Rigidbody>();
             rb.velocity = targetPos * fireballSpeed;
         }
+        audioSource.PlayOneShot(fireballThrow);
         isBasicAbility = false;
     }
 
@@ -176,10 +180,11 @@ public class sorcererAbilities : MonoBehaviour
             {
                 //hitPos = hitPos + Vector3.up * clone.transform.localScale.y;
                 GameObject spawn = Instantiate(clone, hitPos, Quaternion.identity);
+                AudioSource.PlayClipAtPoint(cloneAudio, hitPos);
 
                 UpdateMinionsPlayerReference(spawn);
 
-                Destroy(spawn, 5);
+                StartCoroutine(PlaySoundAndDestroy(spawn, 5f, hitPos));
 
                 StartCoroutine(ResetTagAfterDelay(4.9f));
 
@@ -191,6 +196,7 @@ public class sorcererAbilities : MonoBehaviour
         isWildCardAbility = false;
     }
 
+    //extra methods for clone
     void UpdateMinionsPlayerReference(GameObject newPlayer)
     {
         // Find all GameObjects with the tag "Minion"
@@ -255,6 +261,17 @@ public class sorcererAbilities : MonoBehaviour
 
         GameObject smokeSpawn = Instantiate(smoke, position, Quaternion.identity);
         Destroy(smokeSpawn, 3); 
+    }
+    private IEnumerator PlaySoundAndDestroy(GameObject spawn, float delay, Vector3 hitPos)
+    {
+        // Wait for the delay
+        yield return new WaitForSeconds(delay - 0.1f);
+
+        // Play the sound at the spawn's position
+        AudioSource.PlayClipAtPoint(explode, spawn.transform.position);
+
+        // Destroy the spawn object
+        Destroy(spawn);
     }
 
     //clone damage
@@ -325,8 +342,9 @@ public class sorcererAbilities : MonoBehaviour
                     GetComponent<Animation>().CrossFade("idle_combat", 0.0f);
                     GetComponent<Animation>().CrossFadeQueued("idle_normal");
 
-                hitPos = hitPos + (Vector3.up * inferno.transform.localScale.y / 2) + (Vector3.right * 15);
+                    hitPos = hitPos + (Vector3.up * inferno.transform.localScale.y / 2) + (Vector3.right * 15);
                     GameObject spawn = Instantiate(inferno, hitPos, Quaternion.identity);
+                    AudioSource.PlayClipAtPoint(infernoAudio, hitPos);
 
                     Destroy(spawn, 5);
 
@@ -336,21 +354,4 @@ public class sorcererAbilities : MonoBehaviour
             isUltimateAbility = false;
     }
 
-    //sounds
-    public void PlaySoundEffects(string sound)
-    {
-        switch (sound)
-        {
-            case "fireball":
-                audioSource.PlayOneShot(fireballThrow);
-                break;
-            case "explode":
-                audioSource.PlayOneShot(explode);
-                break;
-
-            default: Debug.Log("sound not found"); 
-                break;
-        }
-            
-    }
 }
