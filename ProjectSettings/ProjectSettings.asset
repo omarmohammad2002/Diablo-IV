@@ -852,11 +852,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: ef1add07-9450-4de4-b87d-e90c5da440f6
+  cloudProjectId: 017cd247-5d09-4d24-b8f9-587bb8ca7c16
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Diablo IV (1)
-  organizationId: ziadsultan1021
+  projectName: Diablo IV
+  organizationId: omarrmohammadd31
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

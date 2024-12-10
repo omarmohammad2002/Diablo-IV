@@ -17,7 +17,26 @@ public class MinionsAttacking : MonoBehaviour
         enemyAnimator = GetComponent<Animator>();
         managementScript = GetComponent<MinionsMainManagement>();
         player = GameObject.FindGameObjectWithTag("Player");
-        punchCollider = GetComponentInChildren<BoxCollider>();
+        BoxCollider[] colliders = GetComponentsInChildren<BoxCollider>();
+
+        foreach (BoxCollider collider in colliders)
+        {
+            // Check if the collider's GameObject is NOT the parent
+            if (collider.gameObject != this.gameObject)
+            {
+                punchCollider = collider;
+                break; // Exit loop after finding the first match
+            }
+        }
+
+        if (punchCollider != null)
+        {
+            Debug.Log("Child BoxCollider found: " + punchCollider.gameObject.name);
+        }
+        else
+        {
+            Debug.Log("No BoxCollider found in children.");
+        }
     }
 
     void Update()
@@ -26,14 +45,14 @@ public class MinionsAttacking : MonoBehaviour
         
     }
 
-    void OnTriggerEnter(Collider other)
-{
-    if (punchCollider.enabled && other.CompareTag("Player"))
-    {
-            player.GetComponent<WandererMainManagement>().DealDamage(managementScript.attackPower);
-            Debug.Log("Player hit By Minion");
-    }
-}
+//    void OnTriggerEnter(Collider other)
+//{
+//    if (punchCollider.enabled && other.CompareTag("Player"))
+//    {
+//            player.GetComponent<WandererMainManagement>().DealDamage(managementScript.attackPower);
+//            Debug.Log("Player hit By Minion");
+//    }
+//}
 
     void EnablePunchCollider()
     {

@@ -138,7 +138,7 @@ public class BarbarianAbilities : MonoBehaviour
     void BasicAbility()
     {
         rotateToAttack();
-        StartCoroutine(AttackWithDelay(0.5f));
+        StartCoroutine(AttackWithDelay(1f));
     }
 
     void rotateToAttack()
@@ -426,5 +426,6 @@ public class BarbarianAbilities : MonoBehaviour
         return remainingTime;
     }
 
+    
 
 }

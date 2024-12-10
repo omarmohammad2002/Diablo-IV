@@ -4422,7 +4422,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 350261658953385139, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
       propertyPath: m_Speed
-      value: 10
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 7445708095457937975, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
       propertyPath: camera

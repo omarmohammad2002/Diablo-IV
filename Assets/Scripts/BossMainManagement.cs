@@ -108,6 +108,8 @@ public class BossMainManagement : MonoBehaviour
     private void FacePlayer()
     {
         if (Player == null) return; // Ensure the player exists
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Boss Divebomb")) return;
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Boss Swinging Hands")) return;
 
         // Calculate the direction to the player
         Vector3 directionToPlayer = Player.transform.position - transform.position;
@@ -123,8 +125,8 @@ public class BossMainManagement : MonoBehaviour
 
     public void StartCombat()
     {
-        InvokeRepeating("Phase1Behavior", 0f, 30f);
-
+        //InvokeRepeating("Phase1Behavior", 0f, 30f);
+        StartCoroutine(InstantiateSpikesWithDelay(2f));
     }
 
     private void Phase1Behavior()
@@ -219,13 +221,20 @@ public class BossMainManagement : MonoBehaviour
         // Wait for the hardcoded delay
         yield return new WaitForSeconds(delay);
 
-        // Logic for Blood Spikes instantiation
-        Vector3 spawnPosition = transform.position + transform.forward * 3 + new Vector3(0, 1f, 0);
-
-        if (bloodSpikesPrefab != null)
+        // Find the spikes GameObject as a child of the boss
+        Transform spikesTransform = transform.Find("Spikes"); // Ensure the child is named "BloodSpikes"
+        if (spikesTransform != null)
         {
-            GameObject bloodSpikes = Instantiate(bloodSpikesPrefab, spawnPosition, Quaternion.identity);
+            GameObject bloodSpikes = spikesTransform.gameObject;
 
+            // Detach the spikes to prevent them from following the boss's rotation
+            bloodSpikes.transform.SetParent(null);
+
+            // Enable the spikes
+            bloodSpikes.SetActive(true);
+            Debug.Log("Blood Spikes enabled!");
+
+            // Damage logic (if needed)
             Collider[] hitColliders = Physics.OverlapSphere(bloodSpikes.transform.position, 5);
             foreach (Collider hitCollider in hitColliders)
             {
@@ -240,15 +249,22 @@ public class BossMainManagement : MonoBehaviour
                 }
             }
 
-            // Destroy the spikes object after a delay
-            Destroy(bloodSpikes, 5f); // Adjust the delay as needed
-            Debug.Log("Blood Spikes instantiated!");
+            // Wait for 5 seconds before disabling the spikes
+            yield return new WaitForSeconds(5f);
+
+            // Disable the spikes
+            bloodSpikes.SetActive(false);
+            Debug.Log("Blood Spikes disabled!");
+
+            // Reattach the spikes to the boss
+            bloodSpikes.transform.SetParent(transform);
         }
         else
         {
-            Debug.LogError("Blood Spikes prefab is not assigned!");
+            Debug.LogError("Blood Spikes child object not found!");
         }
     }
+
 
 
     public void TakeDamage(int damage)
@@ -261,8 +277,8 @@ public class BossMainManagement : MonoBehaviour
         }
         else
         {
-            if (!minionsAlive)
-            {
+            //if (!minionsAlive)
+            //{
                 if (!shieldActive)
                 {
                     currentHealth -= damage;
@@ -284,7 +300,7 @@ public class BossMainManagement : MonoBehaviour
                     }
 
                 }
-            }
+            //}
             if (currentPhase == 1 && currentHealth <= 0)
             {
                 //death animation

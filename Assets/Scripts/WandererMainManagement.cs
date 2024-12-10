@@ -48,7 +48,7 @@ public class WandererMainManagement : MonoBehaviour
         maxHealth = 100 * currentLevel;
         currentHealth = maxHealth ;
         abilityPoints = 0;
-        healingPotions = 1;
+        healingPotions = 0;
         runeFragments = 0;
         XP = 0;
         Animator = GetComponent<Animator>();
