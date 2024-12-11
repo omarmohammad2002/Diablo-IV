@@ -25,8 +25,10 @@ public class NormalToBossLevel : MonoBehaviour
         {
            if (mainManagement.getRuneFragments() == 3)
             {
-                // Play timeline
-                //after playing the timeline, load the boss level with the same player attributes
+                mainManagement.useRuneFragment();
+                mainManagement.useRuneFragment();
+                mainManagement.useRuneFragment();
+                //load the boss level with the same player attributes
             }
         }
     }

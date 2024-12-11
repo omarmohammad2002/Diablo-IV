@@ -1,14 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BossMainManagement : MonoBehaviour
 {
-    private int maxHealth = 50 ;
+    private int maxHealth = 50;
     public int currentHealth;
-    public bool minionsSummoned = false;
     public bool minionsAlive = false;
 
     private int shieldHealth = 50;
@@ -24,7 +22,6 @@ public class BossMainManagement : MonoBehaviour
     //prefabs
     public GameObject minionPrefab;  // Assuming minions are a GameObject prefab.
     public GameObject shieldPrefab; // Assuming shield is a GameObject prefab.
-    public GameObject bloodSpikesPrefab; // Assign the Blood Spikes prefab in the Inspector
     public GameObject reflectiveAuraPrefab;
 
 
@@ -39,10 +36,9 @@ public class BossMainManagement : MonoBehaviour
     public AudioClip spikesSound;
     public AudioClip auraSound;
     public AudioClip dyingSound;
+    public AudioClip damagingSound;
 
     private AudioSource audioSource;
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -58,9 +54,11 @@ public class BossMainManagement : MonoBehaviour
         {
             case "Summon":
                 audioSource.PlayOneShot(summonSound);
+                Debug.Log("Summon sound played");   
                 break;
             case "DiveBomb":
                 audioSource.PlayOneShot(diveBombSound);
+                Debug.Log("Divebomb sound played");
                 break;
             case "Spikes":
                 audioSource.PlayOneShot(spikesSound);
@@ -70,6 +68,11 @@ public class BossMainManagement : MonoBehaviour
                 break;
             case "Dying":
                 audioSource.PlayOneShot(dyingSound);
+                break;
+            case "Damaging":
+                audioSource.PlayOneShot(damagingSound);
+                break;
+            case "None":
                 break;
             default:
                 Debug.LogWarning("Sound not found: " + soundName);
@@ -99,7 +102,6 @@ public class BossMainManagement : MonoBehaviour
         if (minion == null)
         {
             minionsAlive = false;
-            minionsSummoned = false;
         }
         // Rotate to face the player
         FacePlayer();
@@ -109,7 +111,6 @@ public class BossMainManagement : MonoBehaviour
     {
         if (Player == null) return; // Ensure the player exists
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Boss Divebomb")) return;
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Boss Swinging Hands")) return;
 
         // Calculate the direction to the player
         Vector3 directionToPlayer = Player.transform.position - transform.position;
@@ -122,27 +123,55 @@ public class BossMainManagement : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f); // Adjust rotation speed with 5f
         }
     }
+    private void TriggerAttackAnimation(string attackType)
+    {
+        switch (attackType)
+        {
+            case "Summon":
+                SummonMinions();
+                break;
 
+            case "DiveBomb":
+                DiveBombAttack();
+                break;
+
+            case "Spikes":
+                StartCoroutine(Spikes());   
+                break;
+
+            case "Aura":
+                Aura();
+                break;
+            case "Resurrection":
+                Resurrection();
+                break;
+
+            default:
+                Debug.LogWarning("Unknown attack type: " + attackType);
+                break;
+        }
+    }
     public void StartCombat()
     {
-        //InvokeRepeating("Phase1Behavior", 0f, 30f);
-        StartCoroutine(InstantiateSpikesWithDelay(2f));
+        InvokeRepeating("Phase1Behavior", 0f, 30f);
     }
-
     private void Phase1Behavior()
     {
-        if (!minionsSummoned)
+        int randomInt = UnityEngine.Random.Range(0, 2);
+
+        if (!minionsAlive && randomInt == 0)
         {
-            SummonMinions();
+            animator.SetTrigger("Summon");
         }
         else
         {
-            DiveBombAttack();
+            animator.SetTrigger("Divebomb");
         }
     }
+
+
     private void SummonMinions()
     {
-        animator.SetTrigger("Summon");
         Debug.Log("Lilith summons Minions!");
 
         for (int i = 0; i < 3; i++)
@@ -150,29 +179,31 @@ public class BossMainManagement : MonoBehaviour
             Vector3 spawnPosition = new Vector3(UnityEngine.Random.Range(-10, 10), 0, UnityEngine.Random.Range(-10, 10));
             Instantiate(minionPrefab, spawnPosition, Quaternion.identity);
         }
-
-        minionsSummoned = true;
         minionsAlive = true;
     }
+
     private void DiveBombAttack()
     {
-        // Logic for divebomb attack
-        animator.SetTrigger("Divebomb");
         Debug.Log("Lilith performs Divebomb!");
-        // Simulating damage to Wanderer
-        
-        // add ai navigation to try to attack the player
         if (Vector3.Distance(transform.position, Player.transform.position) < 10f)
         {
             Player.GetComponent<WandererMainManagement>().DealDamage(diveBombDamage);
         }
     }
-
-    public void TransitionToNextPhase()
+    private IEnumerator TransitionToNextPhase(float delay)
     {
+        yield return new WaitForSeconds(delay);
+        animator.SetTrigger("Resurrected");
         Debug.Log("Lilith transitions to Phase 2!");
+
+    }
+    private void Resurrection()
+    {
+        // Reset health and update phase
         currentHealth = maxHealth;
         currentPhase = 2;
+
+        // Activate shield
         shieldActive = true;
         if (shieldPrefab != null)
         {
@@ -180,7 +211,6 @@ public class BossMainManagement : MonoBehaviour
             activeShield = Instantiate(shieldPrefab, transform.position, Quaternion.identity, transform);
             Debug.Log("Shield instantiated as a child of the boss.");
         }
-        CancelInvoke("Phase1Behavior");
         InvokeRepeating("Phase2Behavior", 0f, 30f);
     }
     private void Phase2Behavior()
@@ -189,40 +219,25 @@ public class BossMainManagement : MonoBehaviour
 
         if (randomInt == 0 && !reflectiveAuraActive)
         {
-            StartCoroutine(InstantiateAuraWithDelay(2f)); // Hardcoded delay for Aura instantiation
+            animator.SetTrigger("Aura");
         }
         else if (!reflectiveAuraActive)
         {
-            StartCoroutine(InstantiateSpikesWithDelay(2f)); // Hardcoded delay for Blood Spikes instantiation
+            animator.SetTrigger("Spikes");
         }
     }
-    private IEnumerator InstantiateAuraWithDelay(float delay)
+    private void Aura()
     {
-        // Trigger the Aura animation
-        animator.SetTrigger("Aura");
-        Debug.Log("Lilith prepares Aura!");
-
-        // Wait for the hardcoded delay
-        yield return new WaitForSeconds(delay);
-
         // Instantiate the Aura
         reflectiveAuraActive = true;
         activeAura = Instantiate(reflectiveAuraPrefab, transform.position + new Vector3(0, 1f, 0), Quaternion.identity, transform);
         Debug.Log("Aura instantiated!");
     }
 
-
-    private IEnumerator InstantiateSpikesWithDelay(float delay)
+    private IEnumerator Spikes()
     {
-        // Trigger the Blood Spikes animation
-        animator.SetTrigger("Spikes");
-        Debug.Log("Lilith prepares Blood Spikes!");
-
-        // Wait for the hardcoded delay
-        yield return new WaitForSeconds(delay);
-
         // Find the spikes GameObject as a child of the boss
-        Transform spikesTransform = transform.Find("Spikes"); // Ensure the child is named "BloodSpikes"
+        Transform spikesTransform = transform.Find("Spikes");
         if (spikesTransform != null)
         {
             GameObject bloodSpikes = spikesTransform.gameObject;
@@ -264,9 +279,6 @@ public class BossMainManagement : MonoBehaviour
             Debug.LogError("Blood Spikes child object not found!");
         }
     }
-
-
-
     public void TakeDamage(int damage)
     {
         if (reflectiveAuraActive)
@@ -279,32 +291,36 @@ public class BossMainManagement : MonoBehaviour
         {
             //if (!minionsAlive)
             //{
-                if (!shieldActive)
+            if (!shieldActive)
+            {
+                currentHealth -= damage;
+                animator.SetTrigger("Damaged");
+                currentHealth = Mathf.Max(currentHealth, 0);
+            }
+            else
+            {
+                if (damage >= shieldHealth)
                 {
+                    damage -= shieldHealth;
+                    shieldHealth = 0;
+                    shieldActive = false;
+                    Destroy(activeShield);
                     currentHealth -= damage;
-                    currentHealth = Mathf.Max(currentHealth, 0);
+                    animator.SetTrigger("Damaged");
                 }
                 else
                 {
-                    if (damage >= shieldHealth)
-                    {
-                        damage -= shieldHealth;
-                        shieldHealth = 0;
-                        shieldActive = false;
-                        Destroy(activeShield);
-                        currentHealth -= damage;
-                    }
-                    else
-                    {
-                        shieldHealth -= damage;
-                    }
-
+                    shieldHealth -= damage;
                 }
+
+            }
             //}
             if (currentPhase == 1 && currentHealth <= 0)
             {
-                //death animation
-                TransitionToNextPhase();
+                
+                animator.SetTrigger("Dead");
+                CancelInvoke("Phase1Behavior");
+                StartCoroutine(TransitionToNextPhase(5f));
                 //resurrection in the center of the arena
             }
             if (currentPhase == 2 && currentHealth <= 0)
@@ -315,8 +331,9 @@ public class BossMainManagement : MonoBehaviour
     }
     public void Die()
     {
-        //death animation
+        animator.SetTrigger("Dead");
         //Game ends and studio credits roll
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
+
 }
