@@ -1185,37 +1185,33 @@ PrefabInstance:
       propertyPath: m_LookAt
       value: 
       objectReference: {fileID: 466439069}
-    - target: {fileID: 3232099179043198458, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
-      propertyPath: m_Lens.FieldOfView
-      value: 60
-      objectReference: {fileID: 0}
     - target: {fileID: 5348461488137086475, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
       propertyPath: m_LocalPosition.x
       value: -303.04
       objectReference: {fileID: 0}
     - target: {fileID: 5348461488137086475, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.77
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5348461488137086475, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 287.3
+      value: 280.3
       objectReference: {fileID: 0}
     - target: {fileID: 5348461488137086475, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.8482074
+      value: 0.93409437
       objectReference: {fileID: 0}
     - target: {fileID: 5348461488137086475, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.3236235
+      value: 0.31194445
       objectReference: {fileID: 0}
     - target: {fileID: 5348461488137086475, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.3917538
+      value: 0.16471928
       objectReference: {fileID: 0}
     - target: {fileID: 5348461488137086475, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.14946902
+      value: -0.055008646
       objectReference: {fileID: 0}
     - target: {fileID: 5348461488137086475, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1232,18 +1228,6 @@ PrefabInstance:
     - target: {fileID: 5847176548909394364, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
       propertyPath: m_Name
       value: Wanderer Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 7646348665448984561, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
-      propertyPath: m_FollowOffset.x
-      value: -3.64
-      objectReference: {fileID: 0}
-    - target: {fileID: 7646348665448984561, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
-      propertyPath: m_FollowOffset.y
-      value: 4.77
-      objectReference: {fileID: 0}
-    - target: {fileID: 7646348665448984561, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
-      propertyPath: m_FollowOffset.z
-      value: -3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3928,7 +3912,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 7810589bc21462c4ba82134b682e49d9, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: b67c7242d7cc9514487d25ed0ac0bcbf, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &745824859
 Transform:
@@ -4423,6 +4407,10 @@ PrefabInstance:
     - target: {fileID: 350261658953385139, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
       propertyPath: m_Speed
       value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1554755121675236788, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7445708095457937975, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
       propertyPath: camera
@@ -5877,8 +5865,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1260370892}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.32362354, y: 0.39175373, z: -0.14946902, w: 0.8482074}
-  m_LocalPosition: {x: -303.04, y: 4.77, z: 287.3}
+  m_LocalRotation: {x: 0.31194445, y: 0.16471928, z: -0.05500865, w: 0.93409437}
+  m_LocalPosition: {x: -303.04, y: 10, z: 280.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

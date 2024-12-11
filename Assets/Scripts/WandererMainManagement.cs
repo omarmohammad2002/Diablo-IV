@@ -32,7 +32,7 @@ public class WandererMainManagement : MonoBehaviour
     public GameObject pauseScreen;
 
     // Enemies Following
-    private int enemiesFollowing = 0;
+    public int enemiesFollowing = 0;
 
     private Animator Animator;
 

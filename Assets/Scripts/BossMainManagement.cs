@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class BossMainManagement : MonoBehaviour
 {
@@ -23,7 +24,7 @@ public class BossMainManagement : MonoBehaviour
     public GameObject minionPrefab;  // Assuming minions are a GameObject prefab.
     public GameObject shieldPrefab; // Assuming shield is a GameObject prefab.
     public GameObject reflectiveAuraPrefab;
-
+    public Transform minionIdlePointPrefab;
 
     private GameObject activeShield;
     private Animator animator;
@@ -177,7 +178,13 @@ public class BossMainManagement : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             Vector3 spawnPosition = new Vector3(UnityEngine.Random.Range(-10, 10), 0, UnityEngine.Random.Range(-10, 10));
-            Instantiate(minionPrefab, spawnPosition, Quaternion.identity);
+            Transform idlePoint = Instantiate(minionIdlePointPrefab, spawnPosition, Quaternion.identity);
+            GameObject minion =  Instantiate(minionPrefab, spawnPosition, Quaternion.identity);
+            MinionsChasingPlayer minionScript = minion.GetComponent<MinionsChasingPlayer>();
+            if (minionScript != null)
+            {
+                minionScript.idlePoint = idlePoint;
+            }
         }
         minionsAlive = true;
     }
@@ -289,9 +296,9 @@ public class BossMainManagement : MonoBehaviour
         }
         else
         {
-            //if (!minionsAlive)
-            //{
-            if (!shieldActive)
+            if (!minionsAlive)
+            {
+                if (!shieldActive)
             {
                 currentHealth -= damage;
                 animator.SetTrigger("Damaged");
@@ -314,7 +321,7 @@ public class BossMainManagement : MonoBehaviour
                 }
 
             }
-            //}
+            }
             if (currentPhase == 1 && currentHealth <= 0)
             {
                 

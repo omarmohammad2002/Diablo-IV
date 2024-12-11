@@ -75,16 +75,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 3b557f551fc304e41867019a3fd209c8, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3b557f551fc304e41867019a3fd209c8, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3b557f551fc304e41867019a3fd209c8, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3b557f551fc304e41867019a3fd209c8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3b557f551fc304e41867019a3fd209c8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.0000019073486
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3b557f551fc304e41867019a3fd209c8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3b557f551fc304e41867019a3fd209c8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -170,6 +182,7 @@ MonoBehaviour:
   minionPrefab: {fileID: 6488226982083608195, guid: 2c7c246291187ce4682686bd09c736b7, type: 3}
   shieldPrefab: {fileID: 1793982429218652532, guid: 3fda834412a80054195b0f95e21b3717, type: 3}
   reflectiveAuraPrefab: {fileID: 3081362037621676516, guid: 0e1cda1849280884a99fa85ea45ffbbc, type: 3}
+  minionIdlePointPrefab: {fileID: 2232925058051892433, guid: 128c08828a47aa841a6dfdcee41ae1e5, type: 3}
   summonSound: {fileID: 8300000, guid: b3e45a510434bb548881d701e2ccd7be, type: 3}
   diveBombSound: {fileID: 8300000, guid: a1c9fe93f40927e49a84784f48ae63e8, type: 3}
   spikesSound: {fileID: 8300000, guid: e4ea2debac0a9034d9b049ba44cc5930, type: 3}

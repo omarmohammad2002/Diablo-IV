@@ -16,13 +16,15 @@ public class DemonsChasingPlayer : MonoBehaviour
     private readonly float suspiciousTime=3f;
     private float timeSinceLastSawPlayer;
     private GameObject player;
+    private WandererMainManagement playerManagementScript;
 
-     void Start()
+    void Start()
     {
         enemyAgent = GetComponent<NavMeshAgent>();
         enemyAnimator = GetComponent<Animator>();
         managementScript = GetComponent<DemonsMainManagement>();
         player = GameObject.FindGameObjectWithTag("Player");
+        playerManagementScript = player.GetComponent<WandererMainManagement>();
         waitCounter = waitAtPoint;
         timeSinceLastSawPlayer = suspiciousTime;
         enemyAnimator.SetInteger("demonState", 0);
@@ -49,10 +51,11 @@ public class DemonsChasingPlayer : MonoBehaviour
                    enemyAgent.SetDestination(patrolPoints.GetChild(currentPatrolPoint).position);
                    
                 }
-                if(distanceToPlayer <= chaseRange)
+                if(distanceToPlayer <= chaseRange && playerManagementScript.enemiesFollowing<5)
                 {
                     managementScript.currentState = DemonsMainManagement.DemonState.Aggressive;
                     enemyAnimator.SetInteger("demonState", 2);
+                    playerManagementScript.enemiesFollowing++;
                 }
                 break;
             case DemonsMainManagement.DemonState.Patrolling:
@@ -68,10 +71,11 @@ public class DemonsChasingPlayer : MonoBehaviour
                     waitCounter = waitAtPoint;
                 }
 
-                  if(distanceToPlayer <= chaseRange)
+                  if(distanceToPlayer <= chaseRange && playerManagementScript.enemiesFollowing < 5 )
                 {
                     managementScript.currentState = DemonsMainManagement.DemonState.Aggressive;
                     enemyAnimator.SetInteger("demonState", 2);
+                    playerManagementScript.enemiesFollowing++;
                 }
                 break;
 
@@ -83,12 +87,13 @@ public class DemonsChasingPlayer : MonoBehaviour
                     enemyAgent.isStopped = true;
                     enemyAgent.velocity = Vector3.zero;
                     timeSinceLastSawPlayer -= Time.deltaTime;
-                    if(timeSinceLastSawPlayer <= 0)
+                    if (timeSinceLastSawPlayer <= 0)
                     {
                         managementScript.currentState = DemonsMainManagement.DemonState.Idle;
                         enemyAnimator.SetInteger("demonState", 0);
                         timeSinceLastSawPlayer = suspiciousTime;
                         enemyAgent.isStopped = false;
+                        playerManagementScript.enemiesFollowing--;
                     }
                 }
                 break;
