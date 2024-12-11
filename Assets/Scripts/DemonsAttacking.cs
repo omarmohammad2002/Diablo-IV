@@ -11,13 +11,18 @@ public class DemonsAttacking : MonoBehaviour
     private readonly float attackRange = 3f;
     private GameObject player;
     private BoxCollider swordCollider;
-    // private CapsuleCollider bombCollider;
+    private CapsuleCollider bombCollider;
 
    void Start()
     {
         enemyAnimator = GetComponent<Animator>();
         managementScript = GetComponent<DemonsMainManagement>();
         player = GameObject.FindGameObjectWithTag("Player");
+        bombCollider = GetComponentInChildren<CapsuleCollider>();
+        if (bombCollider == null)
+        {
+            Debug.LogError("Bomb Collider not found");
+        }
         BoxCollider[] colliders = GetComponentsInChildren<BoxCollider>();
 
         foreach (BoxCollider collider in colliders)
@@ -30,15 +35,6 @@ public class DemonsAttacking : MonoBehaviour
             }
         }
 
-        if (swordCollider != null)
-        {
-            Debug.Log("Child BoxCollider found: " + swordCollider.gameObject.name);
-        }
-        else
-        {
-            Debug.Log("No BoxCollider found in children.");
-        }
-        // bombCollider = GetComponentInChildren<CapsuleCollider>();
     }
 
 
@@ -59,14 +55,15 @@ public class DemonsAttacking : MonoBehaviour
         swordCollider.enabled = false;
     }
 
-//     void OnTriggerEnter(Collider other)
-//{
-//    if (swordCollider.enabled && other.CompareTag("Player"))
-//    {
-//      //player.GetComponent<WandererMainManagement>().DealDamage(managementScript.attackPower);
-//      Debug.Log("Player hit By Demon");
-//    }
-//}
+    void EnableBombCollider()
+    {
+        bombCollider.enabled = true;
+    }
+
+    void DisableBombCollider()
+    {
+        bombCollider.enabled = false;
+    }
 
 
     void AttackingAnimation()

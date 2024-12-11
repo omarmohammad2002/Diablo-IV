@@ -8,7 +8,7 @@ public class MinionsAttacking : MonoBehaviour
     private MinionsMainManagement managementScript;
     private readonly float attackRange = 2f;
     private GameObject player;
-    private readonly float attackCooldown = 1.5f; // Time between attacks
+    private readonly float attackCooldown = 3f; // Time between attacks
     private float attackTimer = 0f;
     private BoxCollider punchCollider;
 

@@ -855,6 +855,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Demon (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2544139645671837158, guid: 3be2cede3448c7b4b837f4143cc911d9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2883791588217214812, guid: 3be2cede3448c7b4b837f4143cc911d9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.7

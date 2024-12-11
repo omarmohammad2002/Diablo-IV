@@ -11,6 +11,7 @@ public class MinionsMainManagement : MonoBehaviour
     public int xpReward;      
     public enum MinionState { Idle, Aggressive }
     public MinionState currentState;
+    private Animator minionAnimator;
 
     void Awake()
     {
@@ -22,10 +23,17 @@ public class MinionsMainManagement : MonoBehaviour
         
     }
 
+    void Start()
+    {
+        minionAnimator = GetComponent<Animator>();
+    }
+
     public void TakeDamage(int damage)
     {
+        minionAnimator.SetBool("isDamaged", true);
         currentHealth -= damage;
         currentHealth = Mathf.Max(currentHealth, 0);
+        minionAnimator.SetLayerWeight(2, 0.5f);
         if (currentHealth == 0)
         {
             EnemyDeath();

@@ -12,6 +12,8 @@ public class DemonsMainManagement : MonoBehaviour
     public int explosivePower;
     public enum DemonState { Idle, Patrolling, Aggressive }
     public DemonState currentState;
+    private Animator demonAnimator;
+
 
 
    void Awake()
@@ -25,10 +27,17 @@ public class DemonsMainManagement : MonoBehaviour
         
     }
 
+    void Start()
+    {
+        demonAnimator = GetComponent<Animator>();
+    }
+
      public void TakeDamage(int damage)
     {
+        demonAnimator.SetBool("isDamaged", true);
         currentHealth -= damage;
         currentHealth = Mathf.Max(currentHealth, 0);
+        demonAnimator.SetLayerWeight(2, 0.5f);
         if (currentHealth == 0)
         {
             enemyDeath();
@@ -36,6 +45,8 @@ public class DemonsMainManagement : MonoBehaviour
 
        
     }
+
+    
 
     public void enemyDeath()
     {
