@@ -1,5 +1,71 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2121092753179323244
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8948739698727456157}
+    m_Modifications:
+    - target: {fileID: 7846574894075398386, guid: 221afc171d03f7841be6f403c4234969, type: 3}
+      propertyPath: m_Name
+      value: Shield
+      objectReference: {fileID: 0}
+    - target: {fileID: 7846574894075398386, guid: 221afc171d03f7841be6f403c4234969, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8708811349889325582, guid: 221afc171d03f7841be6f403c4234969, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8708811349889325582, guid: 221afc171d03f7841be6f403c4234969, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8708811349889325582, guid: 221afc171d03f7841be6f403c4234969, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8708811349889325582, guid: 221afc171d03f7841be6f403c4234969, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8708811349889325582, guid: 221afc171d03f7841be6f403c4234969, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8708811349889325582, guid: 221afc171d03f7841be6f403c4234969, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8708811349889325582, guid: 221afc171d03f7841be6f403c4234969, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8708811349889325582, guid: 221afc171d03f7841be6f403c4234969, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8708811349889325582, guid: 221afc171d03f7841be6f403c4234969, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8708811349889325582, guid: 221afc171d03f7841be6f403c4234969, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 221afc171d03f7841be6f403c4234969, type: 3}
+--- !u!4 &7328565330520027490 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8708811349889325582, guid: 221afc171d03f7841be6f403c4234969, type: 3}
+  m_PrefabInstance: {fileID: 2121092753179323244}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8915709074942421622
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66,7 +132,10 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: a9f5bf11107d9264f8115f2015fec93d, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: dfc33f3febaf3fa4ab432772180939a4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7328565330520027490}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dfc33f3febaf3fa4ab432772180939a4, type: 3}
       insertIndex: -1
@@ -150,6 +219,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 0}
+  basicCooldown: 1
+  defensiveCooldown: 10
+  wildcardCooldown: 5
+  ultimateCooldown: 1
   shieldPrefab: {fileID: 1793982429218652532, guid: 3fda834412a80054195b0f95e21b3717, type: 3}
   chargeSound: {fileID: 8300000, guid: 861732a2452f7da48b6d154271c9880a, type: 3}
 --- !u!65 &4835398029704341498
@@ -342,3 +415,8 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!4 &8948739698727456157 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dfc33f3febaf3fa4ab432772180939a4, type: 3}
+  m_PrefabInstance: {fileID: 8915709074942421622}
+  m_PrefabAsset: {fileID: 0}

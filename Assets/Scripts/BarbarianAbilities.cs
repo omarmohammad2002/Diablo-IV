@@ -25,13 +25,9 @@ public class BarbarianAbilities : MonoBehaviour
     public float basicCooldown = 1f;
     public float defensiveCooldown = 10f;
     public float wildcardCooldown = 5f; //update
-    public float ultimateCooldown = 10f;
+    public float ultimateCooldown = 1f; //update
     // for cooldown
     private Dictionary<string, float> lastUsedTime = new Dictionary<string, float>();
-
-    // Shield prefab
-    public GameObject shieldPrefab; // Reference to the shield prefab
-    private GameObject activeShield; // To keep track of the instantiated shield
 
     private AudioSource AudioSource; 
     public AudioClip chargeSound;
@@ -235,16 +231,18 @@ public class BarbarianAbilities : MonoBehaviour
         mainManagement.setisInvincible(true);
         Debug.Log("mainManagement.isInvincible: " + mainManagement.getisInvincible());
 
-        // Instantiate the shield prefab as a child of the player
-        if (shieldPrefab != null)
+        // Find the shield as a child of the player
+        Transform shieldTransform = transform.Find("Shield");
+        if (shieldTransform != null)
         {
-            Vector3 shieldSpawnPosition = transform.position + new Vector3(0, 1f, 0); // Adjust 1f to your desired height
-            activeShield = Instantiate(shieldPrefab, shieldSpawnPosition, Quaternion.identity, transform);
-            Debug.Log("Shield prefab instantiated.");
+            // Activate the shield
+            GameObject shield = shieldTransform.gameObject;
+            shield.SetActive(true);
+            Debug.Log("Shield activated from child object.");
         }
         else
         {
-            Debug.LogError("Shield prefab is not assigned!");
+            Debug.LogError("Shield child object not found!");
         }
 
         // Wait for the shield's duration
@@ -255,16 +253,29 @@ public class BarbarianAbilities : MonoBehaviour
         Debug.Log("mainManagement.isInvincible: " + mainManagement.getisInvincible());
         Debug.Log("Shield deactivated. Barbarian is no longer invincible.");
 
-        // Destroy the shield prefab
-        if (activeShield != null)
+        // Deactivate the shield
+        if (shieldTransform != null)
         {
-            Destroy(activeShield);
-            Debug.Log("Shield prefab destroyed.");
+            GameObject shield = shieldTransform.gameObject;
+            shield.SetActive(false);
+            Debug.Log("Shield deactivated.");
         }
     }
 
+
     private void WildcardAbility()
     {
+        StartCoroutine(WildcardAbilityWithDelay(1f)); // Delay of 1 seconds
+    }
+
+    private IEnumerator WildcardAbilityWithDelay(float delay)
+    {
+        Debug.Log("Iron Maelstrom ability triggered. Waiting for delay...");
+
+        // Wait for the delay
+        yield return new WaitForSeconds(delay);
+
+        // Damage logic
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2f);
         foreach (Collider hitCollider in hitColliders)
         {
@@ -274,7 +285,7 @@ public class BarbarianAbilities : MonoBehaviour
                 if (enemyScript != null)
                 {
                     enemyScript.TakeDamage(10);
-                    Debug.Log("Enemy hit by Iron Maelstorm: " + hitCollider.name);
+                    Debug.Log("Boss hit by Iron Maelstrom: " + hitCollider.name);
                 }
             }
             if (hitCollider.CompareTag("Minion"))
@@ -283,7 +294,7 @@ public class BarbarianAbilities : MonoBehaviour
                 if (enemyScript != null)
                 {
                     enemyScript.TakeDamage(10);
-                    Debug.Log("Enemy hit by Iron Maelstorm: " + hitCollider.name);
+                    Debug.Log("Minion hit by Iron Maelstrom: " + hitCollider.name);
                 }
             }
             if (hitCollider.CompareTag("Demon"))
@@ -292,23 +303,40 @@ public class BarbarianAbilities : MonoBehaviour
                 if (enemyScript != null)
                 {
                     enemyScript.TakeDamage(10);
-                    Debug.Log("Enemy hit by Iron Maelstorm: " + hitCollider.name);
+                    Debug.Log("Demon hit by Iron Maelstrom: " + hitCollider.name);
                 }
             }
         }
+
+        Debug.Log("Iron Maelstrom damage applied after delay.");
         isWildcardActive = false;
     }
+
     //Ultimate Ability, getting target position
     void SetChargeTarget()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
+            // Check if the target is within the medium range
+            float distanceToTarget = Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z),
+                                                       new Vector3(hit.point.x, 0, hit.point.z));
+
+            if (distanceToTarget > 20f) // Medium range is 20 units
+            {
+                lastUsedTime["Ultimate"] = -ultimateCooldown; //to reset the cooldown
+                StopCharging();
+                Debug.Log("Target is out of medium range. Charge ability cannot be activated.");
+
+                return; // Exit without activating charge
+            }
+
             targetPosition = hit.point;
             animator.SetBool("isCharging", true);
             isLocked = true;
         }
     }
+
     //Ultimate Ability, charging towards target and killing enemies
     private HashSet<GameObject> damagedEnemies = new HashSet<GameObject>(); // Tracks damaged enemies
 
@@ -317,6 +345,9 @@ public class BarbarianAbilities : MonoBehaviour
         // Disable the NavMeshAgent while charging
         if (agent.enabled)
             agent.enabled = false;
+
+        // Store the player's original Y position
+        float originalY = transform.position.y;
 
         // Calculate the direction to the target
         Vector3 direction = targetPosition - transform.position;
@@ -329,8 +360,10 @@ public class BarbarianAbilities : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10 * Time.deltaTime);
         }
 
-        // Move towards the target position
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5 * Time.deltaTime);
+        // Move towards the target position while maintaining the original Y position
+        Vector3 newPosition = Vector3.MoveTowards(transform.position, targetPosition, 5 * Time.deltaTime);
+        newPosition.y = originalY; // Lock the Y-axis
+        transform.position = newPosition;
 
         // Check for collisions with enemies
         Collider[] hitEnemies = Physics.OverlapSphere(transform.position, 1f);
@@ -373,11 +406,14 @@ public class BarbarianAbilities : MonoBehaviour
         }
 
         // Stop charging if reached the target
-        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+        if (Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z),
+                     new Vector3(targetPosition.x, 0, targetPosition.z)) < 0.1f)
         {
             StopCharging();
         }
+
     }
+
 
     void StopCharging()
     {

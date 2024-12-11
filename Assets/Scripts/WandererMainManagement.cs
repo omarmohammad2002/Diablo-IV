@@ -103,21 +103,6 @@ public class WandererMainManagement : MonoBehaviour
             Debug.Log("Game Resumed");
         }
     }
-        public void ConsumeHealingPotion()
-    {
-        if( (healingPotions > 0) && (currentHealth < maxHealth) )
-        {
-            Animator.SetTrigger("Drinking"); 
-
-            Heal((int)((50f / 100f) * maxHealth)); // Heal by 50 health points (adjust as needed)
-            useHealingPotion(); // Reduce potion count
-            Debug.Log("Used a healing potion. Remaining potions: " + healingPotions);
-        }
-        else
-        {
-            Debug.Log("No healing potions available!");
-        }
-    }
     void HandleCheatInputs()
     {
         // Heal: Increases the Wanderer�s health by 20 health points by pressing �H�
@@ -184,6 +169,8 @@ public class WandererMainManagement : MonoBehaviour
         if (!isInvincible)
         {
             currentHealth -= amount;
+            Animator.SetTrigger("Damaged");
+            
             if (currentHealth <= 0)
             {
                 //Time.timeScale = 0;
@@ -199,6 +186,21 @@ public class WandererMainManagement : MonoBehaviour
         currentHealth += amount;
         currentHealth = Mathf.Min(currentHealth, maxHealth);
        
+    }
+    public void ConsumeHealingPotion()
+    {
+        if ((healingPotions > 0) && (currentHealth < maxHealth))
+        {
+            Animator.SetTrigger("Drinking");
+
+            Heal((int)((50f / 100f) * maxHealth)); // Heal by 50 health points (adjust as needed)
+            useHealingPotion(); // Reduce potion count
+            Debug.Log("Used a healing potion. Remaining potions: " + healingPotions);
+        }
+        else
+        {
+            Debug.Log("No healing potions available!");
+        }
     }
     public void addHealingPotion()
     {
@@ -249,7 +251,6 @@ public class WandererMainManagement : MonoBehaviour
 
     public void addXP(int amount)
     {
-        // This function just adds XP to the player's XP variable, to be used in The Wanderer gaining XP points script
         if (currentLevel < maxLevel)
         {
             XP += amount;
