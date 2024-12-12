@@ -33,6 +33,7 @@ public class MinionsChasingPlayer : MonoBehaviour
 
     void Update()
     {
+        if(!managementScript.isDead){
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
         switch (managementScript.currentState) 
@@ -79,6 +80,7 @@ public class MinionsChasingPlayer : MonoBehaviour
                     }
                 }
                 break;
+        }
         }
     }
     

@@ -9,6 +9,7 @@ public class MinionsMainManagement : MonoBehaviour
     public int currentHealth; 
     public int attackPower;   
     public int xpReward;      
+    public bool isDead=false;
     public enum MinionState { Idle, Aggressive }
     public MinionState currentState;
     private Animator minionAnimator;
@@ -66,10 +67,16 @@ public class MinionsMainManagement : MonoBehaviour
     {
         Debug.LogError("Player object with tag 'Player' not found!");
     }
-        //might add death animation before destroying the game object
-        // Play death animation and destroy the game object
-        Destroy(gameObject);
+    
+    minionAnimator.SetLayerWeight(3, 1);
+    minionAnimator.SetBool("isDead", true);
+    isDead = true;
+    
 }
+
+ public void DestroyMinion(){
+        Destroy(gameObject);
+        }
 
 
 }
