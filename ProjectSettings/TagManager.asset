@@ -15,6 +15,7 @@ TagManager:
   - Boss
   - NavMeshSurface
   - Gate
+  - arrow
   layers:
   - Default
   - TransparentFX
