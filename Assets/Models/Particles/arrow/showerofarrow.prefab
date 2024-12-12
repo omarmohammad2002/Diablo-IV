@@ -84,6 +84,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 528aac2dd81836f8db86a57118290a68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  center: {fileID: 4250159695770123998}
+  regionLength: 5
+  damageInterval: 1
+  damageAmount: 10
+  slowEffectDuration: 3
+  slowMultiplier: 0.25
 --- !u!1001 &1860667716137014169
 PrefabInstance:
   m_ObjectHideFlags: 0
