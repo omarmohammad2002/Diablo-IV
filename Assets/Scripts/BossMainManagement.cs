@@ -86,7 +86,7 @@ public class BossMainManagement : MonoBehaviour
     {
         if (currentPhase == 1 && currentHealth < maxHealth && !inPhase) //this ensures wanderer attacks first
         {
-            StartCombat();
+            StartCoroutine(StartCombat());
             inPhase = true;
 
         }
@@ -152,8 +152,9 @@ public class BossMainManagement : MonoBehaviour
                 break;
         }
     }
-    public void StartCombat()
+    public IEnumerator StartCombat()
     {
+        yield return new WaitForSeconds(3f);
         InvokeRepeating("Phase1Behavior", 0f, 30f);
     }
     private void Phase1Behavior()
@@ -300,8 +301,8 @@ public class BossMainManagement : MonoBehaviour
             {
                 if (!shieldActive)
                 {
-                    currentHealth -= damage;
                     TriggerDamageAnimation(); // Updated call to trigger the animation
+                    currentHealth -= damage;
                     currentHealth = Mathf.Max(currentHealth, 0);
                 }
                 else
