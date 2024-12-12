@@ -299,36 +299,34 @@ public class BossMainManagement : MonoBehaviour
             if (!minionsAlive)
             {
                 if (!shieldActive)
-            {
-                currentHealth -= damage;
-                animator.SetTrigger("Damaged");
-                currentHealth = Mathf.Max(currentHealth, 0);
-            }
-            else
-            {
-                if (damage >= shieldHealth)
                 {
-                    damage -= shieldHealth;
-                    shieldHealth = 0;
-                    shieldActive = false;
-                    Destroy(activeShield);
                     currentHealth -= damage;
-                    animator.SetTrigger("Damaged");
+                    TriggerDamageAnimation(); // Updated call to trigger the animation
+                    currentHealth = Mathf.Max(currentHealth, 0);
                 }
                 else
                 {
-                    shieldHealth -= damage;
+                    if (damage >= shieldHealth)
+                    {
+                        damage -= shieldHealth;
+                        shieldHealth = 0;
+                        shieldActive = false;
+                        Destroy(activeShield);
+                        currentHealth -= damage;
+                        TriggerDamageAnimation(); // Updated call to trigger the animation
+                    }
+                    else
+                    {
+                        shieldHealth -= damage;
+                    }
                 }
+            }
 
-            }
-            }
             if (currentPhase == 1 && currentHealth <= 0)
             {
-                
                 animator.SetTrigger("Dead");
                 CancelInvoke("Phase1Behavior");
                 StartCoroutine(TransitionToNextPhase(5f));
-                //resurrection in the center of the arena
             }
             if (currentPhase == 2 && currentHealth <= 0)
             {
@@ -336,6 +334,22 @@ public class BossMainManagement : MonoBehaviour
             }
         }
     }
+
+    // New method to handle damage animation trigger
+    private void TriggerDamageAnimation()
+    {
+        animator.SetTrigger("Damaged");
+        StartCoroutine(ResetTriggerWithDelay("Damaged", 2f));
+    }
+
+    // Coroutine to reset the trigger after a delay
+    private IEnumerator ResetTriggerWithDelay(string triggerName, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        animator.ResetTrigger(triggerName);
+        Debug.Log($"Trigger '{triggerName}' has been reset after {delay} seconds.");
+    }
+
     public void Die()
     {
         animator.SetTrigger("Dead");
