@@ -35,71 +35,70 @@ public class DemonsChasingPlayer : MonoBehaviour
 
      void Update()
     {
+        if(!managementScript.demonIsDead){
+            float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
-        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-
-        switch(managementScript.currentState){
-            case DemonsMainManagement.DemonState.Idle:
-               if(waitCounter > 0)
-               {
-                   waitCounter -= Time.deltaTime;
-               }
-               else
-               {
-                   managementScript.currentState = DemonsMainManagement.DemonState.Patrolling;
-                   enemyAnimator.SetInteger("demonState", 1);
-                   enemyAgent.SetDestination(patrolPoints.GetChild(currentPatrolPoint).position);
-                   
-                }
-                if(distanceToPlayer <= chaseRange && playerManagementScript.enemiesFollowing<5)
+            switch(managementScript.currentState){
+                case DemonsMainManagement.DemonState.Idle:
+                if(waitCounter > 0)
                 {
-                    managementScript.currentState = DemonsMainManagement.DemonState.Aggressive;
-                    enemyAnimator.SetInteger("demonState", 2);
-                    playerManagementScript.enemiesFollowing++;
+                    waitCounter -= Time.deltaTime;
                 }
-                break;
-            case DemonsMainManagement.DemonState.Patrolling:
-                if(enemyAgent.remainingDistance <= 0.2f)
+                else
                 {
-                    currentPatrolPoint++;
-                    if(currentPatrolPoint >= patrolPoints.childCount)
-                    {
-                        currentPatrolPoint = 0;
+                    managementScript.currentState = DemonsMainManagement.DemonState.Patrolling;
+                    enemyAnimator.SetInteger("demonState", 1);
+                    enemyAgent.SetDestination(patrolPoints.GetChild(currentPatrolPoint).position);
+                    
                     }
-                    managementScript.currentState = DemonsMainManagement.DemonState.Idle;
-                    enemyAnimator.SetInteger("demonState", 0);
-                    waitCounter = waitAtPoint;
-                }
-
-                  if(distanceToPlayer <= chaseRange && playerManagementScript.enemiesFollowing < 5 )
-                {
-                    managementScript.currentState = DemonsMainManagement.DemonState.Aggressive;
-                    enemyAnimator.SetInteger("demonState", 2);
-                    playerManagementScript.enemiesFollowing++;
-                }
-                break;
-
-            case DemonsMainManagement.DemonState.Aggressive:
-                enemyAgent.SetDestination(player.transform.position);
-                if(distanceToPlayer > chaseRange)
-                {
-                    enemyAnimator.SetInteger("demonState", 0);
-                    enemyAgent.isStopped = true;
-                    enemyAgent.velocity = Vector3.zero;
-                    timeSinceLastSawPlayer -= Time.deltaTime;
-                    if (timeSinceLastSawPlayer <= 0)
+                    if(distanceToPlayer <= chaseRange && playerManagementScript.enemiesFollowing<5)
                     {
+                        managementScript.currentState = DemonsMainManagement.DemonState.Aggressive;
+                        enemyAnimator.SetInteger("demonState", 2);
+                        playerManagementScript.enemiesFollowing++;
+                    }
+                    break;
+                case DemonsMainManagement.DemonState.Patrolling:
+                    if(enemyAgent.remainingDistance <= 0.2f)
+                    {
+                        currentPatrolPoint++;
+                        if(currentPatrolPoint >= patrolPoints.childCount)
+                        {
+                            currentPatrolPoint = 0;
+                        }
                         managementScript.currentState = DemonsMainManagement.DemonState.Idle;
                         enemyAnimator.SetInteger("demonState", 0);
-                        timeSinceLastSawPlayer = suspiciousTime;
-                        enemyAgent.isStopped = false;
-                        playerManagementScript.enemiesFollowing--;
+                        waitCounter = waitAtPoint;
                     }
-                }
-                break;
+
+                    if(distanceToPlayer <= chaseRange && playerManagementScript.enemiesFollowing < 5 )
+                    {
+                        managementScript.currentState = DemonsMainManagement.DemonState.Aggressive;
+                        enemyAnimator.SetInteger("demonState", 2);
+                        playerManagementScript.enemiesFollowing++;
+                    }
+                    break;
+
+                case DemonsMainManagement.DemonState.Aggressive:
+                    enemyAgent.SetDestination(player.transform.position);
+                    if(distanceToPlayer > chaseRange)
+                    {
+                        enemyAnimator.SetInteger("demonState", 0);
+                        enemyAgent.isStopped = true;
+                        enemyAgent.velocity = Vector3.zero;
+                        timeSinceLastSawPlayer -= Time.deltaTime;
+                        if (timeSinceLastSawPlayer <= 0)
+                        {
+                            managementScript.currentState = DemonsMainManagement.DemonState.Idle;
+                            enemyAnimator.SetInteger("demonState", 0);
+                            timeSinceLastSawPlayer = suspiciousTime;
+                            enemyAgent.isStopped = false;
+                            playerManagementScript.enemiesFollowing--;
+                        }
+                    }
+                    break;
+            }
         }
-    
-        
     }
 
 
