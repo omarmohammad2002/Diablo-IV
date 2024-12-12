@@ -145,24 +145,32 @@ public class sorcererAbilities : MonoBehaviour
 
         if (Physics.Raycast(ray, out rayhit))
         {
-            Vector3 direction = (rayhit.point - transform.position).normalized;
-            direction.y = 0;
-            transform.rotation = Quaternion.LookRotation(direction);
+            GameObject targetHit = rayhit.transform.gameObject;
+            if (targetHit.CompareTag("Minion") || targetHit.CompareTag("Demon"))
+            {
+                Vector3 direction = (rayhit.point - transform.position).normalized;
+                direction.y = 0;
+                transform.rotation = Quaternion.LookRotation(direction);
 
-            GetComponent<Animation>().CrossFade("attack_short_001", 0.0f);
-            GetComponent<Animation>().CrossFadeQueued("idle_normal");
+                GetComponent<Animation>().CrossFade("attack_short_001", 0.0f);
+                GetComponent<Animation>().CrossFadeQueued("idle_normal");
 
-            Vector3 hitPos = rayhit.point;
+                GameObject spawn = Instantiate(fireball, fireballPosition.position, fireballPosition.rotation);
+                Debug.Log(spawn);
 
-            GameObject spawn = Instantiate(fireball, fireballPosition.position, fireballPosition.rotation);
-            Debug.Log(spawn); 
+                Vector3 targetPos = (targetHit.transform.position - transform.position).normalized;
+                rb = spawn.GetComponent<Rigidbody>();
+                rb.velocity = targetPos * fireballSpeed;
 
-            Vector3 targetPos = (hitPos - transform.position).normalized;
-            rb = spawn.GetComponent<Rigidbody>();
-            rb.velocity = targetPos * fireballSpeed;
+                audioSource.PlayOneShot(fireballThrow);
+                isBasicAbility = false;
+            }
+            else
+            {
+                Debug.Log("taregt should be minion or demon");
+            }
         }
-        audioSource.PlayOneShot(fireballThrow);
-        isBasicAbility = false;
+
     }
 
     //wildcard ability (clone)
