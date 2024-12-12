@@ -146,7 +146,7 @@ public class sorcererAbilities : MonoBehaviour
         if (Physics.Raycast(ray, out rayhit))
         {
             GameObject targetHit = rayhit.transform.gameObject;
-            if (targetHit.CompareTag("Minion") || targetHit.CompareTag("Demon"))
+            if (targetHit.CompareTag("Minion") || targetHit.CompareTag("Demon") || targetHit.CompareTag("Boss"))
             {
                 Vector3 direction = (rayhit.point - transform.position).normalized;
                 direction.y = 0;
@@ -167,7 +167,7 @@ public class sorcererAbilities : MonoBehaviour
             }
             else
             {
-                Debug.Log("taregt should be minion or demon");
+                Debug.Log("taregt should be minion or demonor boss");
             }
         }
 
