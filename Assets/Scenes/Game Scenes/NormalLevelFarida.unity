@@ -1813,6 +1813,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3015279372542914471, guid: a967089208f523246bbb4911dd5cde5c, type: 3}
+      propertyPath: explode
+      value: 
+      objectReference: {fileID: 8300000, guid: 9574081176de1c746b147a2c9c5300cd, type: 3}
     - target: {fileID: 1000010252498714, guid: a967089208f523246bbb4911dd5cde5c, type: 3}
       propertyPath: m_Name
       value: wizard_weapon_legacy DEMO
@@ -1879,11 +1883,11 @@ PrefabInstance:
       objectReference: {fileID: 1260370894}
     - target: {fileID: 8586363955446746824, guid: a967089208f523246bbb4911dd5cde5c, type: 3}
       propertyPath: m_Size.x
-      value: 3.71
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8586363955446746824, guid: a967089208f523246bbb4911dd5cde5c, type: 3}
       propertyPath: m_Size.z
-      value: 1.73
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

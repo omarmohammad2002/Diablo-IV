@@ -13,11 +13,12 @@ TagManager:
   - Minion
   - Enemy
   - Boss
+  - NavMeshSurface
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - EnemyCamp
   - Water
   - UI
   - 
