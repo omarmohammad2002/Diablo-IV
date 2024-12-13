@@ -16,6 +16,7 @@ TagManager:
   - NavMeshSurface
   - Gate
   - arrow
+  - arrowloc
   layers:
   - Default
   - TransparentFX

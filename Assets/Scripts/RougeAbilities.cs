@@ -134,11 +134,8 @@ public class RougeAbilities : MonoBehaviour
 
     // Start the coroutine for handling the arrow
     StartCoroutine(ThrowArrowWithDelay());
-}
-IEnumerator ThrowArrowWithDelay()
+}IEnumerator ThrowArrowWithDelay()
 {
-    yield return new WaitForSeconds(0.5f);
-
     // Dynamically find the arrow position
     Transform currentArrowPosition = FindArrowPosition();
 
@@ -148,40 +145,43 @@ IEnumerator ThrowArrowWithDelay()
         yield break;
     }
 
-    // Instantiate the arrow at the updated hand bone position and parent it to the hand
-    GameObject spawn = Instantiate(arrow, currentArrowPosition.position, currentArrowPosition.rotation);
-    // spawn.transform.SetParent(currentArrowPosition); // Parent it temporarily to align with the hand
+    yield return new WaitForSeconds(0.9f); // Delay before spawning the arrow
 
-
-    yield return new WaitForSeconds(3f);
-
-    // Detach the arrow after alignment
-    // spawn.transform.SetParent(null);
-
-    // Adjust arrow direction to match the player's forward direction
+    // Cast a ray to determine the target point
     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
     RaycastHit rayhit;
 
     if (Physics.Raycast(ray, out rayhit))
     {
-        Vector3 direction = (rayhit.point - transform.position).normalized;
-        direction.y = 0;
+        Vector3 targetPoint = rayhit.point; // Point where the ray hit
+        Vector3 direction = (targetPoint - currentArrowPosition.position).normalized; // Calculate direction
 
-        // Rotate player towards the direction of the hit point
-        transform.rotation = Quaternion.LookRotation(direction);
+        // Spawn the arrow
+        GameObject spawn = Instantiate(arrow, currentArrowPosition.position, Quaternion.LookRotation(direction));
 
-        // Calculate arrow direction based on player rotation
-        Vector3 targetPos = (rayhit.point - spawn.transform.position).normalized;
+        // Adjust player rotation to face the target point
+        Vector3 playerDirection = (targetPoint - transform.position).normalized;
+        playerDirection.y = 0; // Keep the player upright
+        transform.rotation = Quaternion.LookRotation(playerDirection);
 
+        // Apply velocity to the arrow
         Rigidbody rb = spawn.GetComponent<Rigidbody>();
-        rb.velocity = targetPos * arrowSpeed;
-    }
+        if (rb != null)
+        {
+            rb.velocity = direction * arrowSpeed;
+        }
 
-    // Destroy the arrow after 4 seconds to avoid memory leaks
-    Destroy(spawn, 4f);
+        // Destroy the arrow after 4 seconds
+        Destroy(spawn, 4f);
+    }
+    else
+    {
+        Debug.LogError("No valid target found for the arrow.");
+    }
 
     isBasicActive = false;
 }
+
 
 private Transform FindArrowPosition()
 {
