@@ -222,7 +222,7 @@ public class RougeAbilities : MonoBehaviour
         Rigidbody rb = arrow.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            rb.AddForce(transform.forward * 20, ForceMode.Impulse); // Adjust force as needed
+            rb.AddForce(transform.forward * 40, ForceMode.Impulse); // Adjust force as needed
         }
         else
         {
