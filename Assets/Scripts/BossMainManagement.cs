@@ -148,7 +148,7 @@ public class BossMainManagement : MonoBehaviour
                 break;
 
             default:
-                Debug.LogWarning("Unknown attack type: " + attackType);
+                Debug.Log("Unknown attack type: " + attackType);
                 break;
         }
     }
