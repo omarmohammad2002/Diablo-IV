@@ -15,7 +15,7 @@ public class DemonsChasingPlayer : MonoBehaviour
     private readonly float chaseRange = 10f;
     private readonly float suspiciousTime=3f;
     private float timeSinceLastSawPlayer;
-    private GameObject player;
+    public GameObject player;
     private WandererMainManagement playerManagementScript;
 
     void Start()
