@@ -28,7 +28,7 @@ public class wandererMovement : MonoBehaviour
             {
                 agent.SetDestination(hit.point);
                 if (animator != null)
-                    animator.SetBool("isWalking", true); // every wanderer should have a boolean value in his animator to run
+                    animator.SetBool("isRunning", true); // every wanderer should have a boolean value in his animator to run
             }
         }
 
@@ -37,7 +37,7 @@ public class wandererMovement : MonoBehaviour
         {
             if (agent.remainingDistance < agent.stoppingDistance + 1f)
             {
-                animator.SetBool("isWalking", false);
+                animator.SetBool("isRunning", false);
             }
         }
     }
