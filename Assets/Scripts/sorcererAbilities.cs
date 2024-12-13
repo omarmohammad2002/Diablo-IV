@@ -36,6 +36,7 @@ public class sorcererAbilities : MonoBehaviour
     [SerializeField] AudioClip infernoAudio;
 
     [SerializeField] GameObject smoke;
+    private Animator animator;
 
     // Start is called before the first frame update
     void Start()
@@ -49,6 +50,8 @@ public class sorcererAbilities : MonoBehaviour
         lastUsedTime["Ultimate"] = -ultimateCooldown;
 
         audioSource = GetComponent<AudioSource>();
+
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -152,8 +155,7 @@ public class sorcererAbilities : MonoBehaviour
                 direction.y = 0;
                 transform.rotation = Quaternion.LookRotation(direction);
 
-                GetComponent<Animation>().CrossFade("attack_short_001", 0.0f);
-                GetComponent<Animation>().CrossFadeQueued("idle_normal");
+                animator.SetTrigger("Fireball");
 
                 GameObject spawn = Instantiate(fireball, fireballPosition.position, fireballPosition.rotation);
                 Debug.Log(spawn);
@@ -163,11 +165,11 @@ public class sorcererAbilities : MonoBehaviour
                 rb.velocity = targetPos * fireballSpeed;
 
                 audioSource.PlayOneShot(fireballThrow);
-                isBasicAbility = false;
+                isBasicAbility = false; 
             }
             else
             {
-                Debug.Log("taregt should be minion or demonor boss");
+                Debug.Log("taregt should be minion or demon or boss");
             }
         }
 
@@ -334,32 +336,31 @@ public class sorcererAbilities : MonoBehaviour
     //ultimate ability (inferno)
     void UltimateAbility()
     {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit rayhit;
+         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+         RaycastHit rayhit;
 
-            if (Physics.Raycast(ray, out rayhit))
+         if (Physics.Raycast(ray, out rayhit))
+         {
+            Vector3 direction = (rayhit.point - transform.position).normalized;
+            direction.y = 0;
+            transform.rotation = Quaternion.LookRotation(direction);
+
+            GameObject targetHit = rayhit.transform.gameObject;
+            Vector3 hitPos = rayhit.point;
+            if (targetHit != null)
             {
-                Vector3 direction = (rayhit.point - transform.position).normalized;
-                direction.y = 0;
-                transform.rotation = Quaternion.LookRotation(direction);
+                animator.SetTrigger("Inferno");
 
-                GameObject targetHit = rayhit.transform.gameObject;
-                Vector3 hitPos = rayhit.point;
-                if (targetHit != null)
-                {
-                    GetComponent<Animation>().CrossFade("idle_combat", 0.0f);
-                    GetComponent<Animation>().CrossFadeQueued("idle_normal");
+                hitPos = hitPos + (Vector3.up * inferno.transform.localScale.y / 2) + (Vector3.right * 15);
+                GameObject spawn = Instantiate(inferno, hitPos, Quaternion.identity);
+                AudioSource.PlayClipAtPoint(infernoAudio, hitPos);
 
-                    hitPos = hitPos + (Vector3.up * inferno.transform.localScale.y / 2) + (Vector3.right * 15);
-                    GameObject spawn = Instantiate(inferno, hitPos, Quaternion.identity);
-                    AudioSource.PlayClipAtPoint(infernoAudio, hitPos);
-
-                    Destroy(spawn, 5);
-
-                }
+                Destroy(spawn, 5);
 
             }
-            isUltimateAbility = false;
+
+            }
+        isUltimateAbility = false;
     }
 
 }
