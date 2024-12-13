@@ -500,34 +500,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4835398029704341498, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7351498401798438134, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
-      propertyPath: drinkingSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 6f6710944de458c43871c5898df0bad4, type: 3}
+      propertyPath: healingPotions
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7445708095457937975, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
       propertyPath: camera
       value: 
       objectReference: {fileID: 963194227}
-    - target: {fileID: 8181634066772419486, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8240539341964832337, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
       propertyPath: camera
       value: 
       objectReference: {fileID: 963194227}
-    - target: {fileID: 8240539341964832337, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
-      propertyPath: chargeSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 861732a2452f7da48b6d154271c9880a, type: 3}
-    - target: {fileID: 8240539341964832337, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
-      propertyPath: ultimateCooldown
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 8609651014790174503, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
       propertyPath: m_Name
       value: Barbarian Prefab

@@ -15,11 +15,13 @@ TagManager:
   - Boss
   - NavMeshSurface
   - Gate
+  - arrow
+  - arrowloc
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - EnemyCamp
   - Water
   - UI
   - 

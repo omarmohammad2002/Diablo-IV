@@ -41,12 +41,14 @@ public class WandererMainManagement : MonoBehaviour
     public AudioClip drinkingSound ;
     public AudioClip dyingSound;
     public AudioClip damagedSound ;
+    public AudioClip pickUpSound;
+
     // Start is called before the first frame update
     void Start()
     {
         currentLevel = 1;
         maxHealth = 100 * currentLevel;
-        currentHealth = maxHealth ;
+        currentHealth = maxHealth   ;
         abilityPoints = 0;
         healingPotions = 0;
         runeFragments = 0;
@@ -67,8 +69,10 @@ public class WandererMainManagement : MonoBehaviour
             case "Damaged":
                 AudioSource.PlayOneShot(damagedSound);
                 break;
+            case "PickUp":
+                AudioSource.PlayOneShot(pickUpSound);
+                break;
             default:
-                Debug.LogWarning("Sound not found: " + soundName);
                 break;
         }
     }
@@ -165,21 +169,37 @@ public class WandererMainManagement : MonoBehaviour
     }
     public void DealDamage(int amount)
     {
-        // This function deals damage to the player by a specific amount, to be used in enemy attack logic scrip
+        // This function deals damage to the player by a specific amount, to be used in enemy attack logic scripts
         if (!isInvincible)
         {
             currentHealth -= amount;
-            Animator.SetTrigger("Damaged");
-            
+            TriggerDamageAnimation(); // Updated to use the new method
+
             if (currentHealth <= 0)
             {
-                //Time.timeScale = 0;
+                // Trigger death animation and game over logic
                 Animator.SetTrigger("Dead");
                 gameOverScreen.SetActive(true);
-                // more gameover logic to be added here if needed, stop/change audio etc
+                // More gameover logic to be added here if needed, stop/change audio etc
             }
         }
     }
+
+    // New method to handle damage animation trigger
+    private void TriggerDamageAnimation()
+    {
+        Animator.SetTrigger("Damaged");
+        StartCoroutine(ResetTriggerWithDelay("Damaged", 0.02f)); // Reset the trigger after 2 seconds
+    }
+
+    // Coroutine to reset the trigger after a delay
+    private IEnumerator ResetTriggerWithDelay(string triggerName, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Animator.ResetTrigger(triggerName);
+        Debug.Log($"Trigger '{triggerName}' has been reset after {delay} seconds.");
+    }
+
     public void Heal(int amount)
     {
         // This function just heals the player by a specific amount, to be used in health potions logic script
@@ -206,6 +226,7 @@ public class WandererMainManagement : MonoBehaviour
     {
         healingPotions++;
         Debug.Log("Health potion added to inventory. Total potions: " + healingPotions);    
+        PlaySound("PickUp");
     }
     public void useHealingPotion()
     {
@@ -217,6 +238,7 @@ public class WandererMainManagement : MonoBehaviour
     {
         // This function just adds a rune fragment to the player's inventory, to be used in rune fragments logic script
         runeFragments++;
+        PlaySound("PickUp");
     }
     public void useRuneFragment()
     {

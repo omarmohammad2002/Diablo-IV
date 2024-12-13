@@ -52,7 +52,6 @@ public class BarbarianAbilities : MonoBehaviour
                 AudioSource.PlayOneShot(chargeSound);
                 break;
             default:
-                Debug.LogWarning("Sound not found: " + soundName);
                 break;
         }
     }

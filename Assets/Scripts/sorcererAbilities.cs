@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class sorcererAbilities : MonoBehaviour
@@ -27,17 +29,26 @@ public class sorcererAbilities : MonoBehaviour
     // for cooldown
     private Dictionary<string, float> lastUsedTime = new Dictionary<string, float>();
 
+    private AudioSource audioSource;
+    [SerializeField] AudioClip fireballThrow;
+    [SerializeField] AudioClip explode;
+    [SerializeField] AudioClip cloneAudio;
+    [SerializeField] AudioClip infernoAudio;
+
     [SerializeField] GameObject smoke;
 
     // Start is called before the first frame update
     void Start()
     {
         mainManagement = GetComponent<WandererMainManagement>();
+        
 
         lastUsedTime["Basic"] = -basicCooldown;
         lastUsedTime["Defensive"] = -defensiveCooldown;
         lastUsedTime["Wildcard"] = -wildcardCooldown;
         lastUsedTime["Ultimate"] = -ultimateCooldown;
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -134,22 +145,32 @@ public class sorcererAbilities : MonoBehaviour
 
         if (Physics.Raycast(ray, out rayhit))
         {
-            Vector3 direction = (rayhit.point - transform.position).normalized;
-            direction.y = 0;
-            transform.rotation = Quaternion.LookRotation(direction);
+            GameObject targetHit = rayhit.transform.gameObject;
+            if (targetHit.CompareTag("Minion") || targetHit.CompareTag("Demon") || targetHit.CompareTag("Boss"))
+            {
+                Vector3 direction = (rayhit.point - transform.position).normalized;
+                direction.y = 0;
+                transform.rotation = Quaternion.LookRotation(direction);
 
-            GetComponent<Animation>().CrossFade("attack_short_001", 0.0f);
-            GetComponent<Animation>().CrossFadeQueued("idle_combat");
+                GetComponent<Animation>().CrossFade("attack_short_001", 0.0f);
+                GetComponent<Animation>().CrossFadeQueued("idle_normal");
 
-            Vector3 hitPos = rayhit.point;
+                GameObject spawn = Instantiate(fireball, fireballPosition.position, fireballPosition.rotation);
+                Debug.Log(spawn);
 
-            GameObject spawn = Instantiate(fireball, fireballPosition.position, fireballPosition.rotation);
+                Vector3 targetPos = (targetHit.transform.position - transform.position).normalized;
+                rb = spawn.GetComponent<Rigidbody>();
+                rb.velocity = targetPos * fireballSpeed;
 
-            Vector3 targetPos = (hitPos - transform.position).normalized;
-            rb = spawn.GetComponent<Rigidbody>();
-            rb.velocity = targetPos * fireballSpeed;
+                audioSource.PlayOneShot(fireballThrow);
+                isBasicAbility = false;
+            }
+            else
+            {
+                Debug.Log("taregt should be minion or demonor boss");
+            }
         }
-        isBasicAbility = false;
+
     }
 
     //wildcard ability (clone)
@@ -165,16 +186,100 @@ public class sorcererAbilities : MonoBehaviour
 
             if (targetHit != null)
             {
-                hitPos = hitPos + Vector3.up * clone.transform.localScale.y / 2;
+                //hitPos = hitPos + Vector3.up * clone.transform.localScale.y;
                 GameObject spawn = Instantiate(clone, hitPos, Quaternion.identity);
-                Destroy(spawn, 5);
-                GameObject smokeSpawn = Instantiate(smoke, hitPos, Quaternion.identity);
-                Destroy(smokeSpawn, 3);
+                AudioSource.PlayClipAtPoint(cloneAudio, hitPos);
+
+                UpdateMinionsPlayerReference(spawn);
+
+                StartCoroutine(PlaySoundAndDestroy(spawn, 5f, hitPos));
+
+                StartCoroutine(ResetTagAfterDelay(4.9f));
+
+                StartCoroutine(SpawnSmokeAfterDelay(hitPos, 5f));
 
                 StartCoroutine(DelayedCloneDamage(hitPos, 5f));
             }
         }
         isWildCardAbility = false;
+    }
+
+    //extra methods for clone
+    void UpdateMinionsPlayerReference(GameObject newPlayer)
+    {
+        // Find all GameObjects with the tag "Minion"
+        GameObject[] minionGameObjects = GameObject.FindGameObjectsWithTag("Minion");
+        GameObject[] demonGameObjects = GameObject.FindGameObjectsWithTag("Demon");
+
+        foreach (GameObject minion in minionGameObjects)
+        {
+            // Get the MinionChasing instance from the GameObject
+            MinionsChasingPlayer minionChasing = minion.GetComponent<MinionsChasingPlayer>();
+            if (minionChasing != null)
+            {
+                // Update the player reference
+                minionChasing.player = newPlayer;
+            }
+        }
+
+        foreach (GameObject demon in demonGameObjects)
+        {
+            // Get the MinionChasing instance from the GameObject
+            DemonsChasingPlayer demonChasing = demon.GetComponent<DemonsChasingPlayer>();
+            if (demonChasing != null)
+            {
+                // Update the player reference
+                demonChasing.player = newPlayer;
+            }
+        }
+    }
+    IEnumerator ResetTagAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // Reset the player back to the original game object
+        GameObject[] minionGameObjects = GameObject.FindGameObjectsWithTag("Minion");
+        GameObject[] demonGameObjects = GameObject.FindGameObjectsWithTag("Demon");
+
+        foreach (GameObject minion in minionGameObjects)
+        {
+            // Get the MinionChasing instance from the GameObject
+            MinionsChasingPlayer minionChasing = minion.GetComponent<MinionsChasingPlayer>();
+            if (minionChasing != null)
+            {
+                // Update the player reference
+                minionChasing.player = gameObject;
+            }
+        }
+
+        foreach (GameObject demon in demonGameObjects)
+        {
+            // Get the MinionChasing instance from the GameObject
+            DemonsChasingPlayer demonChasing = demon.GetComponent<DemonsChasingPlayer>();
+            if (demonChasing != null)
+            {
+                // Update the player reference
+                demonChasing.player = gameObject;
+            }
+        }
+    }
+    IEnumerator SpawnSmokeAfterDelay(Vector3 position, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        GameObject smokeSpawn = Instantiate(smoke, position, Quaternion.identity);
+        Destroy(smokeSpawn, 3); 
+    }
+    private IEnumerator PlaySoundAndDestroy(GameObject spawn, float delay, Vector3 hitPos)
+    {
+        // Wait for the delay
+        yield return new WaitForSeconds(delay - 0.1f);
+
+        // Play the sound at the spawn's position
+        AudioSource.PlayClipAtPoint(explode, spawn.transform.position);
+
+        // Destroy the spawn object
+        Destroy(spawn);
     }
 
     //clone damage
@@ -206,7 +311,6 @@ public class sorcererAbilities : MonoBehaviour
             }
         }
     }
-
     //defensive ability (teleport)
     void DefensiveAbility()
     {
@@ -244,8 +348,11 @@ public class sorcererAbilities : MonoBehaviour
                 if (targetHit != null)
                 {
                     GetComponent<Animation>().CrossFade("idle_combat", 0.0f);
+                    GetComponent<Animation>().CrossFadeQueued("idle_normal");
+
                     hitPos = hitPos + (Vector3.up * inferno.transform.localScale.y / 2) + (Vector3.right * 15);
                     GameObject spawn = Instantiate(inferno, hitPos, Quaternion.identity);
+                    AudioSource.PlayClipAtPoint(infernoAudio, hitPos);
 
                     Destroy(spawn, 5);
 
@@ -254,4 +361,5 @@ public class sorcererAbilities : MonoBehaviour
             }
             isUltimateAbility = false;
     }
+
 }
