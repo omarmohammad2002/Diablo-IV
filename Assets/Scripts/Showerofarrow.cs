@@ -12,10 +12,12 @@ public class ShowerofArrow : MonoBehaviour
     public float slowMultiplier = 0.25f; // Slow effect multiplier
 
     private float timeCounter = 0;
+    private HashSet<Collider> affectedEnemies = new HashSet<Collider>(); // Track affected enemies
 
     private void Start()
     {
         ApplyEffects();
+        print("Start");
     }
 
     private void Update()
@@ -38,13 +40,18 @@ public class ShowerofArrow : MonoBehaviour
             Quaternion.identity // No rotation for the box
         );
 
+
         foreach (Collider hitCollider in hitColliders)
         {
+            // Check if the enemy has already been affected
+            if (affectedEnemies.Contains(hitCollider)) continue;
+
             if (hitCollider.CompareTag("Minion"))
             {
                 MinionsMainManagement minionScript = hitCollider.GetComponent<MinionsMainManagement>();
                 if (minionScript != null)
                 {
+                    affectedEnemies.Add(hitCollider); // Mark as affected
                     minionScript.TakeDamage(damageAmount);
                     StartCoroutine(ApplySlowEffect(minionScript));
                 }
@@ -55,6 +62,7 @@ public class ShowerofArrow : MonoBehaviour
                 DemonsMainManagement demonScript = hitCollider.GetComponent<DemonsMainManagement>();
                 if (demonScript != null)
                 {
+                    affectedEnemies.Add(hitCollider); // Mark as affected
                     demonScript.TakeDamage(damageAmount);
                     StartCoroutine(ApplySlowEffect(demonScript));
                 }
@@ -62,9 +70,11 @@ public class ShowerofArrow : MonoBehaviour
 
             if (hitCollider.CompareTag("Boss"))
             {
+                print("Boss");
                 BossMainManagement bossScript = hitCollider.GetComponent<BossMainManagement>();
                 if (bossScript != null)
                 {
+                    affectedEnemies.Add(hitCollider); // Mark as affected
                     bossScript.TakeDamage(damageAmount);
                     StartCoroutine(ApplySlowEffect(bossScript));
                 }
@@ -74,25 +84,24 @@ public class ShowerofArrow : MonoBehaviour
 
     private IEnumerator ApplySlowEffect(MonoBehaviour target)
     {
-        // if (target is MinionsMainManagement minion)
-        // {
-        //     minion.ModifySpeed(slowMultiplier);
-        //     yield return new WaitForSeconds(slowEffectDuration);
-        //     minion.ModifySpeed(1f / slowMultiplier); // Restore original speed
-        // }
-        // else if (target is DemonsMainManagement demon)
-        // {
-        //     demon.ModifySpeed(slowMultiplier);
-        //     yield return new WaitForSeconds(slowEffectDuration);
-        //     demon.ModifySpeed(1f / slowMultiplier);
-        // }
-        // else if (target is BossMainManagement boss)
-        // {
-        //     boss.ModifySpeed(slowMultiplier);
-        //     yield return new WaitForSeconds(slowEffectDuration);
-        //     boss.ModifySpeed(1f / slowMultiplier);
-        // }
-        return null;
+        if (target is MinionsMainManagement minion)
+        {
+            //minion.ModifySpeed(slowMultiplier);
+            yield return new WaitForSeconds(slowEffectDuration);
+            //minion.ModifySpeed(1f / slowMultiplier); // Restore original speed
+        }
+        else if (target is DemonsMainManagement demon)
+        {
+            //demon.ModifySpeed(slowMultiplier);
+            yield return new WaitForSeconds(slowEffectDuration);
+            //demon.ModifySpeed(1f / slowMultiplier);
+        }
+        else if (target is BossMainManagement boss)
+        {
+            //boss.ModifySpeed(slowMultiplier);
+            yield return new WaitForSeconds(slowEffectDuration);
+            //boss.ModifySpeed(1f / slowMultiplier);
+        }
     }
 
     private void OnDrawGizmosSelected()

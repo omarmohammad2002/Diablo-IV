@@ -12,12 +12,12 @@ public class ArrowScript : MonoBehaviour
         {
 
             MinionsMainManagement minionScript = other.GetComponent<MinionsMainManagement>();
-            if (minionScript != null) 
+            if (minionScript != null)
             {
                 print("damage 5");
                 minionScript.TakeDamage(5);
             }
-            
+
         }
 
         if (other.CompareTag("Demon"))
@@ -34,7 +34,7 @@ public class ArrowScript : MonoBehaviour
 
         if (other.CompareTag("Boss"))
         {
-
+            print("Boss");
             BossMainManagement bossScript = other.GetComponent<BossMainManagement>();
             if (bossScript != null)
             {
@@ -43,11 +43,7 @@ public class ArrowScript : MonoBehaviour
             }
 
         }
-        if (other.CompareTag("Debug"))
-        {
-            print("Debug");
 
-        }
         Destroy(gameObject);
     }
 
