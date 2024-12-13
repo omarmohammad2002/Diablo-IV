@@ -307,7 +307,7 @@ MonoBehaviour:
   healingPotionPrefab: {fileID: 1021588353636906, guid: f75e1608d9f1e4f06a5027de3c813b5d, type: 3}
   runeFragmentPrefab: {fileID: 7389422386293741155, guid: f7d70f05efcaa474e81a2e187d8081f5, type: 3}
   enemyCampsPrefab:
-  - {fileID: 0}
+  - {fileID: 9007843832113894243}
   - {fileID: 110343226}
   - {fileID: 998365485}
   - {fileID: 1186048837}
@@ -2603,10 +2603,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: stoneEntrance (4)
       objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: b8a3f883fde940740a465ee2ab705fa0, type: 3}
-      propertyPath: m_TagString
-      value: Ground
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3638,10 +3634,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: stoneEntrance (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: b8a3f883fde940740a465ee2ab705fa0, type: 3}
-      propertyPath: m_TagString
-      value: Ground
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3714,10 +3706,6 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b8a3f883fde940740a465ee2ab705fa0, type: 3}
       propertyPath: m_Name
       value: stoneEntrance
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: b8a3f883fde940740a465ee2ab705fa0, type: 3}
-      propertyPath: m_TagString
-      value: Ground
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5185,10 +5173,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: stoneEntrance (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: b8a3f883fde940740a465ee2ab705fa0, type: 3}
-      propertyPath: m_TagString
-      value: Ground
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6053,10 +6037,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: stoneEntrance (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: b8a3f883fde940740a465ee2ab705fa0, type: 3}
-      propertyPath: m_TagString
-      value: Ground
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6877,10 +6857,6 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: dbfcc02186f1a5a4cad07dfae41f75a2, type: 3}
       propertyPath: m_Name
       value: mountains
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: dbfcc02186f1a5a4cad07dfae41f75a2, type: 3}
-      propertyPath: m_TagString
-      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 2671110917873289411, guid: dbfcc02186f1a5a4cad07dfae41f75a2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8412,10 +8388,6 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b8a3f883fde940740a465ee2ab705fa0, type: 3}
       propertyPath: m_Name
       value: stoneEntrance (5)
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: b8a3f883fde940740a465ee2ab705fa0, type: 3}
-      propertyPath: m_TagString
-      value: Ground
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11755,6 +11727,11 @@ PrefabInstance:
 --- !u!4 &5596113120963047916 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 122547821414001806, guid: ad43042155ef01e459f6611f8c8a8e8e, type: 3}
+  m_PrefabInstance: {fileID: 3490719935940025500}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &9007843832113894243 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6883486845150491574, guid: ad43042155ef01e459f6611f8c8a8e8e, type: 3}
   m_PrefabInstance: {fileID: 3490719935940025500}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
