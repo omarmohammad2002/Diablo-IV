@@ -43,6 +43,11 @@ public class ArrowScript : MonoBehaviour
             }
 
         }
+        if (other.CompareTag("Debug"))
+        {
+            print("Debug");
+
+        }
         Destroy(gameObject);
     }
 
