@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class sorcererAbilities : MonoBehaviour
 {
@@ -38,11 +39,12 @@ public class sorcererAbilities : MonoBehaviour
     [SerializeField] GameObject smoke;
     private Animator animator;
 
+
     // Start is called before the first frame update
     void Start()
     {
         mainManagement = GetComponent<WandererMainManagement>();
-        
+
 
         lastUsedTime["Basic"] = -basicCooldown;
         lastUsedTime["Defensive"] = -defensiveCooldown;
@@ -188,7 +190,7 @@ public class sorcererAbilities : MonoBehaviour
 
             if (targetHit != null)
             {
-                //hitPos = hitPos + Vector3.up * clone.transform.localScale.y;
+                hitPos.y = 0;
                 GameObject spawn = Instantiate(clone, hitPos, Quaternion.identity);
                 AudioSource.PlayClipAtPoint(cloneAudio, hitPos);
 
@@ -326,8 +328,19 @@ public class sorcererAbilities : MonoBehaviour
                 if (targetHit != null)
                 {
                     hitPos = hitPos + Vector3.up * sorcerer.transform.localScale.y / 2;
-                    transform.position = hitPos;
+                NavMeshAgent agent = GetComponent<NavMeshAgent>();
+                if (agent != null)
+                {
+                    agent.enabled = false;
                 }
+
+                transform.position = hitPos;
+
+                if (agent != null)
+                {
+                    agent.enabled = true;
+                }
+            }
 
             }
         isDefensiveAbility = false;
