@@ -10,8 +10,11 @@ public class DemonsMainManagement : MonoBehaviour
     public int attackPower;   
     public int xpReward;      
     public int explosivePower;
+    public bool demonIsDead=false;
     public enum DemonState { Idle, Patrolling, Aggressive }
     public DemonState currentState;
+    private Animator demonAnimator;
+
 
 
    void Awake()
@@ -25,10 +28,17 @@ public class DemonsMainManagement : MonoBehaviour
         
     }
 
+    void Start()
+    {
+        demonAnimator = GetComponent<Animator>();
+    }
+
      public void TakeDamage(int damage)
     {
+        demonAnimator.SetBool("isDamaged", true);
         currentHealth -= damage;
         currentHealth = Mathf.Max(currentHealth, 0);
+        demonAnimator.SetLayerWeight(2, 0.5f);
         if (currentHealth == 0)
         {
             enemyDeath();
@@ -36,6 +46,8 @@ public class DemonsMainManagement : MonoBehaviour
 
        
     }
+
+    
 
     public void enemyDeath()
     {
@@ -61,11 +73,14 @@ public class DemonsMainManagement : MonoBehaviour
         {
             Debug.LogError("Player object with tag 'Player' not found!");
         }
-        //might add death animation before destruction
 
-        // Play death animation and destroy the game object
-        Destroy(gameObject);
+        demonAnimator.SetLayerWeight(3, 1);
+        demonIsDead = true;
+        demonAnimator.SetBool("isDead", true);
     }
-
+    
+    public void DestroyDemon(){
+        Destroy(gameObject);
+        }
 
 }

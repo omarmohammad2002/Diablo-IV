@@ -18,10 +18,41 @@ public class NormalLevelInstantiation : MonoBehaviour
     public GameObject terrainObject; // Reference to the GameObject representing the terrain
     public float randomizationRangeScale = 0.5f; // Reduce range to 50% of the camp bounds
 
-    void Start()
+    void Awake()
     {
         GenerateEnemyCamps();
     }
+    void Update()
+    {
+        foreach (GameObject enemyCamp in enemyCampsPrefab)
+        {
+            // Check if all minions and demons are dead
+            bool allEnemiesDefeated = true;
+
+            foreach (Transform child in enemyCamp.transform)
+            {
+                if (child.CompareTag("Minion") || child.CompareTag("Demon"))
+                {
+                    allEnemiesDefeated = false;
+                    break; // No need to check further if an enemy is still alive
+                }
+            }
+
+            // Activate the rune fragment if all enemies are defeated
+            if (allEnemiesDefeated)
+            {
+                foreach (Transform child in enemyCamp.transform)
+                {
+                    if (child.CompareTag("RuneFragment"))
+                    {
+                        child.gameObject.SetActive(true);
+                        break; // Activate the first rune fragment found
+                    }
+                }
+            }
+        }
+    }
+
 
     void GenerateEnemyCamps()
     {

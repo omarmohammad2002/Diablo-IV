@@ -13,13 +13,14 @@ public class MinionsChasingPlayer : MonoBehaviour
     private readonly float suspiciousTime = 3f; 
     private float timeSinceLastSawPlayer; 
     public GameObject player;
-
+    private WandererMainManagement WandererMainManagement; 
     void Start()
     {
         enemyAgent = GetComponent<NavMeshAgent>();
         enemyAnimator = GetComponent<Animator>();
         managementScript = GetComponent<MinionsMainManagement>();
         player = GameObject.FindGameObjectWithTag("Player");
+        WandererMainManagement = player.GetComponent<WandererMainManagement>();
         timeSinceLastSawPlayer = suspiciousTime;
         enemyAnimator.SetInteger("minionState", 0);
 
@@ -32,6 +33,7 @@ public class MinionsChasingPlayer : MonoBehaviour
 
     void Update()
     {
+        if(!managementScript.isDead){
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
         switch (managementScript.currentState) 
@@ -51,9 +53,10 @@ public class MinionsChasingPlayer : MonoBehaviour
                     enemyAnimator.SetInteger("minionState", 1); // Walking animation
                 }
 
-                if (distanceToPlayer <= chaseRange)
+                if (distanceToPlayer <= chaseRange && WandererMainManagement.enemiesFollowing<5)
                 {
                     managementScript.currentState = MinionsMainManagement.MinionState.Aggressive; // Update shared state
+                    WandererMainManagement.enemiesFollowing++;
                 }
                 break;
 
@@ -71,11 +74,13 @@ public class MinionsChasingPlayer : MonoBehaviour
 
                     if (timeSinceLastSawPlayer <= 0)
                     {
+                        WandererMainManagement.enemiesFollowing--;  
                         managementScript.currentState = MinionsMainManagement.MinionState.Idle; // Update shared state
                         timeSinceLastSawPlayer = suspiciousTime;
                     }
                 }
                 break;
+        }
         }
     }
     

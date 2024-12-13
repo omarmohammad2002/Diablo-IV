@@ -6,12 +6,15 @@ using UnityEngine.AI;
 
 public class RougeAbilities : MonoBehaviour
 {
-
-    [SerializeField] GameObject fireball;
-    [SerializeField] Transform fireballPosition;
-    [SerializeField] float fireballSpeed = 10f;
+    [SerializeField] GameObject arrow;
+    [SerializeField] Transform arrowPosition;
+    [SerializeField] float arrowSpeed = 10f;
     Rigidbody rb;
-    [SerializeField] GameObject inferno;
+    [SerializeField] GameObject showerOfArrow;
+    [SerializeField] GameObject smokeBombPrefab;
+    [SerializeField] float smokeBombRadius = 5f;
+    [SerializeField] float stunDuration = 5f;
+
 
     public Camera camera;
     private NavMeshAgent agent;
@@ -69,8 +72,9 @@ public class RougeAbilities : MonoBehaviour
                 Debug.Log("Basic ability is on cooldown.");
             }
         }
-        else if (isDashing && Input.GetMouseButtonDown(1)) // Ultimate Ability
+        else if (isDashing && Input.GetMouseButtonDown(1))
         {
+            print("SetDashTarget");
            SetDashTarget();
         }
 
@@ -94,6 +98,7 @@ public class RougeAbilities : MonoBehaviour
                 isDashing = true;
                 isWildcardActive = true;
                 lastUsedTime["Wildcard"] = currentTime;
+
             } else
             {
                 Debug.Log("Wildcard ability is on cooldown.");
@@ -123,50 +128,76 @@ public class RougeAbilities : MonoBehaviour
             DashTowardsTarget();
         }
     }
-    void BasicAbility()
+ void BasicAbility()
+{
+    if (!isBasicActive) return;
+
+    // Start the coroutine for handling the arrow
+    StartCoroutine(ThrowArrowWithDelay());
+}IEnumerator ThrowArrowWithDelay()
+{
+    // Dynamically find the arrow position
+    Transform currentArrowPosition = FindArrowPosition();
+
+    if (currentArrowPosition == null)
     {
-        StartCoroutine(ThrowFireballWithDelay());
+        Debug.LogError("Arrow position not found. Aborting arrow spawn.");
+        yield break;
     }
 
-    IEnumerator ThrowFireballWithDelay()
+    yield return new WaitForSeconds(0.9f); // Delay before spawning the arrow
+
+    // Cast a ray to determine the target point
+    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    RaycastHit rayhit;
+
+    if (Physics.Raycast(ray, out rayhit))
     {
-        // Wait for 3 seconds before throwing the fireball
-        yield return new WaitForSeconds(3f);
+        Vector3 targetPoint = rayhit.point; // Point where the ray hit
+        Vector3 direction = (targetPoint - currentArrowPosition.position).normalized; // Calculate direction
 
-        // Perform raycast to determine where the fireball should go
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit rayhit;
+        // Spawn the arrow
+        GameObject spawn = Instantiate(arrow, currentArrowPosition.position, Quaternion.LookRotation(direction));
 
-        if (Physics.Raycast(ray, out rayhit))
+        // Adjust player rotation to face the target point
+        Vector3 playerDirection = (targetPoint - transform.position).normalized;
+        playerDirection.y = 0; // Keep the player upright
+        transform.rotation = Quaternion.LookRotation(playerDirection);
+
+        // Apply velocity to the arrow
+        Rigidbody rb = spawn.GetComponent<Rigidbody>();
+        if (rb != null)
         {
-            // Calculate the direction to the point the ray hit
-            Vector3 direction = (rayhit.point - transform.position).normalized;
-            direction.y = 0.2f; // Adjust this value for more or less upward angle
-            
-            // Rotate the character to face the target direction
-            // transform.rotation = Quaternion.LookRotation(direction); 
-
-            // Instantiate the fireball at the specified position and rotation
-            GameObject spawn = Instantiate(fireball, fireballPosition.position, fireballPosition.rotation);
-            
-            // Calculate the target position for the fireball to move towards
-            Vector3 hitPos = rayhit.point;
-            Vector3 targetPos = (hitPos - transform.position).normalized;
-
-            // Adjust the fireball's trajectory by adding an upward component
-            targetPos.y = 0.2f; // This ensures the fireball has an upward trajectory as well.
-
-            // Set the fireball velocity
-            Rigidbody rb = spawn.GetComponent<Rigidbody>();
-            rb.velocity = targetPos * fireballSpeed;
-
-            // Destroy the fireball after 2 seconds
-            Destroy(spawn, 2f);
+            rb.velocity = direction * arrowSpeed;
         }
 
-        // Deactivate ability so it cannot be triggered again immediately
-        isBasicActive = false;
+        // Destroy the arrow after 4 seconds
+        Destroy(spawn, 4f);
     }
+    else
+    {
+        Debug.LogError("No valid target found for the arrow.");
+    }
+
+    isBasicActive = false;
+}
+
+
+private Transform FindArrowPosition()
+{
+    // Find the hand bone by its tag
+    GameObject handBoneObject = GameObject.FindWithTag("arrowloc");
+
+    if (handBoneObject == null)
+    {
+        Debug.LogError("Hand bone with tag 'RightHand' not found!");
+        return null;
+    }
+
+    return handBoneObject.transform;
+}
+
+
 
     void rotateToAttack()
     {
@@ -181,71 +212,18 @@ public class RougeAbilities : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 600 * Time.deltaTime);
         }
     }
-
-    IEnumerator AttackWithDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        bash();
-    }
-
-    void bash()
-    {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
-        foreach (Collider hitCollider in hitColliders)
-        {
-            if (hitCollider.CompareTag("Minion"))
-            {
-                MinionsMainManagement minionScript = hitCollider.GetComponent<MinionsMainManagement>();
-                if (minionScript != null)
-                {
-                    Vector3 directionToEnemy = (hitCollider.transform.position - transform.position).normalized;
-                    float dotProduct = Vector3.Dot(transform.forward, directionToEnemy);
-                    if (dotProduct > 0.5f)
-                    {
-                        Debug.Log("Enemy detected in front: " + hitCollider.name);
-                        minionScript.TakeDamage(5);
-                        break;
-                    }
-                }
-            }
-
-            if (hitCollider.CompareTag("Demon"))
-            {
-                DemonsMainManagement demonScript = hitCollider.GetComponent<DemonsMainManagement>();
-                if (demonScript != null)
-                {
-                    Vector3 directionToEnemy = (hitCollider.transform.position - transform.position).normalized;
-                    float dotProduct = Vector3.Dot(transform.forward, directionToEnemy);
-                    if (dotProduct > 0.5f)
-                    {
-                        Debug.Log("Enemy detected in front: " + hitCollider.name);
-                        demonScript.TakeDamage(5);
-                        break;
-                    }
-                }
-            }
-
-            if (hitCollider.CompareTag("Boss"))
-            {
-                BossMainManagement bossScript = hitCollider.GetComponent<BossMainManagement>();
-                if (bossScript != null)
-                {
-                    Vector3 directionToEnemy = (hitCollider.transform.position - transform.position).normalized;
-                    float dotProduct = Vector3.Dot(transform.forward, directionToEnemy);
-                    if (dotProduct > 0.5f)
-                    {
-                        Debug.Log("Enemy detected in front: " + hitCollider.name);
-                        bossScript.TakeDamage(5);
-                        break;
-                    }
-                }
-            }
-        }
-        isBasicActive = false;
-    }
-
     private void DefensiveAbility()
     {
+
+        GameObject smokeBomb = Instantiate(smokeBombPrefab, transform.position, Quaternion.identity);
+        Destroy(smokeBomb, 3f);
+
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, smokeBombRadius);
+        foreach (Collider hitCollider in hitColliders)
+        {
+                   
+            Debug.Log("Enemy hit by Smoke Bomb: " + hitCollider.name);
+                   }
 
     }
     private void WildcardAbility()
@@ -307,14 +285,14 @@ public class RougeAbilities : MonoBehaviour
         if (direction != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 20 * Time.deltaTime); // Doubled the rotation speed from 10 to 20
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 30 * Time.deltaTime); // Doubled the rotation speed from 10 to 20
         }
 
         // Move towards the target position
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, 10 * Time.deltaTime); // Doubled the move speed from 5 to 10
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, 20 * Time.deltaTime); // Doubled the move speed from 5 to 10
 
         // Stop dashing if reached the target
-        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+        if (Vector3.Distance(transform.position, targetPosition) < 1.2f)
         {
             StopDashing();
         }
@@ -329,30 +307,51 @@ public class RougeAbilities : MonoBehaviour
         // Enable other actions here if needed
     }
     
-    void UltimateAbility()
+   void UltimateAbility()
+{
+    Debug.Log("ultimate ability");
+
+    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    RaycastHit rayhit;
+
+    if (Physics.Raycast(ray, out rayhit))
     {
-        Debug.Log("ultimate ability");
-        
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit rayhit;
+        Vector3 direction = (rayhit.point - transform.position).normalized;
+        direction.y = 0;
+        transform.rotation = Quaternion.LookRotation(direction);
 
-        if (Physics.Raycast(ray, out rayhit))
+        GameObject targetHit = rayhit.transform.gameObject;
+        Vector3 hitPos = rayhit.point;
+
+        if (targetHit != null)
         {
-            Vector3 direction = (rayhit.point - transform.position).normalized;
-            direction.y = 0;
-            transform.rotation = Quaternion.LookRotation(direction);
+            // Elevate the spawn position by 20 units
+            Vector3 spawnPos = hitPos + Vector3.up * 40;
 
-            GameObject targetHit = rayhit.transform.gameObject;
-            Vector3 hitPos = rayhit.point;
-            if (targetHit != null)
-            {
-                hitPos = hitPos + (Vector3.up * inferno.transform.localScale.y / 2) + (Vector3.right * 15);
-                GameObject spawn = Instantiate(inferno, hitPos, Quaternion.identity);
+            // Spawn the arrow shower at the elevated position
+            GameObject spawn = Instantiate(showerOfArrow, spawnPos, Quaternion.identity);
 
-                Destroy(spawn, 5);
-            }
+            // Make the arrow move toward the hit position
+            StartCoroutine(MoveArrowToTarget(spawn, hitPos));
+
+            // Destroy the arrow shower after 5 seconds
+            Destroy(spawn, 5);
         }
-
-        isUltimateActive = false;
     }
+
+    isUltimateActive = false;
+}
+
+IEnumerator MoveArrowToTarget(GameObject arrowShower, Vector3 targetPosition)
+{
+    float timeCounter = 0f;
+
+    while (timeCounter < 1.0)
+    {
+        timeCounter += Time.deltaTime;
+        arrowShower.transform.position = Vector3.Lerp(arrowShower.transform.position, targetPosition, timeCounter);
+        yield return null;
+    }
+
+}
 }
