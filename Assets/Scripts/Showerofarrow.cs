@@ -76,7 +76,7 @@ public class ShowerofArrow : MonoBehaviour
                 {
                     affectedEnemies.Add(hitCollider); // Mark as affected
                     bossScript.TakeDamage(damageAmount);
-                    StartCoroutine(ApplySlowEffect(bossScript));
+                    bossScript.SlowDown();  
                 }
             }
         }

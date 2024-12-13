@@ -46,6 +46,12 @@ public class BossMainManagement : MonoBehaviour
     private Coroutine stunCoroutine; // Reference to the active stun coroutine
     private bool canRotate = true; // Control whether the boss can rotate
 
+    private bool isSlowed = false; // Track if the boss is slowed
+    private Coroutine slowCoroutine; // Reference to the active slow coroutine
+    private float originalSpeed = 5f; // Original rotation speed
+    private float slowedSpeed; // Slowed rotation speed
+
+
     public void Stun()
     {
         if (isStunned)
@@ -69,7 +75,8 @@ public class BossMainManagement : MonoBehaviour
         Debug.Log("Boss is stunned!");
 
         // Play stun animation if available
-        //animator.SetTrigger("Stunned");
+        animator.SetTrigger("Stunned");
+
 
         // Wait for the stun duration
         yield return new WaitForSeconds(duration);
@@ -121,7 +128,64 @@ public class BossMainManagement : MonoBehaviour
         animator = GetComponent<Animator>();
         Player = GameObject.FindGameObjectWithTag("Player");
         audioSource = GetComponent<AudioSource>();
+        slowedSpeed = originalSpeed * 0.25f;
+
     }
+
+    public void SlowDown()
+    {
+        if (isSlowed)
+        {
+            // If already slowed, reset the duration by restarting the coroutine
+            if (slowCoroutine != null)
+            {
+                StopCoroutine(slowCoroutine);
+            }
+        }
+
+        slowCoroutine = StartCoroutine(HandleSlowDown(3f)); // Slow for 3 seconds
+    }
+
+    private IEnumerator HandleSlowDown(float duration)
+    {
+        isSlowed = true;
+
+        // Apply slowed effects
+        ApplySlowDown();
+
+        Debug.Log("Boss is slowed!");
+
+        // Wait for the slow duration
+        yield return new WaitForSeconds(duration);
+
+        // Remove the slow effect
+        RemoveSlowDown();
+
+        Debug.Log("Boss is no longer slowed!");
+
+        isSlowed = false;
+        slowCoroutine = null;
+    }
+
+    private void ApplySlowDown()
+    {
+        // Reduce rotation speed
+        originalSpeed = 5f; // Ensure original speed is properly set
+        slowedSpeed = originalSpeed * 0.25f;
+
+        // Reduce animation speed
+        animator.speed *= 0.25f; // Slow down animation
+    }
+
+    private void RemoveSlowDown()
+    {
+        // Restore rotation speed
+        slowedSpeed = originalSpeed;
+
+        // Restore animation speed
+        animator.speed = 1f;
+    }
+
     public void PlaySound(string soundName)
     {
         switch (soundName)
@@ -187,18 +251,19 @@ public class BossMainManagement : MonoBehaviour
 
     private void FacePlayer()
     {
-        if (Player == null) return; // Ensure the player exists
+        if (Player == null || isStunned) return; // Ensure the player exists and the boss is not stunned
+
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Boss Divebomb")) return;
 
         // Calculate the direction to the player
         Vector3 directionToPlayer = Player.transform.position - transform.position;
         directionToPlayer.y = 0; // Ignore height differences
 
-        // Rotate the boss to face the player
+        // Rotate the boss to face the player using the slowed or original speed
         if (directionToPlayer != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f); // Adjust rotation speed with 5f
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * (isSlowed ? slowedSpeed : originalSpeed));
         }
     }
     private void TriggerAttackAnimation(string attackType)
