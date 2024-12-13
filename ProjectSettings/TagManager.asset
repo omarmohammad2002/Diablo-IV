@@ -17,6 +17,8 @@ TagManager:
   - Gate
   - arrow
   - arrowloc
+  - ARROWMO
+  - Ground
   layers:
   - Default
   - TransparentFX

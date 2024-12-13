@@ -31,6 +31,8 @@ public class WandererMainManagement : MonoBehaviour
     private bool isGamePaused = false;
     public GameObject pauseScreen;
 
+    private bool isDead = false; 
+
     // Enemies Following
     public int enemiesFollowing = 0;
 
@@ -179,7 +181,9 @@ public class WandererMainManagement : MonoBehaviour
             {
                 // Trigger death animation and game over logic
                 Animator.SetTrigger("Dead");
+                isDead = true;
                 gameOverScreen.SetActive(true);
+
                 // More gameover logic to be added here if needed, stop/change audio etc
             }
         }
@@ -388,4 +392,3 @@ public class WandererMainManagement : MonoBehaviour
         return enemiesFollowing;
     }
 }
-
