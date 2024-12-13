@@ -1,25 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+
+
 
 public class WandererMainManagement : MonoBehaviour
 {
+    
+
+    // Public UI Text fields for displaying values
+    public TextMeshProUGUI  healthText;
+    public TextMeshProUGUI  xpText;
+    public TextMeshProUGUI  levelText;
+    public TextMeshProUGUI  healingPotionsText;
+    public TextMeshProUGUI  abilityPointsText;
+    public TextMeshProUGUI  RuneFragmentsText;
+
     // Wanderer's Health
-    public int currentHealth;
-    public int maxHealth;
-    // Wanderer Character class
-    private string characterName;
+    [SerializeField] private int currentHealth;
+    [SerializeField] private int maxHealth;
     // Wanderer's Level and XP
-    public int currentLevel;
-    private int maxLevel = 4;
-    public int XP;
-    private int maxXP = 100;
+    [SerializeField] private int currentLevel;
+    [SerializeField] private int maxLevel = 4;
+    [SerializeField] private int XP;
+    [SerializeField] private int maxXP = 100;
     // Wanderer's Inventory
-    public int healingPotions;
-    private int abilityPoints;
-    private int runeFragments;
+    [SerializeField] private int healingPotions;
+    [SerializeField] private int abilityPoints;
+    [SerializeField] private int runeFragments;
+
     // Cheats and Gameplay Modifiers
-    public bool isInvincible = false;
+    private bool isInvincible = false;
     private bool isSlowMotion = false;
     // abilties 
     private bool ability1Unlock = true;
@@ -32,49 +45,21 @@ public class WandererMainManagement : MonoBehaviour
     public GameObject pauseScreen;
 
     // Enemies Following
-    public int enemiesFollowing = 0;
+    private int enemiesFollowing = 0; 
 
-    private Animator Animator;
 
-    //audio
-    private AudioSource AudioSource;
-    public AudioClip drinkingSound ;
-    public AudioClip dyingSound;
-    public AudioClip damagedSound ;
-    public AudioClip pickUpSound;
+
 
     // Start is called before the first frame update
     void Start()
     {
         currentLevel = 1;
         maxHealth = 100 * currentLevel;
-        currentHealth = maxHealth   ;
+        currentHealth = maxHealth;
         abilityPoints = 0;
         healingPotions = 0;
         runeFragments = 0;
         XP = 0;
-        Animator = GetComponent<Animator>();
-        AudioSource = GetComponent<AudioSource>();
-    }
-    public void PlaySound(string soundName)
-    {
-        switch (soundName)
-        {
-            case "Drinking":
-                AudioSource.PlayOneShot(drinkingSound);
-                break;
-            case "Dying":
-                AudioSource.PlayOneShot(dyingSound);
-                break;
-            case "Damaged":
-                AudioSource.PlayOneShot(damagedSound);
-                break;
-            case "PickUp":
-                AudioSource.PlayOneShot(pickUpSound);
-                break;
-            default:
-                break;
-        }
     }
     void Update()
     {
@@ -87,6 +72,28 @@ public class WandererMainManagement : MonoBehaviour
         {
             TogglePauseGame();
         }
+        UpdateUI(); // Update UI every frame
+    }
+
+    public void UpdateUI()
+    {
+        if (healthText != null)
+            healthText.text = $"HP:                          {currentHealth}/{maxHealth}";
+        
+        if (xpText != null)
+            xpText.text = $"XP:                              {XP}/{maxXP}";
+        
+        if (levelText != null)
+            levelText.text = $"Level: {currentLevel}/{maxLevel}";
+        
+        if (healingPotionsText != null)
+            healingPotionsText.text = $"Potions:                {healingPotions}";
+        
+        if (abilityPointsText != null)
+            abilityPointsText.text = $"Ability Points:      {abilityPoints}";
+
+        if (RuneFragmentsText != null)
+            RuneFragmentsText.text = $"Fragments:           {runeFragments}";
     }
     void TogglePauseGame()
     {
@@ -107,6 +114,19 @@ public class WandererMainManagement : MonoBehaviour
             Debug.Log("Game Resumed");
         }
     }
+        public void ConsumeHealingPotion()
+    {
+        if( (healingPotions > 0) && (currentHealth < maxHealth) )
+        {
+            Heal(50/100 * maxHealth); // Heal by 50 health points (adjust as needed)
+            useHealingPotion(); // Reduce potion count
+            Debug.Log("Used a healing potion. Remaining potions: " + healingPotions);
+        }
+        else
+        {
+            Debug.Log("No healing potions available!");
+        }
+    }
     void HandleCheatInputs()
     {
         // Heal: Increases the Wanderer�s health by 20 health points by pressing �H�
@@ -124,7 +144,6 @@ public class WandererMainManagement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             isInvincible = !isInvincible;
-            
         }
 
         // Toggle Slow Motion: Makes the gameplay in half speed by pressing �M�
@@ -138,21 +157,12 @@ public class WandererMainManagement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C))
         {
             // Add your ability cooldown logic here and set cooldown to 0, probably in the ability script
-            BarbarianAbilities script = GetComponent<BarbarianAbilities>();
-            script.basicCooldown = 0;
-            script.wildcardCooldown = 0;
-            script.defensiveCooldown = 0;
-            script.ultimateCooldown = 0;
-
         }
 
         // Unlock Abilities: Unlocks all locked abilities by pressing �U�
         if (Input.GetKeyDown(KeyCode.U))
         {
             // Add logic here to unlock all abilities, probably in the ability script
-            ability1Unlock = true;
-            ability2Unlock = true;
-            ability3Unlock = true;
         }
 
         // Gain Ability Points: Increments the ability points by 1 point by pressing �A�
@@ -169,64 +179,29 @@ public class WandererMainManagement : MonoBehaviour
     }
     public void DealDamage(int amount)
     {
-        // This function deals damage to the player by a specific amount, to be used in enemy attack logic scripts
+        // This function deals damage to the player by a specific amount, to be used in enemy attack logic scrip
         if (!isInvincible)
         {
             currentHealth -= amount;
-            TriggerDamageAnimation(); // Updated to use the new method
-
             if (currentHealth <= 0)
             {
-                // Trigger death animation and game over logic
-                Animator.SetTrigger("Dead");
+                Time.timeScale = 0;
                 gameOverScreen.SetActive(true);
-                // More gameover logic to be added here if needed, stop/change audio etc
+                // more gameover logic to be added here if needed, stop/change audio etc
             }
         }
     }
-
-    // New method to handle damage animation trigger
-    private void TriggerDamageAnimation()
-    {
-        Animator.SetTrigger("Damaged");
-        StartCoroutine(ResetTriggerWithDelay("Damaged", 0.02f)); // Reset the trigger after 2 seconds
-    }
-
-    // Coroutine to reset the trigger after a delay
-    private IEnumerator ResetTriggerWithDelay(string triggerName, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        Animator.ResetTrigger(triggerName);
-        Debug.Log($"Trigger '{triggerName}' has been reset after {delay} seconds.");
-    }
-
     public void Heal(int amount)
     {
         // This function just heals the player by a specific amount, to be used in health potions logic script
         currentHealth += amount;
         currentHealth = Mathf.Min(currentHealth, maxHealth);
-       
-    }
-    public void ConsumeHealingPotion()
-    {
-        if ((healingPotions > 0) && (currentHealth < maxHealth))
-        {
-            Animator.SetTrigger("Drinking");
-
-            Heal((int)((50f / 100f) * maxHealth)); // Heal by 50 health points (adjust as needed)
-            useHealingPotion(); // Reduce potion count
-            Debug.Log("Used a healing potion. Remaining potions: " + healingPotions);
-        }
-        else
-        {
-            Debug.Log("No healing potions available!");
-        }
+        Debug.Log("healed");
     }
     public void addHealingPotion()
     {
         healingPotions++;
         Debug.Log("Health potion added to inventory. Total potions: " + healingPotions);    
-        PlaySound("PickUp");
     }
     public void useHealingPotion()
     {
@@ -238,7 +213,6 @@ public class WandererMainManagement : MonoBehaviour
     {
         // This function just adds a rune fragment to the player's inventory, to be used in rune fragments logic script
         runeFragments++;
-        PlaySound("PickUp");
     }
     public void useRuneFragment()
     {
@@ -273,6 +247,7 @@ public class WandererMainManagement : MonoBehaviour
 
     public void addXP(int amount)
     {
+        // This function just adds XP to the player's XP variable, to be used in The Wanderer gaining XP points script
         if (currentLevel < maxLevel)
         {
             XP += amount;
@@ -302,6 +277,8 @@ public class WandererMainManagement : MonoBehaviour
     {
         // This function just unlocks the first ability variable of the player, to be used in ability logic script
         ability1Unlock = true;
+        print("ability 1 unlocked");
+        
     }
     public void unlockAbility2()
     {
