@@ -61,6 +61,15 @@ public class fireballScript : MonoBehaviour
             tempSource.Play();
             Destroy(gameObject);
         }
+
+        if (other.CompareTag("Untagged"))
+        {
+            GameObject tempAudioSource = new GameObject("TempAudio");
+            AudioSource tempSource = tempAudioSource.AddComponent<AudioSource>();
+            tempSource.clip = explode;
+            tempSource.Play();
+            Destroy(gameObject);
+        }
         
     }
 
