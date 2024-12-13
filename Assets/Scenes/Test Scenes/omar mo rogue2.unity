@@ -122,6 +122,88 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &112073425
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1927889493}
+    m_Modifications:
+    - target: {fileID: 1947871717301538, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
+      propertyPath: m_Name
+      value: arrow
+      objectReference: {fileID: 0}
+    - target: {fileID: 1947871717301538, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1947871717301538, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
+      propertyPath: m_TagString
+      value: ARROWMO
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209731392266258, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209731392266258, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209731392266258, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209731392266258, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.00000087850617
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209731392266258, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.00000016985626
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209731392266258, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.000000026238876
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209731392266258, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.41099396
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209731392266258, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.29602784
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209731392266258, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7529909
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209731392266258, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.4200669
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209731392266258, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 61.157
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209731392266258, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 129.871
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209731392266258, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 12.027
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
+--- !u!4 &206392563 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3667946887678727147, guid: 803f87fe00d6efd44846bc751548cbc4, type: 3}
+  m_PrefabInstance: {fileID: 2057505748}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &207694312
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,8 +289,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 207694312}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
-  m_LocalPosition: {x: 0, y: 3, z: -30}
+  m_LocalRotation: {x: -0.042990554, y: 0.74646556, z: -0.04843783, w: -0.6622649}
+  m_LocalPosition: {x: 17.517712, y: 3.6006398, z: -20.023706}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -477,6 +559,16 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1262514329 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4209731392266258, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
+  m_PrefabInstance: {fileID: 112073425}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1927889493 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -7777057793763974198, guid: 803f87fe00d6efd44846bc751548cbc4, type: 3}
+  m_PrefabInstance: {fileID: 2057505748}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2057505748
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -537,6 +629,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -76546954072915012, guid: 803f87fe00d6efd44846bc751548cbc4, type: 3}
+      propertyPath: m_TagString
+      value: arrowloc
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 803f87fe00d6efd44846bc751548cbc4, type: 3}
       propertyPath: m_Name
       value: Erika Archer With Bow Arrow
@@ -547,7 +643,10 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: f547e8040cef43c3f8a0e58db8ae2a31, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -7777057793763974198, guid: 803f87fe00d6efd44846bc751548cbc4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1262514329}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 803f87fe00d6efd44846bc751548cbc4, type: 3}
       insertIndex: -1
@@ -592,7 +691,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrow: {fileID: 1947871717301538, guid: 44f50ab3de903eca681a1992d17b4f32, type: 3}
-  arrowPosition: {fileID: 0}
+  arrowPosition: {fileID: 206392563}
   arrowSpeed: 10
   showerOfArrow: {fileID: 5215231338370126180, guid: 160c85c4895be3ab89269c7aeab5b382, type: 3}
   smokeBombPrefab: {fileID: 1269120730060968, guid: 1a365141225c22e49a7bb976869b22a8, type: 3}
@@ -660,7 +759,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -693,7 +792,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2057505749}
   m_Enabled: 1
-  m_AgentTypeID: -334000983
+  m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8

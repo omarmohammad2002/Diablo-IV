@@ -134,56 +134,122 @@ public class RougeAbilities : MonoBehaviour
 
     // Start the coroutine for handling the arrow
     StartCoroutine(ThrowArrowWithDelay());
-}IEnumerator ThrowArrowWithDelay()
-{
-    // Dynamically find the arrow position
-    Transform currentArrowPosition = FindArrowPosition();
+}
+    //    IEnumerator ThrowArrowWithDelay()
+    //{
+    //        Dynamically find the arrow position
+    //       Transform currentArrowPosition = FindArrowPosition();
 
-    if (currentArrowPosition == null)
+    //        if (currentArrowPosition == null)
+    //        {
+    //            Debug.LogError("Arrow position not found. Aborting arrow spawn.");
+    //            yield break;
+    //        }
+
+    //        yield return new WaitForSeconds(0.9f); // Delay before spawning the arrow
+
+    //        // Cast a ray to determine the target point
+    //        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    //        RaycastHit rayhit;
+
+    //        if (Physics.Raycast(ray, out rayhit))
+    //        {
+    //            Vector3 targetPoint = rayhit.point; // Point where the ray hit
+    //            Vector3 direction = (targetPoint - currentArrowPosition.position).normalized; // Calculate direction
+
+    //            // Spawn the arrow
+    //            GameObject spawn = Instantiate(arrow, currentArrowPosition.position, Quaternion.LookRotation(direction));
+
+    //            // Adjust player rotation to face the target point
+    //            Vector3 playerDirection = (targetPoint - transform.position).normalized;
+    //            playerDirection.y = 0; // Keep the player upright
+    //            transform.rotation = Quaternion.LookRotation(playerDirection);
+
+    //            // Apply velocity to the arrow
+    //            Rigidbody rb = spawn.GetComponent<Rigidbody>();
+    //            if (rb != null)
+    //            {
+    //                rb.velocity = direction * arrowSpeed;
+    //            }
+
+    //            // Destroy the arrow after 4 seconds
+    //            Destroy(spawn, 4f);
+    //        }
+    //        else
+    //        {
+    //            Debug.LogError("No valid target found for the arrow.");
+    //        }
+
+
+    //        isBasicActive = false;
+    //}
+
+
+
+    IEnumerator ThrowArrowWithDelay()
     {
-        Debug.LogError("Arrow position not found. Aborting arrow spawn.");
-        yield break;
-    }
+        yield return new WaitForSeconds(0.9f); // Delay before activating the arrow
 
-    yield return new WaitForSeconds(0.9f); // Delay before spawning the arrow
-
-    // Cast a ray to determine the target point
-    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-    RaycastHit rayhit;
-
-    if (Physics.Raycast(ray, out rayhit))
-    {
-        Vector3 targetPoint = rayhit.point; // Point where the ray hit
-        Vector3 direction = (targetPoint - currentArrowPosition.position).normalized; // Calculate direction
-
-        // Spawn the arrow
-        GameObject spawn = Instantiate(arrow, currentArrowPosition.position, Quaternion.LookRotation(direction));
-
-        // Adjust player rotation to face the target point
-        Vector3 playerDirection = (targetPoint - transform.position).normalized;
-        playerDirection.y = 0; // Keep the player upright
-        transform.rotation = Quaternion.LookRotation(playerDirection);
-
-        // Apply velocity to the arrow
-        Rigidbody rb = spawn.GetComponent<Rigidbody>();
-        if (rb != null)
+        // Find the GameObject with tag "ARROWMO" in the current object's hierarchy
+        GameObject arrow = FindChildWithTag(transform, "ARROWMO");
+        if (arrow != null)
         {
-            rb.velocity = direction * arrowSpeed;
+            // Activate the arrow GameObject
+            arrow.SetActive(true);
+
+            // Fire the arrow
+            FireArrow(arrow);
+
+            Debug.Log("Arrow activated and fired.");
+        }
+        else
+        {
+            Debug.LogError("No GameObject with tag 'ARROWMO' found in the hierarchy!");
         }
 
-        // Destroy the arrow after 4 seconds
-        Destroy(spawn, 4f);
+        isBasicActive = false; // Reset state
     }
-    else
+
+    void FireArrow(GameObject arrow)
     {
-        Debug.LogError("No valid target found for the arrow.");
+        // Detach the arrow from the parent (if any)
+        arrow.transform.SetParent(null);
+
+        // Add force to fire the arrow
+        Rigidbody rb = arrow.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.AddForce(transform.forward * 20, ForceMode.Impulse); // Adjust force as needed
+        }
+        else
+        {
+            Debug.LogError("Arrow GameObject does not have a Rigidbody component!");
+        }
+
+        Debug.Log("Arrow fired!");
     }
 
-    isBasicActive = false;
-}
+    GameObject FindChildWithTag(Transform parent, string tag)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child.CompareTag(tag))
+            {
+                return child.gameObject;
+            }
+
+            // Recursively search in the child's children
+            GameObject result = FindChildWithTag(child, tag);
+            if (result != null)
+            {
+                return result;
+            }
+        }
+        return null;
+    }
 
 
-private Transform FindArrowPosition()
+    private Transform FindArrowPosition()
 {
     // Find the hand bone by its tag
     GameObject handBoneObject = GameObject.FindWithTag("arrowloc");
@@ -354,4 +420,6 @@ IEnumerator MoveArrowToTarget(GameObject arrowShower, Vector3 targetPosition)
     }
 
 }
+
+    
 }
