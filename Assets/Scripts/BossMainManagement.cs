@@ -41,10 +41,83 @@ public class BossMainManagement : MonoBehaviour
 
     private AudioSource audioSource;
     // Start is called before the first frame update
+
+    private bool isStunned = false; // Track if the boss is stunned
+    private Coroutine stunCoroutine; // Reference to the active stun coroutine
+    private bool canRotate = true; // Control whether the boss can rotate
+
+    public void Stun()
+    {
+        if (isStunned)
+        {
+            // If already stunned, reset the duration by restarting the coroutine
+            if (stunCoroutine != null)
+            {
+                StopCoroutine(stunCoroutine);
+            }
+        }
+
+        stunCoroutine = StartCoroutine(HandleStun(5f));
+    }
+    private IEnumerator HandleStun(float duration)
+    {
+        isStunned = true;
+
+        // Disable actions like movement, attacking, rotation, and abilities
+        DisableActions();
+
+        Debug.Log("Boss is stunned!");
+
+        // Play stun animation if available
+        //animator.SetTrigger("Stunned");
+
+        // Wait for the stun duration
+        yield return new WaitForSeconds(duration);
+
+        // Re-enable actions
+        EnableActions();
+
+        Debug.Log("Boss is no longer stunned!");
+
+        isStunned = false;
+        stunCoroutine = null;
+    }
+
+    private void DisableActions()
+    {
+        // Disable movement and attacks
+        CancelInvoke("Phase1Behavior");
+        CancelInvoke("Phase2Behavior");
+
+        // Disable rotation
+        canRotate = false;
+
+        // Prevent active animations and abilities
+        //animator.speed = 0; // Pause the animator
+    }
+
+    private void EnableActions()
+    {
+        // Resume behavior
+        if (currentPhase == 1)
+        {
+            InvokeRepeating("Phase1Behavior", 0f, 30f);
+        }
+        else if (currentPhase == 2)
+        {
+            InvokeRepeating("Phase2Behavior", 0f, 30f);
+        }
+
+        // Enable rotation
+        canRotate = true;
+
+        // Resume animations
+        //animator.speed = 1;
+    }
     void Start()
     {
         currentHealth = maxHealth;
-        currentPhase = 1;
+        currentPhase = 0;
         animator = GetComponent<Animator>();
         Player = GameObject.FindGameObjectWithTag("Player");
         audioSource = GetComponent<AudioSource>();
@@ -84,8 +157,9 @@ public class BossMainManagement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (currentPhase == 1 && currentHealth < maxHealth && !inPhase) //this ensures wanderer attacks first
+        if (currentPhase == 0 && currentHealth < maxHealth && !inPhase) //this ensures wanderer attacks first
         {
+            currentPhase = 1; 
             StartCoroutine(StartCombat());
             inPhase = true;
 
@@ -105,7 +179,10 @@ public class BossMainManagement : MonoBehaviour
             minionsAlive = false;
         }
         // Rotate to face the player
-        FacePlayer();
+        if (canRotate)
+        {
+            FacePlayer();
+        } 
     }
 
     private void FacePlayer()
