@@ -194,6 +194,9 @@ public class RougeAbilities : MonoBehaviour
         GameObject arrow = FindChildWithTag(transform, "ARROWMO");
         if (arrow != null)
         {
+            Transform parentTransform = arrow.transform.parent;
+            GameObject clonedArrow = Instantiate(arrow, arrow.transform.position, arrow.transform.rotation, parentTransform);
+            clonedArrow.SetActive(false);   
             // Activate the arrow GameObject
             arrow.SetActive(true);
 
