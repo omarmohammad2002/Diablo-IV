@@ -4,7 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class CharacterHoverText : MonoBehaviour
 {
-    public TMP_Text hoverText;
+    //public TMP_Text hoverText;
+
+    public Light barbarianSpotlight;
+    public Light sorcererSpotlight;
+    public Light erikaSpotlight;
 
     private string barbarianText = "<b>Bash</b>\n" +
                               "<i>Type:</i> Basic\n" +
@@ -80,25 +84,31 @@ public class CharacterHoverText : MonoBehaviour
         switch (gameObject.tag)
         {
             case "Barbarian":
-                hoverText.text = barbarianText;
+                //hoverText.text = barbarianText;
+                barbarianSpotlight.gameObject.SetActive(true);
                 break;
             case "Sorcerer":
-                hoverText.text = sorcererText;
+                //hoverText.text = sorcererText;
+                sorcererSpotlight.gameObject.SetActive(true);
                 break;
             case "Erika":
-                hoverText.text = erikaText;
+                //hoverText.text = erikaText;
+                erikaSpotlight.gameObject.SetActive(true);
                 break;
             default:
-                hoverText.text = "";
+                //hoverText.text = "";
                 break;
         }
 
-        hoverText.enabled = true;
+        //hoverText.enabled = true;
     }
 
     void OnMouseExit()
     {
-        hoverText.enabled = false;
+        //hoverText.enabled = false;
+        barbarianSpotlight.gameObject.SetActive(false);
+        sorcererSpotlight.gameObject.SetActive(false);
+        erikaSpotlight.gameObject.SetActive(false);
     }
 
     //void OnMouseDown()
