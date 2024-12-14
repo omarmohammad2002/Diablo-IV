@@ -14,6 +14,7 @@ public class NormalLevelInstantiation : MonoBehaviour
 
     public int totalMinions = 50;
     public int totalDemons = 10;
+    public int totalHealingPotions = 25; // Adjust the total as needed
 
     public GameObject terrainObject; // Reference to the GameObject representing the terrain
     public float randomizationRangeScale = 0.5f; // Reduce range to 50% of the camp bounds
@@ -22,6 +23,7 @@ public class NormalLevelInstantiation : MonoBehaviour
     {
         GenerateEnemyCamps();
     }
+
     void Update()
     {
         foreach (GameObject enemyCamp in enemyCampsPrefab)
@@ -53,31 +55,29 @@ public class NormalLevelInstantiation : MonoBehaviour
         }
     }
 
-
     void GenerateEnemyCamps()
     {
-        int remainingMinions = Random.Range(45, 51); // Total minions: 45–50
-        int remainingDemons = Random.Range(5, 11);   // Total demons: 5–10
+        int campsCount = enemyCampsPrefab.Length;
+        int minionsPerCamp = totalMinions / campsCount;
+        int demonsPerCamp = totalDemons / campsCount;
+        int potionsPerCamp = totalHealingPotions / campsCount;
 
-        for (int i = 0; i < enemyCampsPrefab.Length; i++)
+        for (int i = 0; i < campsCount; i++)
         {
             GameObject enemyCamp = enemyCampsPrefab[i];
-            // Randomly determine the number of enemies and potions for this camp
-            int enemiesInCamp = Random.Range(5, 16); // Between 5 and 15 enemies per camp
-            int minionsInCamp = Mathf.Min(remainingMinions, Random.Range(1, enemiesInCamp));
-            int demonsInCamp = Mathf.Min(remainingDemons, enemiesInCamp - minionsInCamp);
-            int potionsInCamp = Random.Range(1, 11); // 1 to 10 healing potions per camp
-
-            remainingMinions -= minionsInCamp;
-            remainingDemons -= demonsInCamp;
 
             // Create enemies and potions as children of the camp
-            CreateEnemies(enemyCamp.transform, minionsInCamp, demonsInCamp);
-            CreateHealingPotions(enemyCamp.transform, potionsInCamp);
+            CreateEnemies(enemyCamp.transform, minionsPerCamp, demonsPerCamp);
+            CreateHealingPotions(enemyCamp.transform, potionsPerCamp);
 
             // Create Rune Fragment as a child of the camp
             CreateRuneFragment(enemyCamp.transform);
         }
+
+        // Distribute any remaining minions, demons, or potions among the camps
+        DistributeRemainingEntities(minionsPerCamp * campsCount, totalMinions, 
+                                     demonsPerCamp * campsCount, totalDemons, 
+                                     potionsPerCamp * campsCount, totalHealingPotions);
     }
 
     void CreateEnemies(Transform parent, int minions, int demons)
@@ -140,6 +140,34 @@ public class NormalLevelInstantiation : MonoBehaviour
         GameObject runeFragment = Instantiate(runeFragmentPrefab, fragmentPosition, Quaternion.identity);
         runeFragment.transform.SetParent(parent);
         runeFragment.SetActive(false); // Hide until enemies are defeated
+    }
+
+    void DistributeRemainingEntities(int usedMinions, int totalMinions, int usedDemons, int totalDemons, int usedPotions, int totalPotions)
+    {
+        int remainingMinions = totalMinions - usedMinions;
+        int remainingDemons = totalDemons - usedDemons;
+        int remainingPotions = totalPotions - usedPotions;
+
+        for (int i = 0; i < enemyCampsPrefab.Length; i++)
+        {
+            if (remainingMinions > 0)
+            {
+                CreateEnemies(enemyCampsPrefab[i].transform, 1, 0);
+                remainingMinions--;
+            }
+
+            if (remainingDemons > 0)
+            {
+                CreateEnemies(enemyCampsPrefab[i].transform, 0, 1);
+                remainingDemons--;
+            }
+
+            if (remainingPotions > 0)
+            {
+                CreateHealingPotions(enemyCampsPrefab[i].transform, 1);
+                remainingPotions--;
+            }
+        }
     }
 
     Vector3 GetRandomPositionWithinScaledBounds(Collider collider)
