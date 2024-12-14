@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public class RougeMovment : MonoBehaviour
 {
     [SerializeField] private Camera camera;
-    [SerializeField] private float stoppingThreshold = 1.5f; // Allowable distance to stop earlier
+    [SerializeField] private float stoppingThreshold = 1.7f; // Allowable distance to stop earlier
     private CustomActions input;
     private NavMeshAgent agent;
     private Animator animator;
@@ -73,6 +73,13 @@ public class RougeMovment : MonoBehaviour
 
     void HandleEarlyStopping()
     {
+//         "GetRemainingDistance" can only be called on an active agent that has been placed on a NavMesh.
+// UnityEngine.StackTraceUtility:ExtractStackTrace ()
+// RougeMovment:HandleEarlyStopping () (at Assets/Scripts/RougeMovment.cs:77)
+// RougeMovment:Update () (at Assets/Scripts/RougeMovment.cs:69)
+
+
+        if (agent.pathPending) return; // Wait for the path to be calculated
         // Check if the agent is within the stopping threshold
         if (agent.remainingDistance <= stoppingThreshold && agent.remainingDistance > 0f)
         {

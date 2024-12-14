@@ -285,8 +285,8 @@ public class RougeAbilities : MonoBehaviour
     void DashTowardsTarget()
     {
         // Disable the NavMeshAgent while charging
-        if (agent.enabled)
-            agent.enabled = false;
+        // if (agent.enabled)
+        //     agent.enabled = false;
 
         // Store the player's original Y position
         float originalY = transform.position.y;
