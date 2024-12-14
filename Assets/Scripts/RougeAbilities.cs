@@ -290,10 +290,17 @@ public class RougeAbilities : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, smokeBombRadius);
         foreach (Collider hitCollider in hitColliders)
         {
-                   
-            Debug.Log("Enemy hit by Smoke Bomb: " + hitCollider.name);
-                   }
 
+            Debug.Log("Enemy hit by Smoke Bomb: " + hitCollider.name);
+            if (hitCollider.CompareTag("Boss"))
+            {
+                BossMainManagement bossMainManagement = hitCollider.GetComponent<BossMainManagement>();
+                if (bossMainManagement != null)
+                {
+                    bossMainManagement.Stun();
+                }
+            }
+        }
     }
     private void WildcardAbility()
     {
