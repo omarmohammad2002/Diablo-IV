@@ -87,6 +87,7 @@ public class DemonsMainManagement : MonoBehaviour
 
     public void StunDemon()
     {
+        Debug.Log("Demon Stunned");
         StartCoroutine(StunDemonCoroutine());
     }
 

@@ -85,6 +85,8 @@ public class MinionsMainManagement : MonoBehaviour
 
     private IEnumerator StopMinionTemporarily()
     {
+        Debug.Log("Minion stopped");
+        // TODO: fix the stopping of the minion
         minionAgent.isStopped = true;
         minionAgent.velocity = Vector3.zero;
         yield return new WaitForSeconds(5f);
