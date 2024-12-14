@@ -9,7 +9,7 @@ public class MinionsChasingPlayer : MonoBehaviour
     private NavMeshAgent enemyAgent;
     private Animator enemyAnimator;
     private MinionsMainManagement managementScript;
-    private readonly float chaseRange = 10f; 
+    private readonly float chaseRange = 15f; 
     private readonly float suspiciousTime = 3f; 
     private float timeSinceLastSawPlayer; 
     public GameObject player;

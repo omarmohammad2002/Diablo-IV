@@ -14,6 +14,7 @@ public class BossMainManagement : MonoBehaviour
     public bool shieldActive = false;
     public bool reflectiveAuraActive = false;
     private int currentPhase;
+    private bool inPhase;
 
     // Attacks damagee
     private int diveBombDamage = 20;
@@ -28,10 +29,11 @@ public class BossMainManagement : MonoBehaviour
 
     private GameObject activeShield;
     private Animator animator;
-    private bool inPhase;
+    
     private GameObject Player;
     private GameObject activeAura;
 
+    // audio
     public AudioClip summonSound;
     public AudioClip diveBombSound;
     public AudioClip spikesSound;
@@ -40,87 +42,19 @@ public class BossMainManagement : MonoBehaviour
     public AudioClip damagingSound;
 
     private AudioSource audioSource;
-    // Start is called before the first frame update
-
+    
+    // for stunnning
     private bool isStunned = false; // Track if the boss is stunned
     private Coroutine stunCoroutine; // Reference to the active stun coroutine
     private bool canRotate = true; // Control whether the boss can rotate
 
+    //for slowing down
     private bool isSlowed = false; // Track if the boss is slowed
     private Coroutine slowCoroutine; // Reference to the active slow coroutine
     private float originalSpeed = 5f; // Original rotation speed
     private float slowedSpeed; // Slowed rotation speed
 
-
-    public void Stun()
-    {
-        if (isStunned)
-        {
-            // If already stunned, reset the duration by restarting the coroutine
-            if (stunCoroutine != null)
-            {
-                StopCoroutine(stunCoroutine);
-            }
-        }
-
-        stunCoroutine = StartCoroutine(HandleStun(5f));
-    }
-    private IEnumerator HandleStun(float duration)
-    {
-        isStunned = true;
-
-        // Disable actions like movement, attacking, rotation, and abilities
-        DisableActions();
-
-        Debug.Log("Boss is stunned!");
-
-        // Play stun animation if available
-        animator.SetTrigger("Stunned");
-
-
-        // Wait for the stun duration
-        yield return new WaitForSeconds(duration);
-
-        // Re-enable actions
-        EnableActions();
-
-        Debug.Log("Boss is no longer stunned!");
-
-        isStunned = false;
-        stunCoroutine = null;
-    }
-
-    private void DisableActions()
-    {
-        // Disable movement and attacks
-        CancelInvoke("Phase1Behavior");
-        CancelInvoke("Phase2Behavior");
-
-        // Disable rotation
-        canRotate = false;
-
-        // Prevent active animations and abilities
-        //animator.speed = 0; // Pause the animator
-    }
-
-    private void EnableActions()
-    {
-        // Resume behavior
-        if (currentPhase == 1)
-        {
-            InvokeRepeating("Phase1Behavior", 0f, 30f);
-        }
-        else if (currentPhase == 2)
-        {
-            InvokeRepeating("Phase2Behavior", 0f, 30f);
-        }
-
-        // Enable rotation
-        canRotate = true;
-
-        // Resume animations
-        //animator.speed = 1;
-    }
+    // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
@@ -130,60 +64,6 @@ public class BossMainManagement : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         slowedSpeed = originalSpeed * 0.25f;
 
-    }
-
-    public void SlowDown()
-    {
-        if (isSlowed)
-        {
-            // If already slowed, reset the duration by restarting the coroutine
-            if (slowCoroutine != null)
-            {
-                StopCoroutine(slowCoroutine);
-            }
-        }
-
-        slowCoroutine = StartCoroutine(HandleSlowDown(3f)); // Slow for 3 seconds
-    }
-
-    private IEnumerator HandleSlowDown(float duration)
-    {
-        isSlowed = true;
-
-        // Apply slowed effects
-        ApplySlowDown();
-
-        Debug.Log("Boss is slowed!");
-
-        // Wait for the slow duration
-        yield return new WaitForSeconds(duration);
-
-        // Remove the slow effect
-        RemoveSlowDown();
-
-        Debug.Log("Boss is no longer slowed!");
-
-        isSlowed = false;
-        slowCoroutine = null;
-    }
-
-    private void ApplySlowDown()
-    {
-        // Reduce rotation speed
-        originalSpeed = 5f; // Ensure original speed is properly set
-        slowedSpeed = originalSpeed * 0.25f;
-
-        // Reduce animation speed
-        animator.speed *= 0.25f; // Slow down animation
-    }
-
-    private void RemoveSlowDown()
-    {
-        // Restore rotation speed
-        slowedSpeed = originalSpeed;
-
-        // Restore animation speed
-        animator.speed = 1f;
     }
 
     public void PlaySound(string soundName)
@@ -498,6 +378,129 @@ public class BossMainManagement : MonoBehaviour
         animator.SetTrigger("Dead");
         //Game ends and studio credits roll
         //Destroy(gameObject);
+    }
+    public void Stun()
+    {
+        if (isStunned)
+        {
+            // If already stunned, reset the duration by restarting the coroutine
+            if (stunCoroutine != null)
+            {
+                StopCoroutine(stunCoroutine);
+            }
+        }
+
+        stunCoroutine = StartCoroutine(HandleStun(5f));
+    }
+    private IEnumerator HandleStun(float duration)
+    {
+        isStunned = true;
+
+        // Disable actions like movement, attacking, rotation, and abilities
+        DisableActions();
+
+        Debug.Log("Boss is stunned!");
+
+        // Play stun animation if available
+        animator.SetTrigger("Stunned");
+
+
+        // Wait for the stun duration
+        yield return new WaitForSeconds(duration);
+
+        // Re-enable actions
+        EnableActions();
+
+        Debug.Log("Boss is no longer stunned!");
+
+        isStunned = false;
+        stunCoroutine = null;
+    }
+
+    private void DisableActions()
+    {
+        // Disable movement and attacks
+        CancelInvoke("Phase1Behavior");
+        CancelInvoke("Phase2Behavior");
+
+        // Disable rotation
+        canRotate = false;
+
+        // Prevent active animations and abilities
+        //animator.speed = 0; // Pause the animator
+    }
+
+    private void EnableActions()
+    {
+        // Resume behavior
+        if (currentPhase == 1)
+        {
+            InvokeRepeating("Phase1Behavior", 0f, 30f);
+        }
+        else if (currentPhase == 2)
+        {
+            InvokeRepeating("Phase2Behavior", 0f, 30f);
+        }
+
+        // Enable rotation
+        canRotate = true;
+
+        // Resume animations
+        //animator.speed = 1;
+    }
+
+    public void SlowDown()
+    {
+        if (isSlowed)
+        {
+            // If already slowed, reset the duration by restarting the coroutine
+            if (slowCoroutine != null)
+            {
+                StopCoroutine(slowCoroutine);
+            }
+        }
+
+        slowCoroutine = StartCoroutine(HandleSlowDown(3f)); // Slow for 3 seconds
+    }
+
+    private IEnumerator HandleSlowDown(float duration)
+    {
+        isSlowed = true;
+
+        // Apply slowed effects
+        ApplySlowDown();
+
+        Debug.Log("Boss is slowed!");
+
+        // Wait for the slow duration
+        yield return new WaitForSeconds(duration);
+
+        // Remove the slow effect
+        RemoveSlowDown();
+
+        Debug.Log("Boss is no longer slowed!");
+
+        isSlowed = false;
+        slowCoroutine = null;
+    }
+
+    private void ApplySlowDown()
+    {
+        // Reduce rotation speed
+        originalSpeed = 5f; // Ensure original speed is properly set
+        slowedSpeed = originalSpeed * 0.25f;
+
+        // Reduce animation speed
+        animator.speed *= 0.25f; // Slow down animation
+    }
+
+    private void RemoveSlowDown()
+    {
+        // Restore rotation speed
+        slowedSpeed = originalSpeed;
+
+        // Restore animation speed
+        animator.speed = 1f;
     }
 
 }

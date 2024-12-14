@@ -1,23 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class DemonsMainManagement : MonoBehaviour
 {
-    
-    public int maxHealth;     
-    public int currentHealth; 
-    public int attackPower;   
-    public int xpReward;      
+    public int maxHealth;
+    public int currentHealth;
+    public int attackPower;
+    public int xpReward;
     public int explosivePower;
-    public bool demonIsDead=false;
+    public bool demonIsDead = false;
     public enum DemonState { Idle, Patrolling, Aggressive }
     public DemonState currentState;
     private Animator demonAnimator;
+    private NavMeshAgent demonAgent;
 
-
-
-   void Awake()
+    void Awake()
     {
         maxHealth = 40;
         currentHealth = maxHealth;
@@ -25,15 +24,15 @@ public class DemonsMainManagement : MonoBehaviour
         explosivePower = 15;
         xpReward = 30;
         currentState = DemonState.Patrolling;
-        
     }
 
     void Start()
     {
         demonAnimator = GetComponent<Animator>();
+        demonAgent = GetComponent<NavMeshAgent>();
     }
 
-     public void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         demonAnimator.SetBool("isDamaged", true);
         currentHealth -= damage;
@@ -43,31 +42,20 @@ public class DemonsMainManagement : MonoBehaviour
         {
             enemyDeath();
         }
-
-       
     }
-
-    
 
     public void enemyDeath()
     {
-        // Search for the player object using the Player tag
         GameObject player = GameObject.FindGameObjectWithTag("Player");
 
         if (player != null)
         {
-            // Get the WandererMainManagement component
             WandererMainManagement wandererMM = player.GetComponent<WandererMainManagement>();
-
-            if (wandererMM != null)
-            {
-                // Add XP to the player
-                wandererMM.addXP(xpReward);
-            }
-            else
-            {
-                Debug.LogError("WandererMainManagement component not found on the player!");
-            }
+            wandererMM.addXP(xpReward);
+            if (currentState == DemonState.Aggressive)
+                {
+                    wandererMM.enemiesFollowing--;
+                }
         }
         else
         {
@@ -78,9 +66,35 @@ public class DemonsMainManagement : MonoBehaviour
         demonIsDead = true;
         demonAnimator.SetBool("isDead", true);
     }
-    
-    public void DestroyDemon(){
-        Destroy(gameObject);
-        }
 
+    public void DestroyDemon()
+    {
+        Destroy(gameObject);
+    }
+
+    public void StopDemon()
+    {
+        StartCoroutine(StopDemonTemporarily());
+    }
+
+    private IEnumerator StopDemonTemporarily()
+    {
+        demonAgent.isStopped = true;
+        demonAgent.velocity = Vector3.zero;
+        yield return new WaitForSeconds(5f);
+        demonAgent.isStopped = false;
+    }
+
+    public void StunDemon()
+    {
+        StartCoroutine(StunDemonCoroutine());
+    }
+
+    private IEnumerator StunDemonCoroutine()
+    {
+        float originalSpeed = demonAgent.speed;
+        demonAgent.speed = originalSpeed / 4;
+        yield return new WaitForSeconds(3f);
+        demonAgent.speed = originalSpeed;
+    }
 }

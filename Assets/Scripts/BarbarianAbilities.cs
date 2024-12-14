@@ -27,6 +27,7 @@ public class BarbarianAbilities : MonoBehaviour
     public float defensiveCooldown = 10f;
     public float wildcardCooldown = 5f; //update
     public float ultimateCooldown = 1f; //update
+
     // for cooldown
     private Dictionary<string, float> lastUsedTime = new Dictionary<string, float>();
 

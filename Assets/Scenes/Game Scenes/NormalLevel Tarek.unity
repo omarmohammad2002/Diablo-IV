@@ -642,6 +642,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rogue
       objectReference: {fileID: 0}
+    - target: {fileID: 4046210600891727809, guid: 694d828e349858b418bbf2a185c0a83d, type: 3}
+      propertyPath: m_Size.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4046210600891727809, guid: 694d828e349858b418bbf2a185c0a83d, type: 3}
+      propertyPath: m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4046210600891727809, guid: 694d828e349858b418bbf2a185c0a83d, type: 3}
+      propertyPath: m_Center.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4046210600891727809, guid: 694d828e349858b418bbf2a185c0a83d, type: 3}
+      propertyPath: m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4046210600891727809, guid: 694d828e349858b418bbf2a185c0a83d, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5344533266331880881, guid: 694d828e349858b418bbf2a185c0a83d, type: 3}
       propertyPath: m_Speed
       value: 15
