@@ -9,65 +9,89 @@ public class WandererMovement : MonoBehaviour
     private NavMeshAgent agent;
     private Animator animator;
 
-    private float clickTime = 0f;
+    private float lastClickTime = 0f;
     private float doubleClickThreshold = 0.3f; // Time in seconds to detect a double click
     private bool isDoubleClick = false;
 
-    // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            float timeSinceLastClick = Time.time - clickTime;
-            clickTime = Time.time;
+            float currentTime = Time.time;
+            float timeSinceLastClick = currentTime - lastClickTime;
 
             if (timeSinceLastClick <= doubleClickThreshold)
             {
                 isDoubleClick = true;
+                HandleDoubleClick(); // Handle double click immediately
             }
             else
             {
                 isDoubleClick = false;
+                StartCoroutine(HandleSingleClickAfterDelay());
             }
 
-            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                agent.SetDestination(hit.point);
-
-                if (animator != null)
-                {
-                    if (isDoubleClick)
-                    {
-                        animator.SetBool("isRunning", true);
-                        animator.SetBool("isWalking", false);
-                        agent.speed = 15f; // Adjust speed for running
-                    }
-                    else
-                    {
-                        animator.SetBool("isRunning", false);
-                        animator.SetBool("isWalking", true);
-                        agent.speed = 7.5f; // Adjust speed for walking
-                    }
-                }
-            }
+            lastClickTime = currentTime;
         }
 
-        // Update animator parameters
+        // Update animator parameters when destination is reached
         if (animator != null && agent.enabled)
         {
             if (agent.remainingDistance < agent.stoppingDistance + 1f)
             {
                 animator.SetBool("isRunning", false);
                 animator.SetBool("isWalking", false);
+            }
+        }
+    }
+
+    private IEnumerator HandleSingleClickAfterDelay()
+    {
+        yield return new WaitForSeconds(doubleClickThreshold);
+
+        // If not a double click, handle as a single click
+        if (!isDoubleClick)
+        {
+            HandleSingleClick();
+        }
+    }
+
+    private void HandleSingleClick()
+    {
+        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            agent.SetDestination(hit.point);
+
+            if (animator != null)
+            {
+                animator.SetBool("isRunning", false);
+                animator.SetBool("isWalking", true);
+                agent.speed = 2.5f; // Adjust speed for walking
+            }
+        }
+    }
+
+    private void HandleDoubleClick()
+    {
+        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            agent.SetDestination(hit.point);
+
+            if (animator != null)
+            {
+                animator.SetBool("isRunning", true);
+                animator.SetBool("isWalking", false);
+                agent.speed = 5f; // Adjust speed for running
             }
         }
     }
