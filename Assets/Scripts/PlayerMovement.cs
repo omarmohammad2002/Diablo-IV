@@ -13,6 +13,9 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
     private float lookRotationSpeed = 8f;
 
+    private float lastClickTime = 0f;
+    private float doubleClickThreshold = 0.3f; // Time in seconds for double-click detection
+
     void Awake()
     {
         input = new CustomActions();
@@ -33,6 +36,24 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleMouseClick()
     {
+        float currentTime = Time.time;
+        if (currentTime - lastClickTime <= doubleClickThreshold)
+        {
+            // Detected a double click
+            animator.SetBool("isRunning", true);
+            animator.SetBool("isWalking", false);
+            agent.speed = 16f; // Set a higher speed for running
+        }
+        else
+        {
+            // Single click
+            animator.SetBool("isRunning", false);
+            animator.SetBool("isWalking", true);
+            agent.speed = 8f; // Default walking speed
+        }
+
+        lastClickTime = currentTime;
+
         // Cast a ray from the screen point where the mouse clicked
         Ray ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out RaycastHit hit, 100))
@@ -45,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         FaceTarget();
-        SetAnimations();
+        UpdateMovementAnimations();
     }
 
     void FaceTarget()
@@ -59,15 +80,23 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void SetAnimations()
+    void UpdateMovementAnimations()
     {
-        if (agent.velocity.magnitude > 0)
+        if (agent.velocity.magnitude > 0.1f) // Slight threshold to detect motion
         {
-            animator.SetBool("isWalking", true);
+            if (animator.GetBool("isRunning"))
+            {
+                animator.SetBool("isWalking", false);
+            }
+            else
+            {
+                animator.SetBool("isWalking", true);
+            }
         }
         else
         {
             animator.SetBool("isWalking", false);
+            animator.SetBool("isRunning", false);
         }
     }
 }
