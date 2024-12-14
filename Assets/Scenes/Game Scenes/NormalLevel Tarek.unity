@@ -10166,7 +10166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bdcc71d3e7fe9d73b3330ab2475d777, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 0}
+  camera: {fileID: 1260370894}
   stoppingThreshold: 1.7
 --- !u!1001 &1749912468
 PrefabInstance:
