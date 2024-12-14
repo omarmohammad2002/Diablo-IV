@@ -314,6 +314,7 @@ MonoBehaviour:
   - {fileID: 2106284542}
   totalMinions: 50
   totalDemons: 10
+  totalHealingPotions: 25
   terrainObject: {fileID: 208152258}
   randomizationRangeScale: 0.5
 --- !u!4 &41602715
@@ -1175,10 +1176,6 @@ PrefabInstance:
       propertyPath: m_LookAt
       value: 
       objectReference: {fileID: 466439069}
-    - target: {fileID: 3232099179043198458, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
-      propertyPath: m_Lens.FieldOfView
-      value: 80
-      objectReference: {fileID: 0}
     - target: {fileID: 5348461488137086475, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
       propertyPath: m_LocalPosition.x
       value: 19.33
@@ -1222,18 +1219,6 @@ PrefabInstance:
     - target: {fileID: 5847176548909394364, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
       propertyPath: m_Name
       value: Wanderer Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 7646348665448984561, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
-      propertyPath: m_FollowOffset.x
-      value: -5.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 7646348665448984561, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
-      propertyPath: m_FollowOffset.y
-      value: 12.57
-      objectReference: {fileID: 0}
-    - target: {fileID: 7646348665448984561, guid: 832c820ff0365d94dab04d584cd52604, type: 3}
-      propertyPath: m_FollowOffset.z
-      value: -13.84
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4544,31 +4529,7 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 350261658953385139, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
-      propertyPath: m_Speed
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 350261658953385139, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
-      propertyPath: m_Acceleration
-      value: 34
-      objectReference: {fileID: 0}
-    - target: {fileID: 350261658953385139, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
-      propertyPath: m_AngularSpeed
-      value: 513
-      objectReference: {fileID: 0}
-    - target: {fileID: 1554755121675236788, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
-      propertyPath: m_Mass
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1554755121675236788, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
-      propertyPath: m_AngularDrag
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1554755121675236788, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7445708095457937975, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
+    - target: {fileID: 2239384567391851792, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
       propertyPath: camera
       value: 
       objectReference: {fileID: 1260370894}
@@ -4579,18 +4540,6 @@ PrefabInstance:
     - target: {fileID: 8609651014790174503, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
       propertyPath: m_Name
       value: Barbarian Prefab
-      objectReference: {fileID: 0}
-    - target: {fileID: 8948739698727456157, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8948739698727456157, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8948739698727456157, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8948739698727456157, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7866,7 +7815,7 @@ Transform:
   m_GameObject: {fileID: 1659025384}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -31.4, y: 36.2, z: -503.7}
+  m_LocalPosition: {x: -31.4, y: 43.4, z: -503.7}
   m_LocalScale: {x: 20, y: 1, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
