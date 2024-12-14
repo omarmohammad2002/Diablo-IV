@@ -12,7 +12,7 @@ public class DemonsChasingPlayer : MonoBehaviour
     private NavMeshAgent enemyAgent;
     private Animator enemyAnimator;
     private DemonsMainManagement managementScript;
-    private readonly float chaseRange = 10f;
+    private readonly float chaseRange = 15f;
     private readonly float suspiciousTime=3f;
     private float timeSinceLastSawPlayer;
     public GameObject player;

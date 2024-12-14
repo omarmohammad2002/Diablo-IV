@@ -53,18 +53,14 @@ public class MinionsMainManagement : MonoBehaviour
     
     if (player != null)
     {
-        // Get the WandererMainManagement component
         WandererMainManagement wandererMM = player.GetComponent<WandererMainManagement>();
-        
-        if (wandererMM != null)
+        wandererMM.addXP(xpReward);
+        if (currentState == MinionState.Aggressive)
         {
-            // Add XP to the player
-            wandererMM.addXP(xpReward);
+            wandererMM.enemiesFollowing--;
+
         }
-        else
-        {
-            Debug.LogError("WandererMainManagement component not found on the player!");
-        }
+
     }
     else
     {

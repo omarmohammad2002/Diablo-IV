@@ -51,15 +51,11 @@ public class DemonsMainManagement : MonoBehaviour
         if (player != null)
         {
             WandererMainManagement wandererMM = player.GetComponent<WandererMainManagement>();
-
-            if (wandererMM != null)
-            {
-                wandererMM.addXP(xpReward);
-            }
-            else
-            {
-                Debug.LogError("WandererMainManagement component not found on the player!");
-            }
+            wandererMM.addXP(xpReward);
+            if (currentState == DemonState.Aggressive)
+                {
+                    wandererMM.enemiesFollowing--;
+                }
         }
         else
         {
