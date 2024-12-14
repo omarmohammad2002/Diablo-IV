@@ -172,19 +172,21 @@ public class WandererMainManagement : MonoBehaviour
     public void DealDamage(int amount)
     {
         // This function deals damage to the player by a specific amount, to be used in enemy attack logic scripts
-        if (!isInvincible)
+        if (currentHealth > 0)
         {
-            currentHealth -= amount;
-            TriggerDamageAnimation(); // Updated to use the new method
-
-            if (currentHealth <= 0)
+            if (!isInvincible)
             {
-                // Trigger death animation and game over logic
-                Animator.SetTrigger("Dead");
-                isDead = true;
-                gameOverScreen.SetActive(true);
+                currentHealth -= amount;
+                TriggerDamageAnimation(); // Updated to use the new method
 
-                // More gameover logic to be added here if needed, stop/change audio etc
+                if (currentHealth <= 0)
+                {
+                    // Trigger death animation and game over logic
+                    Animator.SetTrigger("Dead");
+                    isDead = true;
+                    gameOverScreen.SetActive(true);
+                    // More gameover logic to be added here if needed, stop/change audio etc
+                }
             }
         }
     }
