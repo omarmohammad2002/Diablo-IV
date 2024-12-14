@@ -74,7 +74,7 @@ public class WandererMovement : MonoBehaviour
             {
                 animator.SetBool("isRunning", false);
                 animator.SetBool("isWalking", true);
-                agent.speed = 2.5f; // Adjust speed for walking
+                agent.speed = 7.5f; // Adjust speed for walking
             }
         }
     }
@@ -91,7 +91,7 @@ public class WandererMovement : MonoBehaviour
             {
                 animator.SetBool("isRunning", true);
                 animator.SetBool("isWalking", false);
-                agent.speed = 5f; // Adjust speed for running
+                agent.speed = 15f; // Adjust speed for running
             }
         }
     }
