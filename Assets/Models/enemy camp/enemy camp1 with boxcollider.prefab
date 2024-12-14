@@ -10989,6 +10989,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1176493762879406442}
+  - component: {fileID: 1509748002554192755}
   m_Layer: 0
   m_Name: Mini Army Tent (1)
   m_TagString: Untagged
@@ -11021,6 +11022,27 @@ Transform:
   - {fileID: 1176493762879406460}
   m_Father: {fileID: 5596113119194683049}
   m_LocalEulerAnglesHint: {x: 0, y: -41.059, z: 0}
+--- !u!65 &1509748002554192755
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176493762879446346}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 8, z: 2.5}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1176493762879446348
 GameObject:
   m_ObjectHideFlags: 0
@@ -29865,6 +29887,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5446523113102455231}
+  - component: {fileID: 404100261794562665}
   m_Layer: 0
   m_Name: Mini Army Tent
   m_TagString: Untagged
@@ -29897,6 +29920,27 @@ Transform:
   - {fileID: 5446523113102455209}
   m_Father: {fileID: 5596113119194683049}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &404100261794562665
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5446523113102290335}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 8, z: 2.5}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5512608469866889247
 GameObject:
   m_ObjectHideFlags: 0
@@ -37648,6 +37692,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7845061949301241069}
+  - component: {fileID: 7557675330183802324}
   m_Layer: 0
   m_Name: Mini Army Tent Prefabs
   m_TagString: Untagged
@@ -37680,6 +37725,27 @@ Transform:
   - {fileID: 7845061949301241083}
   m_Father: {fileID: 5596113119194683049}
   m_LocalEulerAnglesHint: {x: 0, y: 40.222, z: 0}
+--- !u!65 &7557675330183802324
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7845061949301663949}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 8, z: 2.5}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7845061949301663951
 GameObject:
   m_ObjectHideFlags: 0

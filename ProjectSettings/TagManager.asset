@@ -17,11 +17,13 @@ TagManager:
   - Gate
   - arrow
   - arrowloc
+  - ARROWMO
+  - Ground
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - EnemyCamp
   - Water
   - UI
   - 

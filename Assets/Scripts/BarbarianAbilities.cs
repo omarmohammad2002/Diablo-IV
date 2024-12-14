@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -26,6 +27,7 @@ public class BarbarianAbilities : MonoBehaviour
     public float defensiveCooldown = 10f;
     public float wildcardCooldown = 5f; //update
     public float ultimateCooldown = 1f; //update
+
     // for cooldown
     private Dictionary<string, float> lastUsedTime = new Dictionary<string, float>();
 
@@ -371,6 +373,7 @@ public class BarbarianAbilities : MonoBehaviour
             // Ensure the enemy hasn't been damaged already
             if (!damagedEnemies.Contains(hitCollider.gameObject))
             {
+                print(hitCollider.tag);
                 if (hitCollider.CompareTag("Boss"))
                 {
                     BossMainManagement enemyScript = hitCollider.GetComponent<BossMainManagement>();
@@ -382,7 +385,7 @@ public class BarbarianAbilities : MonoBehaviour
                     }
                 }
 
-                if (hitCollider.CompareTag("Minion"))
+                else if (hitCollider.CompareTag("Minion"))
                 {
                     MinionsMainManagement enemyScript = hitCollider.GetComponent<MinionsMainManagement>();
                     if (enemyScript != null)
@@ -392,7 +395,7 @@ public class BarbarianAbilities : MonoBehaviour
                     }
                 }
 
-                if (hitCollider.CompareTag("Demon"))
+                else if (hitCollider.CompareTag("Demon"))
                 {
                     DemonsMainManagement enemyScript = hitCollider.GetComponent<DemonsMainManagement>();
                     if (enemyScript != null)
@@ -400,6 +403,10 @@ public class BarbarianAbilities : MonoBehaviour
                         enemyScript.TakeDamage(enemyScript.currentHealth);
                         damagedEnemies.Add(hitCollider.gameObject); // Mark as damaged
                     }
+                }
+                else if (hitCollider.CompareTag("Untagged"))
+                {
+                    Destroy(hitCollider.gameObject);   
                 }
             }
         }
