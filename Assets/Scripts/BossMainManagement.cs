@@ -14,6 +14,7 @@ public class BossMainManagement : MonoBehaviour
     public bool shieldActive = false;
     public bool reflectiveAuraActive = false;
     private int currentPhase;
+    private bool inPhase;
 
     // Attacks damagee
     private int diveBombDamage = 20;
@@ -23,15 +24,17 @@ public class BossMainManagement : MonoBehaviour
     //prefabs
     public GameObject minionPrefab;  // Assuming minions are a GameObject prefab.
     public GameObject shieldPrefab; // Assuming shield is a GameObject prefab.
+    public GameObject healingPotionPrefab;
     public GameObject reflectiveAuraPrefab;
     public Transform minionIdlePointPrefab;
-
+    public GameObject arenaGround;
     private GameObject activeShield;
     private Animator animator;
-    private bool inPhase;
+    
     private GameObject Player;
     private GameObject activeAura;
 
+    // audio
     public AudioClip summonSound;
     public AudioClip diveBombSound;
     public AudioClip spikesSound;
@@ -40,15 +43,31 @@ public class BossMainManagement : MonoBehaviour
     public AudioClip damagingSound;
 
     private AudioSource audioSource;
+    
+    // for stunnning
+    private bool isStunned = false; // Track if the boss is stunned
+    private Coroutine stunCoroutine; // Reference to the active stun coroutine
+    private bool canRotate = true; // Control whether the boss can rotate
+
+    //for slowing down
+    private bool isSlowed = false; // Track if the boss is slowed
+    private Coroutine slowCoroutine; // Reference to the active slow coroutine
+    private float originalSpeed = 5f; // Original rotation speed
+    private float slowedSpeed; // Slowed rotation speed
+
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
-        currentPhase = 1;
+        currentPhase = 0;
         animator = GetComponent<Animator>();
         Player = GameObject.FindGameObjectWithTag("Player");
         audioSource = GetComponent<AudioSource>();
+        slowedSpeed = originalSpeed * 0.25f;
+        SpawnHealingPotions();
+
     }
+
     public void PlaySound(string soundName)
     {
         switch (soundName)
@@ -84,8 +103,9 @@ public class BossMainManagement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (currentPhase == 1 && currentHealth < maxHealth && !inPhase) //this ensures wanderer attacks first
+        if (currentPhase == 0 && currentHealth < maxHealth && !inPhase) //this ensures wanderer attacks first
         {
+            currentPhase = 1; 
             StartCoroutine(StartCombat());
             inPhase = true;
 
@@ -105,23 +125,27 @@ public class BossMainManagement : MonoBehaviour
             minionsAlive = false;
         }
         // Rotate to face the player
-        FacePlayer();
+        if (canRotate)
+        {
+            FacePlayer();
+        } 
     }
 
     private void FacePlayer()
     {
-        if (Player == null) return; // Ensure the player exists
+        if (Player == null || isStunned) return; // Ensure the player exists and the boss is not stunned
+
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Boss Divebomb")) return;
 
         // Calculate the direction to the player
         Vector3 directionToPlayer = Player.transform.position - transform.position;
         directionToPlayer.y = 0; // Ignore height differences
 
-        // Rotate the boss to face the player
+        // Rotate the boss to face the player using the slowed or original speed
         if (directionToPlayer != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f); // Adjust rotation speed with 5f
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * (isSlowed ? slowedSpeed : originalSpeed));
         }
     }
     private void TriggerAttackAnimation(string attackType)
@@ -148,7 +172,7 @@ public class BossMainManagement : MonoBehaviour
                 break;
 
             default:
-                Debug.LogWarning("Unknown attack type: " + attackType);
+                Debug.Log("Unknown attack type: " + attackType);
                 break;
         }
     }
@@ -173,22 +197,45 @@ public class BossMainManagement : MonoBehaviour
 
 
     private void SummonMinions()
-    {
-        Debug.Log("Lilith summons Minions!");
+{
+    Debug.Log("Lilith summons Minions!");
 
-        for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 3; i++)
+    {
+        // Calculate a random relative position around the boss
+        Vector3 relativePosition = new Vector3(UnityEngine.Random.Range(-10, 10), 0, UnityEngine.Random.Range(-10, 10));
+        Vector3 spawnPosition = transform.position + relativePosition;
+
+        // Instantiate the idle point and minion as children of arenaGround
+        Transform idlePoint = Instantiate(minionIdlePointPrefab, spawnPosition, Quaternion.identity, arenaGround.transform);
+        GameObject minion = Instantiate(minionPrefab, spawnPosition, Quaternion.identity, arenaGround.transform);
+
+        // Assign the idle point to the minion
+        MinionsChasingPlayer minionScript = minion.GetComponent<MinionsChasingPlayer>();
+        if (minionScript != null)
         {
-            Vector3 spawnPosition = new Vector3(UnityEngine.Random.Range(-10, 10), 0, UnityEngine.Random.Range(-10, 10));
-            Transform idlePoint = Instantiate(minionIdlePointPrefab, spawnPosition, Quaternion.identity);
-            GameObject minion =  Instantiate(minionPrefab, spawnPosition, Quaternion.identity);
-            MinionsChasingPlayer minionScript = minion.GetComponent<MinionsChasingPlayer>();
-            if (minionScript != null)
-            {
-                minionScript.idlePoint = idlePoint;
-            }
+            minionScript.idlePoint = idlePoint;
         }
-        minionsAlive = true;
     }
+
+    minionsAlive = true;
+}
+
+private void SpawnHealingPotions()
+{
+    Debug.Log("Lilith spawns healing potions!");
+
+    for (int i = 0; i < 10; i++)
+    {
+        // Calculate a random position within the arena
+        Vector3 randomPosition = new Vector3(UnityEngine.Random.Range(-50, 50), 1.5f, UnityEngine.Random.Range(-50, 50));
+        Vector3 spawnPosition = arenaGround.transform.position + randomPosition;
+
+        // Instantiate the healing potion as a child of arenaGround
+        Instantiate(healingPotionPrefab, spawnPosition, Quaternion.identity, arenaGround.transform);
+    }
+}
+
 
     private void DiveBombAttack()
     {
@@ -356,6 +403,129 @@ public class BossMainManagement : MonoBehaviour
         animator.SetTrigger("Dead");
         //Game ends and studio credits roll
         //Destroy(gameObject);
+    }
+    public void Stun()
+    {
+        if (isStunned)
+        {
+            // If already stunned, reset the duration by restarting the coroutine
+            if (stunCoroutine != null)
+            {
+                StopCoroutine(stunCoroutine);
+            }
+        }
+
+        stunCoroutine = StartCoroutine(HandleStun(5f));
+    }
+    private IEnumerator HandleStun(float duration)
+    {
+        isStunned = true;
+
+        // Disable actions like movement, attacking, rotation, and abilities
+        DisableActions();
+
+        Debug.Log("Boss is stunned!");
+
+        // Play stun animation if available
+        animator.SetTrigger("Stunned");
+
+
+        // Wait for the stun duration
+        yield return new WaitForSeconds(duration);
+
+        // Re-enable actions
+        EnableActions();
+
+        Debug.Log("Boss is no longer stunned!");
+
+        isStunned = false;
+        stunCoroutine = null;
+    }
+
+    private void DisableActions()
+    {
+        // Disable movement and attacks
+        CancelInvoke("Phase1Behavior");
+        CancelInvoke("Phase2Behavior");
+
+        // Disable rotation
+        canRotate = false;
+
+        // Prevent active animations and abilities
+        //animator.speed = 0; // Pause the animator
+    }
+
+    private void EnableActions()
+    {
+        // Resume behavior
+        if (currentPhase == 1)
+        {
+            InvokeRepeating("Phase1Behavior", 0f, 30f);
+        }
+        else if (currentPhase == 2)
+        {
+            InvokeRepeating("Phase2Behavior", 0f, 30f);
+        }
+
+        // Enable rotation
+        canRotate = true;
+
+        // Resume animations
+        //animator.speed = 1;
+    }
+
+    public void SlowDown()
+    {
+        if (isSlowed)
+        {
+            // If already slowed, reset the duration by restarting the coroutine
+            if (slowCoroutine != null)
+            {
+                StopCoroutine(slowCoroutine);
+            }
+        }
+
+        slowCoroutine = StartCoroutine(HandleSlowDown(3f)); // Slow for 3 seconds
+    }
+
+    private IEnumerator HandleSlowDown(float duration)
+    {
+        isSlowed = true;
+
+        // Apply slowed effects
+        ApplySlowDown();
+
+        Debug.Log("Boss is slowed!");
+
+        // Wait for the slow duration
+        yield return new WaitForSeconds(duration);
+
+        // Remove the slow effect
+        RemoveSlowDown();
+
+        Debug.Log("Boss is no longer slowed!");
+
+        isSlowed = false;
+        slowCoroutine = null;
+    }
+
+    private void ApplySlowDown()
+    {
+        // Reduce rotation speed
+        originalSpeed = 5f; // Ensure original speed is properly set
+        slowedSpeed = originalSpeed * 0.25f;
+
+        // Reduce animation speed
+        animator.speed *= 0.25f; // Slow down animation
+    }
+
+    private void RemoveSlowDown()
+    {
+        // Restore rotation speed
+        slowedSpeed = originalSpeed;
+
+        // Restore animation speed
+        animator.speed = 1f;
     }
 
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MinionsMainManagement : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class MinionsMainManagement : MonoBehaviour
     public enum MinionState { Idle, Aggressive }
     public MinionState currentState;
     private Animator minionAnimator;
+    private NavMeshAgent minionAgent;
 
     void Awake()
     {
@@ -27,6 +29,7 @@ public class MinionsMainManagement : MonoBehaviour
     void Start()
     {
         minionAnimator = GetComponent<Animator>();
+        minionAgent = GetComponent<NavMeshAgent>();
     }
 
     public void TakeDamage(int damage)
@@ -50,18 +53,14 @@ public class MinionsMainManagement : MonoBehaviour
     
     if (player != null)
     {
-        // Get the WandererMainManagement component
         WandererMainManagement wandererMM = player.GetComponent<WandererMainManagement>();
-        
-        if (wandererMM != null)
+        wandererMM.addXP(xpReward);
+        if (currentState == MinionState.Aggressive)
         {
-            // Add XP to the player
-            wandererMM.addXP(xpReward);
+            wandererMM.enemiesFollowing--;
+
         }
-        else
-        {
-            Debug.LogError("WandererMainManagement component not found on the player!");
-        }
+
     }
     else
     {
@@ -77,6 +76,35 @@ public class MinionsMainManagement : MonoBehaviour
  public void DestroyMinion(){
         Destroy(gameObject);
         }
+
+        
+    public void StopMinion()
+    {
+        StartCoroutine(StopMinionTemporarily());
+    }
+
+    private IEnumerator StopMinionTemporarily()
+    {
+        Debug.Log("Minion stopped");
+        // TODO: fix the stopping of the minion
+        minionAgent.isStopped = true;
+        minionAgent.velocity = Vector3.zero;
+        yield return new WaitForSeconds(5f);
+        minionAgent.isStopped = false;
+    }
+
+    public void StunMinion()
+    {
+        StartCoroutine(StunMinionCoroutine());
+    }
+
+    private IEnumerator StunMinionCoroutine()
+    {
+        float originalSpeed = minionAgent.speed;
+        minionAgent.speed = originalSpeed / 4;
+        yield return new WaitForSeconds(3f);
+        minionAgent.speed = originalSpeed;
+    }
 
 
 }

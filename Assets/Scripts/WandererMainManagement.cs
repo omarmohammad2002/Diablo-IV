@@ -31,6 +31,8 @@ public class WandererMainManagement : MonoBehaviour
     private bool isGamePaused = false;
     public GameObject pauseScreen;
 
+    private bool isDead = false; 
+
     // Enemies Following
     public int enemiesFollowing = 0;
 
@@ -170,17 +172,21 @@ public class WandererMainManagement : MonoBehaviour
     public void DealDamage(int amount)
     {
         // This function deals damage to the player by a specific amount, to be used in enemy attack logic scripts
-        if (!isInvincible)
+        if (currentHealth > 0)
         {
-            currentHealth -= amount;
-            TriggerDamageAnimation(); // Updated to use the new method
-
-            if (currentHealth <= 0)
+            if (!isInvincible)
             {
-                // Trigger death animation and game over logic
-                Animator.SetTrigger("Dead");
-                gameOverScreen.SetActive(true);
-                // More gameover logic to be added here if needed, stop/change audio etc
+                currentHealth -= amount;
+                TriggerDamageAnimation(); // Updated to use the new method
+
+                if (currentHealth <= 0)
+                {
+                    // Trigger death animation and game over logic
+                    Animator.SetTrigger("Dead");
+                    isDead = true;
+                    gameOverScreen.SetActive(true);
+                    // More gameover logic to be added here if needed, stop/change audio etc
+                }
             }
         }
     }
@@ -388,4 +394,3 @@ public class WandererMainManagement : MonoBehaviour
         return enemiesFollowing;
     }
 }
-

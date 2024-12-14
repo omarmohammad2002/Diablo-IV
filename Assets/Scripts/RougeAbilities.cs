@@ -12,7 +12,7 @@ public class RougeAbilities : MonoBehaviour
     Rigidbody rb;
     [SerializeField] GameObject showerOfArrow;
     [SerializeField] GameObject smokeBombPrefab;
-    [SerializeField] float smokeBombRadius = 5f;
+    [SerializeField] float smokeBombRadius = 10f;
     [SerializeField] float stunDuration = 5f;
 
 
@@ -35,7 +35,7 @@ public class RougeAbilities : MonoBehaviour
     // Cooldown timers
     private float basicCooldown = 1f;
     private float defensiveCooldown = 10f;
-    private float wildcardCooldown = 5f;
+    private float wildcardCooldown = 1f;
     private float ultimateCooldown = 10f;
     // for cooldown
     private Dictionary<string, float> lastUsedTime = new Dictionary<string, float>();
@@ -74,7 +74,6 @@ public class RougeAbilities : MonoBehaviour
         }
         else if (isDashing && Input.GetMouseButtonDown(1))
         {
-            print("SetDashTarget");
            SetDashTarget();
         }
 
@@ -134,56 +133,74 @@ public class RougeAbilities : MonoBehaviour
 
     // Start the coroutine for handling the arrow
     StartCoroutine(ThrowArrowWithDelay());
-}IEnumerator ThrowArrowWithDelay()
-{
-    // Dynamically find the arrow position
-    Transform currentArrowPosition = FindArrowPosition();
-
-    if (currentArrowPosition == null)
+}
+    IEnumerator ThrowArrowWithDelay()
     {
-        Debug.LogError("Arrow position not found. Aborting arrow spawn.");
-        yield break;
-    }
+        yield return new WaitForSeconds(0.9f); // Delay before activating the arrow
 
-    yield return new WaitForSeconds(0.9f); // Delay before spawning the arrow
-
-    // Cast a ray to determine the target point
-    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-    RaycastHit rayhit;
-
-    if (Physics.Raycast(ray, out rayhit))
-    {
-        Vector3 targetPoint = rayhit.point; // Point where the ray hit
-        Vector3 direction = (targetPoint - currentArrowPosition.position).normalized; // Calculate direction
-
-        // Spawn the arrow
-        GameObject spawn = Instantiate(arrow, currentArrowPosition.position, Quaternion.LookRotation(direction));
-
-        // Adjust player rotation to face the target point
-        Vector3 playerDirection = (targetPoint - transform.position).normalized;
-        playerDirection.y = 0; // Keep the player upright
-        transform.rotation = Quaternion.LookRotation(playerDirection);
-
-        // Apply velocity to the arrow
-        Rigidbody rb = spawn.GetComponent<Rigidbody>();
-        if (rb != null)
+        // Find the GameObject with tag "ARROWMO" in the current object's hierarchy
+        GameObject arrow = FindChildWithTag(transform, "ARROWMO");
+        if (arrow != null)
         {
-            rb.velocity = direction * arrowSpeed;
+            Transform parentTransform = arrow.transform.parent;
+            GameObject clonedArrow = Instantiate(arrow, arrow.transform.position, arrow.transform.rotation, parentTransform);
+            clonedArrow.SetActive(false);   
+            // Activate the arrow GameObject
+            arrow.SetActive(true);
+
+            // Fire the arrow
+            FireArrow(arrow);
+
+            Debug.Log("Arrow activated and fired.");
+        }
+        else
+        {
+            Debug.LogError("No GameObject with tag 'ARROWMO' found in the hierarchy!");
         }
 
-        // Destroy the arrow after 4 seconds
-        Destroy(spawn, 4f);
+        isBasicActive = false; // Reset state
     }
-    else
+
+    void FireArrow(GameObject arrow)
     {
-        Debug.LogError("No valid target found for the arrow.");
+        // Detach the arrow from the parent (if any)
+        arrow.transform.SetParent(null);
+
+        // Add force to fire the arrow
+        Rigidbody rb = arrow.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.AddForce(transform.forward * 40, ForceMode.Impulse); // Adjust force as needed
+        }
+        else
+        {
+            Debug.LogError("Arrow GameObject does not have a Rigidbody component!");
+        }
+
+        Debug.Log("Arrow fired!");
     }
 
-    isBasicActive = false;
-}
+    GameObject FindChildWithTag(Transform parent, string tag)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child.CompareTag(tag))
+            {
+                return child.gameObject;
+            }
+
+            // Recursively search in the child's children
+            GameObject result = FindChildWithTag(child, tag);
+            if (result != null)
+            {
+                return result;
+            }
+        }
+        return null;
+    }
 
 
-private Transform FindArrowPosition()
+    private Transform FindArrowPosition()
 {
     // Find the hand bone by its tag
     GameObject handBoneObject = GameObject.FindWithTag("arrowloc");
@@ -209,7 +226,7 @@ private Transform FindArrowPosition()
             Vector3 targetPosition = hit.point;
             Vector3 direction = targetPosition - transform.position;
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 600 * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 400 * Time.deltaTime);
         }
     }
     private void DefensiveAbility()
@@ -221,23 +238,24 @@ private Transform FindArrowPosition()
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, smokeBombRadius);
         foreach (Collider hitCollider in hitColliders)
         {
-                   
-            Debug.Log("Enemy hit by Smoke Bomb: " + hitCollider.name);
-                   }
 
-    }
-    private void WildcardAbility()
-    {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
-        foreach (Collider hitCollider in hitColliders)
-        {
+            Debug.Log("Enemy hit by Smoke Bomb: " + hitCollider.name);
+            if (hitCollider.CompareTag("Boss"))
+            {
+                BossMainManagement bossMainManagement = hitCollider.GetComponent<BossMainManagement>();
+                if (bossMainManagement != null)
+                {
+                    bossMainManagement.Stun();
+                }
+            }
+
             if (hitCollider.CompareTag("Minion"))
             {
+                Debug.Log("Minion hit by Smoke Bomb: " + hitCollider.name);
                 MinionsMainManagement minionScript = hitCollider.GetComponent<MinionsMainManagement>();
                 if (minionScript != null)
                 {
-                    minionScript.TakeDamage(10);
-                    Debug.Log("Enemy hit by Iron Maelstorm: " + hitCollider.name);
+                    minionScript.StopMinion();
                 }
             }
 
@@ -246,22 +264,11 @@ private Transform FindArrowPosition()
                 DemonsMainManagement demonScript = hitCollider.GetComponent<DemonsMainManagement>();
                 if (demonScript != null)
                 {
-                    demonScript.TakeDamage(10);
-                    Debug.Log("Enemy hit by Iron Maelstorm: " + hitCollider.name);
+                    demonScript.StopDemon();
                 }
             }
 
-            if (hitCollider.CompareTag("Boss"))
-            {
-                BossMainManagement bossScript = hitCollider.GetComponent<BossMainManagement>();
-                if (bossScript != null)
-                {
-                    bossScript.TakeDamage(10);
-                    Debug.Log("Enemy hit by Iron Maelstorm: " + hitCollider.name);
-                }
-            }
         }
-        isWildcardActive = false;
     }
     //Ultimate Ability, getting target position
     void SetDashTarget()
@@ -277,7 +284,14 @@ private Transform FindArrowPosition()
     //Ultimate Ability, dashing towards target and killing enemies
     void DashTowardsTarget()
     {
-       // Calculate the direction to the target
+        // Disable the NavMeshAgent while charging
+        if (agent.enabled)
+            agent.enabled = false;
+
+        // Store the player's original Y position
+        float originalY = transform.position.y;
+
+        // Calculate the direction to the target
         Vector3 direction = targetPosition - transform.position;
         direction.y = 0; // Ensure the player stays upright
 
@@ -285,14 +299,18 @@ private Transform FindArrowPosition()
         if (direction != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 30 * Time.deltaTime); // Doubled the rotation speed from 10 to 20
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 30 * Time.deltaTime);
         }
 
-        // Move towards the target position
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, 20 * Time.deltaTime); // Doubled the move speed from 5 to 10
+        // Move towards the target position while maintaining the original Y position
+        Vector3 newPosition = Vector3.MoveTowards(transform.position, targetPosition, 10 * Time.deltaTime);
+        newPosition.y = originalY; // Lock the Y-axis
+        transform.position = newPosition;
+        
 
-        // Stop dashing if reached the target
-        if (Vector3.Distance(transform.position, targetPosition) < 1.2f)
+        // Stop charging if reached the target
+        if (Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z),
+                     new Vector3(targetPosition.x, 0, targetPosition.z)) < 0.8f)
         {
             StopDashing();
         }
@@ -304,7 +322,14 @@ private Transform FindArrowPosition()
         isLocked = false;
         isWildcardActive = false;
         animator.SetBool("isDashing", false);
-        // Enable other actions here if needed
+
+        // Re-enable the NavMeshAgent after charging
+        if (!agent.enabled)
+            agent.enabled = true;
+
+
+        // Optional: Reset the NavMeshAgent destination to the current position
+        agent.SetDestination(transform.position);
     }
     
    void UltimateAbility()
@@ -354,4 +379,6 @@ IEnumerator MoveArrowToTarget(GameObject arrowShower, Vector3 targetPosition)
     }
 
 }
+
+    
 }

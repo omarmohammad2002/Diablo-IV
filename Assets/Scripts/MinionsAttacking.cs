@@ -6,7 +6,7 @@ public class MinionsAttacking : MonoBehaviour
 {
     private Animator enemyAnimator;
     private MinionsMainManagement managementScript;
-    private readonly float attackRange = 2f;
+    private readonly float attackRange = 4f;
     private GameObject player;
     private readonly float attackCooldown = 3f; // Time between attacks
     private float attackTimer = 0f;
@@ -27,15 +27,6 @@ public class MinionsAttacking : MonoBehaviour
                 punchCollider = collider;
                 break; // Exit loop after finding the first match
             }
-        }
-
-        if (punchCollider != null)
-        {
-            Debug.Log("Child BoxCollider found: " + punchCollider.gameObject.name);
-        }
-        else
-        {
-            Debug.Log("No BoxCollider found in children.");
         }
     }
 

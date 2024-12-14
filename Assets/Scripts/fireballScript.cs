@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class fireballScript : MonoBehaviour
 {
+    [SerializeField] AudioClip explode;
+    private AudioSource audioSource;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Minion"))
@@ -15,6 +22,11 @@ public class fireballScript : MonoBehaviour
                 print("damage 5");
                 minionScript.TakeDamage(5);
             }
+            GameObject tempAudioSource = new GameObject("TempAudio");
+            AudioSource tempSource = tempAudioSource.AddComponent<AudioSource>();
+            tempSource.clip = explode;
+            tempSource.Play();
+            Destroy(gameObject);
             
         }
 
@@ -27,7 +39,11 @@ public class fireballScript : MonoBehaviour
                 print("damage 5");
                 demonScript.TakeDamage(5);
             }
-
+            GameObject tempAudioSource = new GameObject("TempAudio");
+            AudioSource tempSource = tempAudioSource.AddComponent<AudioSource>();
+            tempSource.clip = explode;
+            tempSource.Play();
+            Destroy(gameObject);
         }
 
         if (other.CompareTag("Boss"))
@@ -39,9 +55,22 @@ public class fireballScript : MonoBehaviour
                 print("damage 5");
                 bossScript.TakeDamage(5);
             }
-
+            GameObject tempAudioSource = new GameObject("TempAudio");
+            AudioSource tempSource = tempAudioSource.AddComponent<AudioSource>();
+            tempSource.clip = explode;
+            tempSource.Play();
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
+
+        if (other.CompareTag("Untagged"))
+        {
+            GameObject tempAudioSource = new GameObject("TempAudio");
+            AudioSource tempSource = tempAudioSource.AddComponent<AudioSource>();
+            tempSource.clip = explode;
+            tempSource.Play();
+            Destroy(gameObject);
+        }
+        
     }
 
 }
