@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 public class wandererMovement : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class wandererMovement : MonoBehaviour
     {
 
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) &!EventSystem.current.IsPointerOverGameObject())
         {
             Ray ray = camera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;

@@ -19,6 +19,10 @@ TagManager:
   - arrowloc
   - ARROWMO
   - Ground
+  - Ability 3 cover
+  - Ability 1 cover
+  - Ability 2 cover
+  - Pick
   layers:
   - Default
   - TransparentFX
