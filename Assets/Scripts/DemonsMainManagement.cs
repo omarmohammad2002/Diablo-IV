@@ -11,10 +11,13 @@ public class DemonsMainManagement : MonoBehaviour
     public int xpReward;
     public int explosivePower;
     public bool demonIsDead = false;
-    public enum DemonState { Idle, Patrolling, Aggressive }
+
+    public enum DemonState { Idle, Patrolling, Aggressive, Stopped }
     public DemonState currentState;
+
     private Animator demonAnimator;
     private NavMeshAgent demonAgent;
+    private DemonState previousState; // Store state before stopping
 
     void Awake()
     {
@@ -40,11 +43,11 @@ public class DemonsMainManagement : MonoBehaviour
         demonAnimator.SetLayerWeight(2, 0.5f);
         if (currentHealth == 0)
         {
-            enemyDeath();
+            EnemyDeath();
         }
     }
 
-    public void enemyDeath()
+    public void EnemyDeath()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
 
@@ -52,10 +55,11 @@ public class DemonsMainManagement : MonoBehaviour
         {
             WandererMainManagement wandererMM = player.GetComponent<WandererMainManagement>();
             wandererMM.addXP(xpReward);
+
             if (currentState == DemonState.Aggressive)
-                {
-                    wandererMM.enemiesFollowing--;
-                }
+            {
+                wandererMM.enemiesFollowing--;
+            }
         }
         else
         {
@@ -79,23 +83,43 @@ public class DemonsMainManagement : MonoBehaviour
 
     private IEnumerator StopDemonTemporarily()
     {
+        // Save the current state and switch to Stopped
+        previousState = currentState;
+        currentState = DemonState.Stopped;
+
+        // Stop the NavMeshAgent and animations
         demonAgent.isStopped = true;
+        demonAgent.ResetPath();
         demonAgent.velocity = Vector3.zero;
+
+        if (demonAnimator != null)
+        {
+            demonAnimator.SetInteger("demonState", 0); // Set to idle animation
+        }
+
+        Debug.Log("Demon stopped");
+
+        // Wait for the stop duration
         yield return new WaitForSeconds(5f);
+
+        // Resume the previous state
+        currentState = previousState;
         demonAgent.isStopped = false;
+
+        Debug.Log("Demon resumed");
     }
 
     public void StunDemon()
     {
-        Debug.Log("Demon Stunned");
+        Debug.Log("Demon stunned");
         StartCoroutine(StunDemonCoroutine());
     }
 
     private IEnumerator StunDemonCoroutine()
     {
         float originalSpeed = demonAgent.speed;
-        demonAgent.speed = originalSpeed / 4;
-        yield return new WaitForSeconds(3f);
-        demonAgent.speed = originalSpeed;
+        demonAgent.speed = originalSpeed / 4; // Reduce speed
+        yield return new WaitForSeconds(3f); // Stun duration
+        demonAgent.speed = originalSpeed; // Restore speed
     }
 }

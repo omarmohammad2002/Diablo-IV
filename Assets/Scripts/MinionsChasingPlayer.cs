@@ -9,11 +9,12 @@ public class MinionsChasingPlayer : MonoBehaviour
     private NavMeshAgent enemyAgent;
     private Animator enemyAnimator;
     private MinionsMainManagement managementScript;
-    private readonly float chaseRange = 15f; 
-    private readonly float suspiciousTime = 3f; 
-    private float timeSinceLastSawPlayer; 
+    private readonly float chaseRange = 15f;
+    private readonly float suspiciousTime = 3f;
+    private float timeSinceLastSawPlayer;
     public GameObject player;
-    private WandererMainManagement WandererMainManagement; 
+    private WandererMainManagement WandererMainManagement;
+
     void Start()
     {
         enemyAgent = GetComponent<NavMeshAgent>();
@@ -24,26 +25,32 @@ public class MinionsChasingPlayer : MonoBehaviour
         timeSinceLastSawPlayer = suspiciousTime;
         enemyAnimator.SetInteger("minionState", 0);
 
-        if(enemyAgent == null)
+        if (enemyAgent == null)
         {
             Debug.LogError("NavMeshAgent component not found attached to " + gameObject.name);
         }
-       
     }
 
     void Update()
     {
-        if(!managementScript.isDead){
+        if (managementScript.isDead || managementScript.currentState == MinionsMainManagement.MinionState.Stopped)
+        {
+            // If the minion is dead or stopped, do nothing
+            enemyAgent.isStopped = true;
+            enemyAgent.velocity = Vector3.zero;
+            return;
+        }
+
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
-        switch (managementScript.currentState) 
+        switch (managementScript.currentState)
         {
             case MinionsMainManagement.MinionState.Idle:
                 enemyAgent.SetDestination(idlePoint.position);
 
                 if (enemyAgent.remainingDistance <= 0.1f && !enemyAgent.pathPending)
                 {
-                    enemyAnimator.SetInteger("minionState", 0);
+                    enemyAnimator.SetInteger("minionState", 0); // Idle animation
                     enemyAgent.isStopped = true;
                     enemyAgent.velocity = Vector3.zero;
                 }
@@ -53,9 +60,9 @@ public class MinionsChasingPlayer : MonoBehaviour
                     enemyAnimator.SetInteger("minionState", 1); // Walking animation
                 }
 
-                if (distanceToPlayer <= chaseRange && WandererMainManagement.enemiesFollowing<5)
+                if (distanceToPlayer <= chaseRange && WandererMainManagement.enemiesFollowing < 5)
                 {
-                    managementScript.currentState = MinionsMainManagement.MinionState.Aggressive; // Update shared state
+                    managementScript.currentState = MinionsMainManagement.MinionState.Aggressive;
                     WandererMainManagement.enemiesFollowing++;
                 }
                 break;
@@ -63,7 +70,7 @@ public class MinionsChasingPlayer : MonoBehaviour
             case MinionsMainManagement.MinionState.Aggressive:
                 enemyAgent.SetDestination(player.transform.position);
                 enemyAgent.isStopped = false;
-                enemyAnimator.SetInteger("minionState", 1);
+                enemyAnimator.SetInteger("minionState", 1); // Running animation
 
                 if (distanceToPlayer > chaseRange)
                 {
@@ -74,14 +81,12 @@ public class MinionsChasingPlayer : MonoBehaviour
 
                     if (timeSinceLastSawPlayer <= 0)
                     {
-                        WandererMainManagement.enemiesFollowing--;  
-                        managementScript.currentState = MinionsMainManagement.MinionState.Idle; // Update shared state
+                        WandererMainManagement.enemiesFollowing--;
+                        managementScript.currentState = MinionsMainManagement.MinionState.Idle;
                         timeSinceLastSawPlayer = suspiciousTime;
                     }
                 }
                 break;
         }
-        }
     }
-    
 }
