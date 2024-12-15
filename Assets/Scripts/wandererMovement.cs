@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class WandererMovement : MonoBehaviour
 {
-    [SerializeField] private Camera camera;
+    private Camera camera;
     private NavMeshAgent agent;
     private Animator animator;
 
@@ -18,12 +18,14 @@ public class WandererMovement : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        camera = Camera.main;
     }
 
     void Update()
     {
 
-        if (Input.GetMouseButton(0) &!EventSystem.current.IsPointerOverGameObject())
+        // if (Input.GetMouseButton(0) &&!EventSystem.current.IsPointerOverGameObject())
+        if (Input.GetMouseButton(0))
 
         {
             float currentTime = Time.time;

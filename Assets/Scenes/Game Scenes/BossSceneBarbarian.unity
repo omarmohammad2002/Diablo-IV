@@ -3552,6 +3552,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1387654717}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1293011385 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: a19f970d226112d469daabbce9ff075c, type: 3}
+  m_PrefabInstance: {fileID: 1921939282}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1297406689
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3847,6 +3852,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7440150952100790743, guid: 3123c36074647c242a98cddd5aecf959, type: 3}
+      propertyPath: arenaGround
+      value: 
+      objectReference: {fileID: 1293011385}
+    - target: {fileID: 7440150952100790743, guid: 3123c36074647c242a98cddd5aecf959, type: 3}
+      propertyPath: healingPotionPrefab
+      value: 
+      objectReference: {fileID: 1021588353636906, guid: f75e1608d9f1e4f06a5027de3c813b5d, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

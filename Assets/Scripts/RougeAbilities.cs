@@ -45,6 +45,9 @@ public class RougeAbilities : MonoBehaviour
 
     public AudioClip arrowSound;
 
+    void Awake(){
+        camera = Camera.main;
+    }
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();

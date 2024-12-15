@@ -7,33 +7,34 @@ using UnityEngine.AI;
 
 public class WandererMainManagement : MonoBehaviour
 {
-    [SerializeField] private int currentHealth;
-    [SerializeField] private int maxHealth;
+    // Wanderer's Health
+    public int currentHealth;
+    public int maxHealth;
+    // Wanderer Character class
+    public string characterName;
     // Wanderer's Level and XP
-    [SerializeField] private int currentLevel;
-    [SerializeField] private int maxLevel = 4;
-    [SerializeField] private int XP;
-    [SerializeField] private int maxXP = 100;
+    public int currentLevel;
+    public int maxLevel = 4;
+    public int XP;
+    public int maxXP = 100;
     // Wanderer's Inventory
-    [SerializeField] private int healingPotions;
-    [SerializeField] private int abilityPoints;
-    [SerializeField] private int runeFragments;
-
+    public int healingPotions;
+    public int abilityPoints;
+    public int runeFragments;
 
     [SerializeField] private Slider healthSlider; // Reference to the slider
 
     [SerializeField] private Slider xpSlider; // Reference to the XP slider
 
     // Wanderer's Health
-    private string characterName;
     // Wanderer's Inventory
     // Cheats and Gameplay Modifiers
     public bool isInvincible = false;
     private bool isSlowMotion = false;
     // abilties 
-    private bool ability1Unlock = false;
-    private bool ability2Unlock = false;
-    private bool ability3Unlock = false;
+    private bool ability1Unlock = true;
+    private bool ability2Unlock = true;
+    private bool ability3Unlock = true;
     // Game Over Screen
     public GameObject gameOverScreen;
     // Pause Game
@@ -66,7 +67,7 @@ public class WandererMainManagement : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         currentLevel = 1;
         maxHealth = 100 * currentLevel;
@@ -281,7 +282,7 @@ public class WandererMainManagement : MonoBehaviour
     {
         bloodObject.SetActive(true); // Activate the blood effect
         yield return new WaitForSeconds(duration); // Wait for the specified duration
-        Vector3 spawnPosition = transform.position + transform.forward * 1f;
+        Vector3 spawnPosition = transform.position + transform.forward * 2f;
         spawnPosition.y = 0; // Ensure it's on the ground (adjust if necessary)
         Instantiate(bloodPrefab, spawnPosition, Quaternion.identity);
         bloodObject.SetActive(false); // Deactivate the blood effect

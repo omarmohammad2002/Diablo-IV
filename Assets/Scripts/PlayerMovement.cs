@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private Camera camera;
+    private Camera camera;
     private CustomActions input;
     private NavMeshAgent agent;
     private Animator animator;
@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
         input = new CustomActions();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        camera = Camera.main;
     }
 
     void OnEnable()
@@ -58,21 +59,30 @@ public class PlayerMovement : MonoBehaviour
         Ray ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out RaycastHit hit, 100))
         {
-            // Set the destination of the NavMeshAgent
-            agent.SetDestination(hit.point);
+            // Check if the NavMeshAgent is on a valid NavMesh
+            if (agent.isOnNavMesh)
+            {
+                // Set the destination of the NavMeshAgent
+                agent.SetDestination(hit.point);
+            }
+         
         }
     }
 
     void Update()
     {
-        FaceTarget();
-        UpdateMovementAnimations();
+        if (agent.isOnNavMesh) // Ensure the agent is on a valid NavMesh before performing any operations
+        {
+            FaceTarget();
+            UpdateMovementAnimations();
+        }
+       
     }
 
     void FaceTarget()
     {
-        // Only rotate towards the target if the agent is moving
-        if (agent.remainingDistance > agent.stoppingDistance)
+        // Only rotate towards the target if the agent is moving and on a valid NavMesh
+        if (agent.isOnNavMesh && agent.remainingDistance > agent.stoppingDistance)
         {
             Vector3 direction = (agent.destination - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
@@ -82,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
 
     void UpdateMovementAnimations()
     {
-        if (agent.velocity.magnitude > 0.1f) // Slight threshold to detect motion
+        if (agent.isOnNavMesh && agent.velocity.magnitude > 0.1f) // Slight threshold to detect motion
         {
             if (animator.GetBool("isRunning"))
             {

@@ -40,6 +40,10 @@ public class BarbarianAbilities : MonoBehaviour
     [SerializeField] private Slider Cooldown3Slider;
 
     [SerializeField] private GameObject destructionPrefab;
+
+    void Awake(){
+        camera = Camera.main;
+    }
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
