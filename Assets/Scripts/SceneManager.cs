@@ -8,9 +8,13 @@ public class SceneManagerScript : MonoBehaviour
     public GameObject optionsPanel;
     public GameObject developersPanel;
     public GameObject creditsPanel;
-    public GameObject levelSelectionPanel;
+    public GameObject selectLevelPanel;
     public GameObject selectCharacterPanel;
     public GameObject selectBarbarianPanel;
+    public GameObject selectSorcererPanel;
+    public GameObject selectErikaPanel;
+
+    private static bool comingFromLevelSelection = false;
 
     public ImageHoverEffect[] hoverEffects;
 
@@ -18,7 +22,6 @@ public class SceneManagerScript : MonoBehaviour
     {
         if (mainMenuPanel != null) mainMenuPanel.SetActive(true);
         if (gameplayPanel != null) gameplayPanel.SetActive(false);
-        if (levelSelectionPanel != null) levelSelectionPanel.SetActive(false);
     }
 
     public void OnPlayButtonPressed()
@@ -41,14 +44,28 @@ public class SceneManagerScript : MonoBehaviour
 
     public void OnNewGameButtonPressed()
     {
+        comingFromLevelSelection = false;
         gameplayPanel.SetActive(false);
         selectCharacterPanel.SetActive(true);
     }
 
     public void OnSelectLevelButtonPressed()
     {
-        if (mainMenuPanel != null) mainMenuPanel.SetActive(false);
-        if (levelSelectionPanel != null) levelSelectionPanel.SetActive(true);
+        comingFromLevelSelection = true;
+        if (gameplayPanel != null) gameplayPanel.SetActive(false);
+        if (selectLevelPanel != null) selectLevelPanel.SetActive(true);
+    }
+
+    public void OnLevelButtonPressed()
+    {
+        if (selectLevelPanel != null) selectLevelPanel.SetActive(false);
+        if (selectCharacterPanel != null) selectCharacterPanel.SetActive(true);
+    }
+
+    public void OnBackToChooseLevelOrGamePressed()
+    {
+        if (selectLevelPanel != null) selectLevelPanel.SetActive(false);
+        if (gameplayPanel != null) gameplayPanel.SetActive(true);
     }
 
     public void OnDevelopersButtonPressed()
@@ -67,6 +84,7 @@ public class SceneManagerScript : MonoBehaviour
     {
         if (gameplayPanel != null) gameplayPanel.SetActive(false);
         if (optionsPanel != null) optionsPanel.SetActive(false);
+        if (selectLevelPanel != null) selectLevelPanel.SetActive(false);
         if (mainMenuPanel != null) mainMenuPanel.SetActive(true);
 
         // Reset hover states for all buttons
@@ -92,6 +110,8 @@ public class SceneManagerScript : MonoBehaviour
     public void OnBackToSelectCharacterPressed()
     {
         if (selectBarbarianPanel != null) selectBarbarianPanel.SetActive(false);
+        if (selectSorcererPanel != null) selectSorcererPanel.SetActive(false);
+        if (selectErikaPanel != null) selectErikaPanel.SetActive(false);
         if (selectCharacterPanel != null) selectCharacterPanel.SetActive(true);
 
         // Reset hover states for all buttons
@@ -103,25 +123,38 @@ public class SceneManagerScript : MonoBehaviour
 
     public void OnBackToChooseLevelPressed()
     {
-        if (selectCharacterPanel != null) selectCharacterPanel.SetActive(false);
-        if (gameplayPanel != null) gameplayPanel.SetActive(true);
+        if (comingFromLevelSelection)
+        {
+            if (selectCharacterPanel != null) selectCharacterPanel.SetActive(false);
+            if (selectLevelPanel != null) selectLevelPanel.SetActive(true);
+        }
+        else
+        {
+            if (selectCharacterPanel != null) selectCharacterPanel.SetActive(false);
+            if (gameplayPanel != null) gameplayPanel.SetActive(true);
+        }
 
-        // Reset hover states for all buttons
         foreach (var hoverEffect in hoverEffects)
         {
             hoverEffect.ResetHoverState();
         }
     }
 
-    public void OnNormalLevelButtonPressed()
+    public void onBarbarianClicked()
     {
-        SceneManager.LoadScene(2);
+        if (selectCharacterPanel != null) selectCharacterPanel.SetActive(false);
+        if (selectBarbarianPanel != null) selectBarbarianPanel.SetActive(true);
     }
 
-    public void OnBossLevelButtonPressed()
+    public void onSorcererClicked()
     {
-        SceneManager.LoadScene(3);
+        if (selectCharacterPanel != null) selectCharacterPanel.SetActive(false);
+        if (selectSorcererPanel != null) selectSorcererPanel.SetActive(true);
     }
 
-
+    public void onErikaClicked()
+    {
+        if (selectCharacterPanel != null) selectCharacterPanel.SetActive(false);
+        if (selectErikaPanel != null) selectErikaPanel.SetActive(true);
+    }
 }
