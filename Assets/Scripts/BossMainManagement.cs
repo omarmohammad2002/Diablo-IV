@@ -24,9 +24,10 @@ public class BossMainManagement : MonoBehaviour
     //prefabs
     public GameObject minionPrefab;  // Assuming minions are a GameObject prefab.
     public GameObject shieldPrefab; // Assuming shield is a GameObject prefab.
+    public GameObject healingPotionPrefab;
     public GameObject reflectiveAuraPrefab;
     public Transform minionIdlePointPrefab;
-
+    public GameObject arenaGround;
     private GameObject activeShield;
     private Animator animator;
     
@@ -63,6 +64,7 @@ public class BossMainManagement : MonoBehaviour
         Player = GameObject.FindGameObjectWithTag("Player");
         audioSource = GetComponent<AudioSource>();
         slowedSpeed = originalSpeed * 0.25f;
+        SpawnHealingPotions();
 
     }
 
@@ -195,22 +197,45 @@ public class BossMainManagement : MonoBehaviour
 
 
     private void SummonMinions()
-    {
-        Debug.Log("Lilith summons Minions!");
+{
+    Debug.Log("Lilith summons Minions!");
 
-        for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 3; i++)
+    {
+        // Calculate a random relative position around the boss
+        Vector3 relativePosition = new Vector3(UnityEngine.Random.Range(-10, 10), 0, UnityEngine.Random.Range(-10, 10));
+        Vector3 spawnPosition = transform.position + relativePosition;
+
+        // Instantiate the idle point and minion as children of arenaGround
+        Transform idlePoint = Instantiate(minionIdlePointPrefab, spawnPosition, Quaternion.identity, arenaGround.transform);
+        GameObject minion = Instantiate(minionPrefab, spawnPosition, Quaternion.identity, arenaGround.transform);
+
+        // Assign the idle point to the minion
+        MinionsChasingPlayer minionScript = minion.GetComponent<MinionsChasingPlayer>();
+        if (minionScript != null)
         {
-            Vector3 spawnPosition = new Vector3(UnityEngine.Random.Range(-10, 10), 0, UnityEngine.Random.Range(-10, 10));
-            Transform idlePoint = Instantiate(minionIdlePointPrefab, spawnPosition, Quaternion.identity);
-            GameObject minion =  Instantiate(minionPrefab, spawnPosition, Quaternion.identity);
-            MinionsChasingPlayer minionScript = minion.GetComponent<MinionsChasingPlayer>();
-            if (minionScript != null)
-            {
-                minionScript.idlePoint = idlePoint;
-            }
+            minionScript.idlePoint = idlePoint;
         }
-        minionsAlive = true;
     }
+
+    minionsAlive = true;
+}
+
+private void SpawnHealingPotions()
+{
+    Debug.Log("Lilith spawns healing potions!");
+
+    for (int i = 0; i < 10; i++)
+    {
+        // Calculate a random position within the arena
+        Vector3 randomPosition = new Vector3(UnityEngine.Random.Range(-50, 50), 1.5f, UnityEngine.Random.Range(-50, 50));
+        Vector3 spawnPosition = arenaGround.transform.position + randomPosition;
+
+        // Instantiate the healing potion as a child of arenaGround
+        Instantiate(healingPotionPrefab, spawnPosition, Quaternion.identity, arenaGround.transform);
+    }
+}
+
 
     private void DiveBombAttack()
     {

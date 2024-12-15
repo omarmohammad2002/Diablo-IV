@@ -53,7 +53,7 @@ public class ShowerofArrow : MonoBehaviour
                 {
                     affectedEnemies.Add(hitCollider); // Mark as affected
                     minionScript.TakeDamage(damageAmount);
-                    StartCoroutine(ApplySlowEffect(minionScript));
+                    ApplySlowEffect(minionScript);
                 }
             }
 
@@ -64,7 +64,7 @@ public class ShowerofArrow : MonoBehaviour
                 {
                     affectedEnemies.Add(hitCollider); // Mark as affected
                     demonScript.TakeDamage(damageAmount);
-                    StartCoroutine(ApplySlowEffect(demonScript));
+                    ApplySlowEffect(demonScript);
                 }
             }
 
@@ -82,25 +82,15 @@ public class ShowerofArrow : MonoBehaviour
         }
     }
 
-    private IEnumerator ApplySlowEffect(MonoBehaviour target)
+    private void ApplySlowEffect(MonoBehaviour target)
     {
         if (target is MinionsMainManagement minion)
         {
-            //minion.ModifySpeed(slowMultiplier);
-            yield return new WaitForSeconds(slowEffectDuration);
-            //minion.ModifySpeed(1f / slowMultiplier); // Restore original speed
+            minion.StunMinion();
         }
         else if (target is DemonsMainManagement demon)
         {
-            //demon.ModifySpeed(slowMultiplier);
-            yield return new WaitForSeconds(slowEffectDuration);
-            //demon.ModifySpeed(1f / slowMultiplier);
-        }
-        else if (target is BossMainManagement boss)
-        {
-            //boss.ModifySpeed(slowMultiplier);
-            yield return new WaitForSeconds(slowEffectDuration);
-            //boss.ModifySpeed(1f / slowMultiplier);
+            demon.StunDemon();
         }
     }
 

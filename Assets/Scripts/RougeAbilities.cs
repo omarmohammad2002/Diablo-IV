@@ -12,7 +12,7 @@ public class RougeAbilities : MonoBehaviour
     Rigidbody rb;
     [SerializeField] GameObject showerOfArrow;
     [SerializeField] GameObject smokeBombPrefab;
-    [SerializeField] float smokeBombRadius = 5f;
+    [SerializeField] float smokeBombRadius = 10f;
     [SerializeField] float stunDuration = 5f;
 
 
@@ -39,6 +39,11 @@ public class RougeAbilities : MonoBehaviour
     private float ultimateCooldown = 10f;
     // for cooldown
     private Dictionary<string, float> lastUsedTime = new Dictionary<string, float>();
+    
+    private AudioSource AudioSource; 
+    public AudioClip chargeSound;
+
+    public AudioClip arrowSound;
 
     void Start()
     {
@@ -51,6 +56,38 @@ public class RougeAbilities : MonoBehaviour
         lastUsedTime["Defensive"] = -defensiveCooldown;
         lastUsedTime["Wildcard"] = -wildcardCooldown;
         lastUsedTime["Ultimate"] = -ultimateCooldown;
+        AudioSource = GetComponent<AudioSource>();
+    }
+
+    public void PlaySound(string soundName)
+    {
+        switch (soundName)
+        {
+            case "Charge":
+                if (chargeSound != null)
+                {
+                    AudioSource.PlayOneShot(chargeSound);
+                }
+                else
+                {
+                    Debug.LogError("chargeSound AudioClip is not assigned!");
+                }
+                break;
+
+            case "Arrow":
+                if (arrowSound != null)
+                {
+                    AudioSource.PlayOneShot(arrowSound);
+                }
+                else
+                {
+                    Debug.LogError("arrowSound AudioClip is not assigned!");
+                }
+                break;
+            default:
+                Debug.LogWarning("Sound name not recognized: " + soundName);
+                break;
+        }
     }
 
     void Update()
@@ -74,7 +111,6 @@ public class RougeAbilities : MonoBehaviour
         }
         else if (isDashing && Input.GetMouseButtonDown(1))
         {
-            print("SetDashTarget");
            SetDashTarget();
         }
 
@@ -135,57 +171,6 @@ public class RougeAbilities : MonoBehaviour
     // Start the coroutine for handling the arrow
     StartCoroutine(ThrowArrowWithDelay());
 }
-    //    IEnumerator ThrowArrowWithDelay()
-    //{
-    //        Dynamically find the arrow position
-    //       Transform currentArrowPosition = FindArrowPosition();
-
-    //        if (currentArrowPosition == null)
-    //        {
-    //            Debug.LogError("Arrow position not found. Aborting arrow spawn.");
-    //            yield break;
-    //        }
-
-    //        yield return new WaitForSeconds(0.9f); // Delay before spawning the arrow
-
-    //        // Cast a ray to determine the target point
-    //        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-    //        RaycastHit rayhit;
-
-    //        if (Physics.Raycast(ray, out rayhit))
-    //        {
-    //            Vector3 targetPoint = rayhit.point; // Point where the ray hit
-    //            Vector3 direction = (targetPoint - currentArrowPosition.position).normalized; // Calculate direction
-
-    //            // Spawn the arrow
-    //            GameObject spawn = Instantiate(arrow, currentArrowPosition.position, Quaternion.LookRotation(direction));
-
-    //            // Adjust player rotation to face the target point
-    //            Vector3 playerDirection = (targetPoint - transform.position).normalized;
-    //            playerDirection.y = 0; // Keep the player upright
-    //            transform.rotation = Quaternion.LookRotation(playerDirection);
-
-    //            // Apply velocity to the arrow
-    //            Rigidbody rb = spawn.GetComponent<Rigidbody>();
-    //            if (rb != null)
-    //            {
-    //                rb.velocity = direction * arrowSpeed;
-    //            }
-
-    //            // Destroy the arrow after 4 seconds
-    //            Destroy(spawn, 4f);
-    //        }
-    //        else
-    //        {
-    //            Debug.LogError("No valid target found for the arrow.");
-    //        }
-
-
-    //        isBasicActive = false;
-    //}
-
-
-
     IEnumerator ThrowArrowWithDelay()
     {
         yield return new WaitForSeconds(0.9f); // Delay before activating the arrow
@@ -278,7 +263,7 @@ public class RougeAbilities : MonoBehaviour
             Vector3 targetPosition = hit.point;
             Vector3 direction = targetPosition - transform.position;
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 600 * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 400 * Time.deltaTime);
         }
     }
     private void DefensiveAbility()
@@ -300,20 +285,14 @@ public class RougeAbilities : MonoBehaviour
                     bossMainManagement.Stun();
                 }
             }
-        }
-    }
-    private void WildcardAbility()
-    {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
-        foreach (Collider hitCollider in hitColliders)
-        {
+
             if (hitCollider.CompareTag("Minion"))
             {
+                Debug.Log("Minion hit by Smoke Bomb: " + hitCollider.name);
                 MinionsMainManagement minionScript = hitCollider.GetComponent<MinionsMainManagement>();
                 if (minionScript != null)
                 {
-                    minionScript.TakeDamage(10);
-                    Debug.Log("Enemy hit by Iron Maelstorm: " + hitCollider.name);
+                    minionScript.StopMinion();
                 }
             }
 
@@ -322,22 +301,11 @@ public class RougeAbilities : MonoBehaviour
                 DemonsMainManagement demonScript = hitCollider.GetComponent<DemonsMainManagement>();
                 if (demonScript != null)
                 {
-                    demonScript.TakeDamage(10);
-                    Debug.Log("Enemy hit by Iron Maelstorm: " + hitCollider.name);
+                    demonScript.StopDemon();
                 }
             }
 
-            if (hitCollider.CompareTag("Boss"))
-            {
-                BossMainManagement bossScript = hitCollider.GetComponent<BossMainManagement>();
-                if (bossScript != null)
-                {
-                    bossScript.TakeDamage(10);
-                    Debug.Log("Enemy hit by Iron Maelstorm: " + hitCollider.name);
-                }
-            }
         }
-        isWildcardActive = false;
     }
     //Ultimate Ability, getting target position
     void SetDashTarget()
@@ -353,7 +321,14 @@ public class RougeAbilities : MonoBehaviour
     //Ultimate Ability, dashing towards target and killing enemies
     void DashTowardsTarget()
     {
-       // Calculate the direction to the target
+        // Disable the NavMeshAgent while charging
+        // if (agent.enabled)
+        //     agent.enabled = false;
+
+        // Store the player's original Y position
+        float originalY = transform.position.y;
+
+        // Calculate the direction to the target
         Vector3 direction = targetPosition - transform.position;
         direction.y = 0; // Ensure the player stays upright
 
@@ -361,14 +336,18 @@ public class RougeAbilities : MonoBehaviour
         if (direction != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 30 * Time.deltaTime); // Doubled the rotation speed from 10 to 20
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 30 * Time.deltaTime);
         }
 
-        // Move towards the target position
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, 20 * Time.deltaTime); // Doubled the move speed from 5 to 10
+        // Move towards the target position while maintaining the original Y position
+        Vector3 newPosition = Vector3.MoveTowards(transform.position, targetPosition, 10 * Time.deltaTime);
+        newPosition.y = originalY; // Lock the Y-axis
+        transform.position = newPosition;
+        
 
-        // Stop dashing if reached the target
-        if (Vector3.Distance(transform.position, targetPosition) < 1.2f)
+        // Stop charging if reached the target
+        if (Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z),
+                     new Vector3(targetPosition.x, 0, targetPosition.z)) < 0.8f)
         {
             StopDashing();
         }
@@ -380,7 +359,14 @@ public class RougeAbilities : MonoBehaviour
         isLocked = false;
         isWildcardActive = false;
         animator.SetBool("isDashing", false);
-        // Enable other actions here if needed
+
+        // Re-enable the NavMeshAgent after charging
+        if (!agent.enabled)
+            agent.enabled = true;
+
+
+        // Optional: Reset the NavMeshAgent destination to the current position
+        agent.SetDestination(transform.position);
     }
     
    void UltimateAbility()

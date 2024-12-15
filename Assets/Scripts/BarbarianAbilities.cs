@@ -33,6 +33,8 @@ public class BarbarianAbilities : MonoBehaviour
 
     private AudioSource AudioSource; 
     public AudioClip chargeSound;
+
+    [SerializeField] private GameObject destructionPrefab;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -406,8 +408,23 @@ public class BarbarianAbilities : MonoBehaviour
                 }
                 else if (hitCollider.CompareTag("Untagged"))
                 {
-                    Destroy(hitCollider.gameObject);   
+                    // Store the position of the object to be destroyed
+                    Vector3 spawnPosition = hitCollider.transform.position;
+
+                    // Ensure the Y position is set to 0
+                    spawnPosition.y = 0f;
+
+                    // Destroy the object
+                    Destroy(hitCollider.gameObject);
+
+                    // Spawn the destruction prefab at the same position with specific rotation
+                    if (destructionPrefab != null)
+                    {
+                        Quaternion spawnRotation = Quaternion.Euler(-90f, 0f, 0f); // Set the desired rotation
+                        Instantiate(destructionPrefab, spawnPosition, spawnRotation);
+                    }
                 }
+
             }
         }
 

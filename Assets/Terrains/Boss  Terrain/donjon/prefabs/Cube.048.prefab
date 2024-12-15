@@ -9645,9 +9645,9 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 1, g: 0, b: 0.08159733, a: 1}
+  m_Color: {r: 0.90188676, g: 0.30459943, b: 0.30459943, a: 1}
   m_Intensity: 1.370351
-  m_Range: 180
+  m_Range: 80
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10

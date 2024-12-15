@@ -46,6 +46,8 @@ public class WandererMainManagement : MonoBehaviour
     public AudioClip damagedSound ;
     public AudioClip pickUpSound;
 
+    public GameObject bloodPrefab; // Prefab to instantiate
+
     // Start is called before the first frame update
     void Start()
     {
@@ -180,6 +182,13 @@ public class WandererMainManagement : MonoBehaviour
                 currentHealth -= amount;
                 TriggerDamageAnimation(); // Updated to use the new method
 
+                // Activate blood effect
+                Transform blood = transform.Find("Blood"); // Finds the child named 'blood'
+                if (blood != null)
+                {
+                    StartCoroutine(ActivateBloodEffect(blood.gameObject, 1f)); // Activate for 2 seconds
+                }
+
                 if (currentHealth <= 0)
                 {
                     // Trigger death animation and game over logic
@@ -197,6 +206,18 @@ public class WandererMainManagement : MonoBehaviour
             }
         }
     }
+
+    // Coroutine to handle activating and deactivating the blood effect
+    private IEnumerator ActivateBloodEffect(GameObject bloodObject, float duration)
+    {
+        bloodObject.SetActive(true); // Activate the blood effect
+        yield return new WaitForSeconds(duration); // Wait for the specified duration
+        Vector3 spawnPosition = transform.position + transform.forward * 1f;
+        spawnPosition.y = 0; // Ensure it's on the ground (adjust if necessary)
+        Instantiate(bloodPrefab, spawnPosition, Quaternion.identity);
+        bloodObject.SetActive(false); // Deactivate the blood effect
+    }
+
 
     // New method to handle damage animation trigger
     private void TriggerDamageAnimation()
