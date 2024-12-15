@@ -317,6 +317,7 @@ public class WandererMainManagement : MonoBehaviour
         if ((healingPotions > 0) && (currentHealth < maxHealth))
         {
             Animator.SetTrigger("Drinking");
+            Debug.Log("drinking");
 
             Heal((int)((50f / 100f) * maxHealth)); // Heal by 50 health points (adjust as needed)
             useHealingPotion(); // Reduce potion count
