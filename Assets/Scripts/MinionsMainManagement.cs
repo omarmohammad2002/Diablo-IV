@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class MinionsMainManagement : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class MinionsMainManagement : MonoBehaviour
 
     private MinionState previousState; // Store the state before stopping
 
+    [SerializeField] private Slider MinionHealthSlider; // Reference to the slider
+
     void Awake()
     {
         maxHealth = 20;
@@ -25,6 +28,12 @@ public class MinionsMainManagement : MonoBehaviour
         attackPower = 5;
         xpReward = 10;
         currentState = MinionState.Idle;
+
+         if (MinionHealthSlider != null)
+        {
+            MinionHealthSlider.maxValue = maxHealth;
+            MinionHealthSlider.value = currentHealth;
+        }
     }
 
     void Start()
@@ -39,6 +48,12 @@ public class MinionsMainManagement : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Max(currentHealth, 0);
         minionAnimator.SetLayerWeight(2, 0.5f);
+
+        // Update the slider to reflect the current health
+        if (MinionHealthSlider != null)
+        {
+            MinionHealthSlider.value = currentHealth;
+        }
 
         if (currentHealth == 0)
         {

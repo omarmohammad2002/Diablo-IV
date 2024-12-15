@@ -286,10 +286,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6593089475368026944}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ace0bbf7742a7da499bea331bc5a2631, type: 3}
+  m_Script: {fileID: 11500000, guid: 2dac392fc4df7594daf7726217070755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slider: {fileID: 850017668238408490}
+  slider: {fileID: 0}
   colorStart: {r: 1, g: 0, b: 0, a: 1}
   colorEnd: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &6759883856463616446
