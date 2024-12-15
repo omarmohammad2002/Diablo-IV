@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.AI;
 
 public class WandererMainManagement : MonoBehaviour
 {
@@ -261,6 +262,12 @@ public class WandererMainManagement : MonoBehaviour
                     // Trigger death animation and game over logic
                     Animator.SetTrigger("Dead");
                     isDead = true;
+                    NavMeshAgent agent = GetComponent<NavMeshAgent>();
+                    if (agent != null)
+                    {
+                        agent.enabled = false;
+                        Debug.Log("NavMeshAgent disabled");
+                    }
                     gameOverScreen.SetActive(true);
                     // More gameover logic to be added here if needed, stop/change audio etc
                 }

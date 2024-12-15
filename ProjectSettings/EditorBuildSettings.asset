@@ -8,5 +8,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game Scenes/NormalLevel Ziad.unity
     guid: 13fd4f3a9304a714683558e54cdeadbc
+  - enabled: 1
+    path: Assets/Scenes/Game Scenes/NormalLevelKhaled.unity
+    guid: be243507cedf3ce4abec2e149e8f0fbe
+  - enabled: 1
+    path: Assets/Scenes/Game Scenes/mainmenu.unity
+    guid: ca880190982a803488b4f9171dd29404
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 4647cb905cd691b4eb194047ee3cd5fd, type: 2}
