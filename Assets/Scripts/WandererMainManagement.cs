@@ -200,7 +200,7 @@ public class WandererMainManagement : MonoBehaviour
                         agent.enabled = false;
                         Debug.Log("NavMeshAgent disabled");
                     }
-                    //gameOverScreen.SetActive(true);
+                    gameOverScreen.SetActive(true);
                     // More gameover logic to be added here if needed, stop/change audio etc
                 }
             }
