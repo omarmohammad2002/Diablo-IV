@@ -599,6 +599,14 @@ PrefabInstance:
       propertyPath: camera
       value: 
       objectReference: {fileID: 1260370894}
+    - target: {fileID: 490099818707849931, guid: 694d828e349858b418bbf2a185c0a83d, type: 3}
+      propertyPath: arrowSound
+      value: 
+      objectReference: {fileID: 8300000, guid: cd5233fe141b9cdc182b94f5d007a175, type: 3}
+    - target: {fileID: 490099818707849931, guid: 694d828e349858b418bbf2a185c0a83d, type: 3}
+      propertyPath: chargeSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 861732a2452f7da48b6d154271c9880a, type: 3}
     - target: {fileID: 2335591104428290232, guid: 694d828e349858b418bbf2a185c0a83d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -299.4

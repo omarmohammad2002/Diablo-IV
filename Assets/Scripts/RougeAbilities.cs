@@ -35,10 +35,15 @@ public class RougeAbilities : MonoBehaviour
     // Cooldown timers
     private float basicCooldown = 1f;
     private float defensiveCooldown = 10f;
-    private float wildcardCooldown = 1f;
+    private float wildcardCooldown = 5f;
     private float ultimateCooldown = 10f;
     // for cooldown
     private Dictionary<string, float> lastUsedTime = new Dictionary<string, float>();
+    
+    private AudioSource AudioSource; 
+    public AudioClip chargeSound;
+
+    public AudioClip arrowSound;
 
     void Start()
     {
@@ -51,6 +56,38 @@ public class RougeAbilities : MonoBehaviour
         lastUsedTime["Defensive"] = -defensiveCooldown;
         lastUsedTime["Wildcard"] = -wildcardCooldown;
         lastUsedTime["Ultimate"] = -ultimateCooldown;
+        AudioSource = GetComponent<AudioSource>();
+    }
+
+    public void PlaySound(string soundName)
+    {
+        switch (soundName)
+        {
+            case "Charge":
+                if (chargeSound != null)
+                {
+                    AudioSource.PlayOneShot(chargeSound);
+                }
+                else
+                {
+                    Debug.LogError("chargeSound AudioClip is not assigned!");
+                }
+                break;
+
+            case "Arrow":
+                if (arrowSound != null)
+                {
+                    AudioSource.PlayOneShot(arrowSound);
+                }
+                else
+                {
+                    Debug.LogError("arrowSound AudioClip is not assigned!");
+                }
+                break;
+            default:
+                Debug.LogWarning("Sound name not recognized: " + soundName);
+                break;
+        }
     }
 
     void Update()
