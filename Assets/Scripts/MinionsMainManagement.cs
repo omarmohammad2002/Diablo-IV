@@ -116,7 +116,7 @@ public class MinionsMainManagement : MonoBehaviour
             minionAnimator.SetInteger("minionState", 0); // Idle animation
         }
 
-        yield return new WaitForSeconds(7f); // Stopping duration
+        yield return new WaitForSeconds(5f); // Stopping duration
 
         // Restore the previous state
         minionAnimator.SetLayerWeight(4, 0);
