@@ -2998,10 +2998,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4865791277316188902, guid: 3c9c8a8bf50e6b5439ab9db67bc82586, type: 3}
+      propertyPath: m_Size.z
+      value: 1.808319
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865791277316188902, guid: 3c9c8a8bf50e6b5439ab9db67bc82586, type: 3}
+      propertyPath: m_Center.z
+      value: 0.61618996
+      objectReference: {fileID: 0}
     - target: {fileID: 6229523725606427383, guid: 3c9c8a8bf50e6b5439ab9db67bc82586, type: 3}
       propertyPath: camera
       value: 
       objectReference: {fileID: 1260370894}
+    - target: {fileID: 6229523725606427383, guid: 3c9c8a8bf50e6b5439ab9db67bc82586, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3989,7 +4001,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: af26431f8e12ab54a9bf40c3269dc23e, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: df28f7fddfddcc649aa521ceda163df0, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &745824859
 Transform:
