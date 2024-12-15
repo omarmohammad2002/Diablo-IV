@@ -31,9 +31,9 @@ public class WandererMainManagement : MonoBehaviour
     public bool isInvincible = false;
     private bool isSlowMotion = false;
     // abilties 
-    private bool ability1Unlock = false;
-    private bool ability2Unlock = false;
-    private bool ability3Unlock = false;
+    private bool ability1Unlock = true;
+    private bool ability2Unlock = true;
+    private bool ability3Unlock = true;
     // Game Over Screen
     public GameObject gameOverScreen;
     // Pause Game
