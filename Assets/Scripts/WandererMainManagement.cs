@@ -205,7 +205,7 @@ public class WandererMainManagement : MonoBehaviour
     {
         bloodObject.SetActive(true); // Activate the blood effect
         yield return new WaitForSeconds(duration); // Wait for the specified duration
-        Vector3 spawnPosition = transform.position + transform.forward * 1f;
+        Vector3 spawnPosition = transform.position + transform.forward * 2f;
         spawnPosition.y = 0; // Ensure it's on the ground (adjust if necessary)
         Instantiate(bloodPrefab, spawnPosition, Quaternion.identity);
         bloodObject.SetActive(false); // Deactivate the blood effect

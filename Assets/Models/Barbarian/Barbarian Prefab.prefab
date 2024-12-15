@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 570650379909157855, guid: 964f3edac7c95764897744d297b5ef46, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.183
+      value: 0.139
       objectReference: {fileID: 0}
     - target: {fileID: 570650379909157855, guid: 964f3edac7c95764897744d297b5ef46, type: 3}
       propertyPath: m_LocalRotation.w
@@ -150,7 +150,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dfc33f3febaf3fa4ab432772180939a4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 25.08
+      value: 8.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dfc33f3febaf3fa4ab432772180939a4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -158,7 +158,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dfc33f3febaf3fa4ab432772180939a4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 404.5
+      value: 21.43
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dfc33f3febaf3fa4ab432772180939a4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -241,6 +241,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dfc33f3febaf3fa4ab432772180939a4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2239384567391851792}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dfc33f3febaf3fa4ab432772180939a4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5269562931344889467}
   m_SourcePrefab: {fileID: 100100000, guid: dfc33f3febaf3fa4ab432772180939a4, type: 3}
 --- !u!1 &8609651014790174503 stripped
 GameObject:
@@ -492,6 +495,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 38db52ae14f321d4784fda634a8d62b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camera: {fileID: 0}
+--- !u!114 &5269562931344889467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8609651014790174503}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eb912ccf4d68dd48bcaac32c9f3f4dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 0}
