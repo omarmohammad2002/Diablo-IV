@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using UnityEngine.AI;
 
 public class WandererMainManagement : MonoBehaviour
 {
@@ -18,13 +21,19 @@ public class WandererMainManagement : MonoBehaviour
     public int healingPotions;
     public int abilityPoints;
     public int runeFragments;
+
+    [SerializeField] private Slider healthSlider; // Reference to the slider
+
+    [SerializeField] private Slider xpSlider; // Reference to the XP slider
+    // Wanderer's Health
+    // Wanderer's Inventory
     // Cheats and Gameplay Modifiers
     public bool isInvincible = false;
     private bool isSlowMotion = false;
     // abilties 
-    private bool ability1Unlock = true;
-    private bool ability2Unlock = true;
-    private bool ability3Unlock = true;
+    private bool ability1Unlock = false;
+    private bool ability2Unlock = false;
+    private bool ability3Unlock = false;
     // Game Over Screen
     public GameObject gameOverScreen;
     // Pause Game
@@ -45,21 +54,54 @@ public class WandererMainManagement : MonoBehaviour
     public AudioClip damagedSound ;
     public AudioClip pickUpSound;
 
+
+    public TextMeshProUGUI  healthText;
+    public TextMeshProUGUI  xpText;
+    public TextMeshProUGUI  levelText;
+    public TextMeshProUGUI  healingPotionsText;
+    public TextMeshProUGUI  abilityPointsText;
+     public TextMeshProUGUI  RuneFragmentsText;
+
     public GameObject bloodPrefab; // Prefab to instantiate
+
 
     // Start is called before the first frame update
     void Awake()
     {
         currentLevel = 1;
         maxHealth = 100 * currentLevel;
-        currentHealth = maxHealth   ;
+        currentHealth = maxHealth ;
         abilityPoints = 0;
         healingPotions = 0;
         runeFragments = 0;
         XP = 0;
         Animator = GetComponent<Animator>();
         AudioSource = GetComponent<AudioSource>();
+        InitializeSlider(); // Set up the slider at the start
     }
+
+   private void InitializeSlider()
+{
+    if (healthSlider != null)
+    {
+        healthSlider.maxValue = maxHealth;
+        healthSlider.value = currentHealth;
+    }
+    else
+    {
+        Debug.LogWarning("Health slider is not assigned!");
+    }
+
+    if (xpSlider != null)
+    {
+        xpSlider.maxValue = maxXP;
+        xpSlider.value = XP;
+    }
+    else
+    {
+        Debug.LogWarning("XP slider is not assigned!");
+    }
+}
     public void PlaySound(string soundName)
     {
         switch (soundName)
@@ -91,6 +133,28 @@ public class WandererMainManagement : MonoBehaviour
         {
             TogglePauseGame();
         }
+        UpdateUI(); // Update UI every frame
+    }
+
+      public void UpdateUI()
+    {
+        if (healthText != null)
+            healthText.text = $"HP:                          {currentHealth}/{maxHealth}";
+        
+        if (xpText != null)
+            xpText.text = $"XP:                              {XP}/{maxXP}";
+        
+        if (levelText != null)
+            levelText.text = $"Level: {currentLevel}/{maxLevel}";
+        
+        if (healingPotionsText != null)
+            healingPotionsText.text = $"Potions:                {healingPotions}";
+        
+        if (abilityPointsText != null)
+            abilityPointsText.text = $"Ability Points:      {abilityPoints}";
+
+        if (RuneFragmentsText != null)
+            RuneFragmentsText.text = $"Fragments:           {runeFragments}";
     }
     void TogglePauseGame()
     {
@@ -176,8 +240,14 @@ public class WandererMainManagement : MonoBehaviour
         // This function deals damage to the player by a specific amount, to be used in enemy attack logic scripts
         if (currentHealth > 0)
         {
+           
+        
             if (!isInvincible)
-            {
+          {
+
+            if (healthSlider != null)
+                healthSlider.value = currentHealth; // Update the slider
+
                 currentHealth -= amount;
                 TriggerDamageAnimation(); // Updated to use the new method
 
@@ -193,6 +263,12 @@ public class WandererMainManagement : MonoBehaviour
                     // Trigger death animation and game over logic
                     Animator.SetTrigger("Dead");
                     isDead = true;
+                    NavMeshAgent agent = GetComponent<NavMeshAgent>();
+                    if (agent != null)
+                    {
+                        agent.enabled = false;
+                        Debug.Log("NavMeshAgent disabled");
+                    }
                     gameOverScreen.SetActive(true);
                     // More gameover logic to be added here if needed, stop/change audio etc
                 }
@@ -205,7 +281,7 @@ public class WandererMainManagement : MonoBehaviour
     {
         bloodObject.SetActive(true); // Activate the blood effect
         yield return new WaitForSeconds(duration); // Wait for the specified duration
-        Vector3 spawnPosition = transform.position + transform.forward * 1f;
+        Vector3 spawnPosition = transform.position + transform.forward * 2f;
         spawnPosition.y = 0; // Ensure it's on the ground (adjust if necessary)
         Instantiate(bloodPrefab, spawnPosition, Quaternion.identity);
         bloodObject.SetActive(false); // Deactivate the blood effect
@@ -232,7 +308,9 @@ public class WandererMainManagement : MonoBehaviour
         // This function just heals the player by a specific amount, to be used in health potions logic script
         currentHealth += amount;
         currentHealth = Mathf.Min(currentHealth, maxHealth);
-       
+
+        if (healthSlider != null)
+            healthSlider.value = currentHealth; // Update the slider
     }
     public void ConsumeHealingPotion()
     {
@@ -291,11 +369,20 @@ public class WandererMainManagement : MonoBehaviour
     {
         //This function just updates the current health of the player to a specific amount, to be used in character leveling up script
         currentHealth = amount;
+
+        if (healthSlider != null)
+            healthSlider.value = currentHealth; // Update the slider
     }
     public void updateMaxHealth(int amount)
     {
         //This function just updates the max health of the player to a specific amount, to be used in character leveling up script
         maxHealth = amount;
+
+         if (healthSlider != null)
+        {
+            healthSlider.maxValue = maxHealth; // Update the slider max value
+            healthSlider.value = currentHealth; // Update the slider value
+        }
     }
 
     public void addXP(int amount)
@@ -303,12 +390,18 @@ public class WandererMainManagement : MonoBehaviour
         if (currentLevel < maxLevel)
         {
             XP += amount;
+            if (xpSlider != null)
+            xpSlider.value = XP; // Update the XP slider
+
             if (XP >= maxXP) { 
 
                 if (XP > maxXP)
                     XP = XP - maxXP;
                 else if (XP  == maxXP)
                     XP = 0;
+
+                 if (xpSlider != null)
+                xpSlider.value = XP; // Reset XP slider after leveling up
 
                 increaseLevel();
                 updateMaxHealth(100 * currentLevel);
@@ -322,6 +415,10 @@ public class WandererMainManagement : MonoBehaviour
     {
         //This function just updates the max XP of the player to a specific amount, to be used in character leveling up script
         maxXP = amount;
+         if (xpSlider != null)
+    {
+        xpSlider.maxValue = maxXP; // Update the slider max value
+    }
     }
 
 

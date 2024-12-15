@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 public class WandererMovement : MonoBehaviour
 {
@@ -22,7 +23,9 @@ public class WandererMovement : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+
+        if (Input.GetMouseButton(0) &!EventSystem.current.IsPointerOverGameObject())
+
         {
             float currentTime = Time.time;
             float timeSinceLastClick = currentTime - lastClickTime;

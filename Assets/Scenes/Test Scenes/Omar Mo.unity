@@ -500,7 +500,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7445708095457937975, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
+    - target: {fileID: 2239384567391851792, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 963194227}
+    - target: {fileID: 5269562931344889467, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
       propertyPath: camera
       value: 
       objectReference: {fileID: 963194227}
@@ -522,7 +526,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8948739698727456157, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 17.97
+      value: 21.43
       objectReference: {fileID: 0}
     - target: {fileID: 8948739698727456157, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -642,8 +646,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.013968007, y: -0.95091695, z: 0.3060711, w: 0.04338706}
-  m_LocalPosition: {x: 3.394311, y: 15.043465, z: 32.389717}
+  m_LocalRotation: {x: 0.041921888, y: -0.8766292, z: 0.07769474, w: 0.47299835}
+  m_LocalPosition: {x: 19.153606, y: 6.2135363, z: 27.87991}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -664,7 +668,7 @@ GameObject:
   - component: {fileID: 1228201199}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Gate
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -684,11 +688,11 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.86, y: 1.82, z: 1.52}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1228201196
 MeshRenderer:
@@ -749,7 +753,7 @@ Transform:
   m_GameObject: {fileID: 1228201194}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.86, y: 1, z: -4.9}
+  m_LocalPosition: {x: 7.86, y: 1, z: 13.43}
   m_LocalScale: {x: 2, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1121,10 +1125,6 @@ PrefabInstance:
     - target: {fileID: 5613628036869185794, guid: 861b95d1cd3b2d94eb042c165d10964a, type: 3}
       propertyPath: m_Name
       value: Rubble Pile
-      objectReference: {fileID: 0}
-    - target: {fileID: 5613628036869185794, guid: 861b95d1cd3b2d94eb042c165d10964a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
