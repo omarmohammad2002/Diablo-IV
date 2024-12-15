@@ -421,7 +421,7 @@ public class BarbarianAbilities : MonoBehaviour
                     if (destructionPrefab != null)
                     {
                         Quaternion spawnRotation = Quaternion.Euler(-90f, 0f, 0f); // Set the desired rotation
-                        //Instantiate(destructionPrefab, spawnPosition, spawnRotation);
+                        Instantiate(destructionPrefab, spawnPosition, spawnRotation);
                     }
                 }
 
