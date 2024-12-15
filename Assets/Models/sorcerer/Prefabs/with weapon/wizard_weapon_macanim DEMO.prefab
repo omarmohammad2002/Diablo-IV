@@ -17030,6 +17030,7 @@ GameObject:
   - component: {fileID: 1749769704563020045}
   - component: {fileID: -4929234701277282081}
   - component: {fileID: -2507115607403311123}
+  - component: {fileID: 1988304838464076319}
   m_Layer: 0
   m_Name: wizard_weapon_macanim DEMO
   m_TagString: Player
@@ -17114,9 +17115,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth: 0
   maxHealth: 0
+  characterName: 
   currentLevel: 0
+  maxLevel: 4
   XP: 0
+  maxXP: 100
   healingPotions: 0
+  abilityPoints: 0
+  runeFragments: 0
   isInvincible: 0
   gameOverScreen: {fileID: 0}
   pauseScreen: {fileID: 0}
@@ -17125,6 +17131,7 @@ MonoBehaviour:
   dyingSound: {fileID: 0}
   damagedSound: {fileID: 0}
   pickUpSound: {fileID: 0}
+  bloodPrefab: {fileID: 0}
 --- !u!114 &6229523725606427383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17137,7 +17144,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eb912ccf4d68dd48bcaac32c9f3f4dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 0}
 --- !u!114 &1749769704563020045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17279,6 +17285,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1988304838464076319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013586557078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5201d05dba17c44a9a27af8c45b97e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1000013699516860
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class WandererMovement : MonoBehaviour
 {
-    [SerializeField] private Camera camera;
+    private Camera camera;
     private NavMeshAgent agent;
     private Animator animator;
 
@@ -17,6 +17,7 @@ public class WandererMovement : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        camera = Camera.main;
     }
 
     void Update()

@@ -247,6 +247,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 803f87fe00d6efd44846bc751548cbc4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7210095698852951894}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 803f87fe00d6efd44846bc751548cbc4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8799155704916553567}
   m_SourcePrefab: {fileID: 100100000, guid: 803f87fe00d6efd44846bc751548cbc4, type: 3}
 --- !u!4 &1514401911961863352 stripped
 Transform:
@@ -342,9 +345,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth: 0
   maxHealth: 0
+  characterName: 
   currentLevel: 0
+  maxLevel: 4
   XP: 0
+  maxXP: 100
   healingPotions: 0
+  abilityPoints: 0
+  runeFragments: 0
   isInvincible: 0
   gameOverScreen: {fileID: 0}
   pauseScreen: {fileID: 0}
@@ -353,6 +361,7 @@ MonoBehaviour:
   dyingSound: {fileID: 0}
   damagedSound: {fileID: 0}
   pickUpSound: {fileID: 0}
+  bloodPrefab: {fileID: 0}
 --- !u!114 &8665980691669886407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -365,7 +374,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eb912ccf4d68dd48bcaac32c9f3f4dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 0}
 --- !u!114 &490099818707849931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,6 +394,8 @@ MonoBehaviour:
   smokeBombRadius: 5
   stunDuration: 5
   camera: {fileID: 0}
+  chargeSound: {fileID: 0}
+  arrowSound: {fileID: 0}
 --- !u!114 &6614280493231009075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,6 +418,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 813e10cc0b44a354ea642cf3f9f2d0b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-8799155704916553567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3108186402533337602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5201d05dba17c44a9a27af8c45b97e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &3742845219066623129 stripped

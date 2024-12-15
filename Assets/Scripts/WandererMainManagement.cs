@@ -8,16 +8,16 @@ public class WandererMainManagement : MonoBehaviour
     public int currentHealth;
     public int maxHealth;
     // Wanderer Character class
-    private string characterName;
+    public string characterName;
     // Wanderer's Level and XP
     public int currentLevel;
-    private int maxLevel = 4;
+    public int maxLevel = 4;
     public int XP;
-    private int maxXP = 100;
+    public int maxXP = 100;
     // Wanderer's Inventory
     public int healingPotions;
-    private int abilityPoints;
-    private int runeFragments;
+    public int abilityPoints;
+    public int runeFragments;
     // Cheats and Gameplay Modifiers
     public bool isInvincible = false;
     private bool isSlowMotion = false;
@@ -48,7 +48,7 @@ public class WandererMainManagement : MonoBehaviour
     public GameObject bloodPrefab; // Prefab to instantiate
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         currentLevel = 1;
         maxHealth = 100 * currentLevel;

@@ -1,36 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; // For scene management
 
 public class NormalToBossLevel : MonoBehaviour
 {
-    // Start is called before the first frame update
+    // Reference to the player's main management script
     private WandererMainManagement mainManagement;
 
+    // Start is called before the first frame update
     void Start()
     {
         mainManagement = GetComponent<WandererMainManagement>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Gate"))
         {
-           if (mainManagement.getRuneFragments() == 3)
+            if (mainManagement.getRuneFragments() == 3)
             {
+                // Consume the rune fragments
                 mainManagement.useRuneFragment();
                 mainManagement.useRuneFragment();
                 mainManagement.useRuneFragment();
-                //load the boss level with the same player attributes
-            }
-        }
+
+                LoadBossLevel();
+               
+               
+            }}
+
     }
 
+    private void LoadBossLevel()
+    {
+         GameManager.Instance.SavePlayerState(FindObjectOfType<WandererMainManagement>());
+        SceneManager.LoadScene("BossLevel");
+    }
 }
