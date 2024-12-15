@@ -94,6 +94,8 @@ public class DemonsMainManagement : MonoBehaviour
 
         if (demonAnimator != null)
         {
+            demonAnimator.SetLayerWeight(4, 1);
+            demonAnimator.SetBool("isStunned", true);
             demonAnimator.SetInteger("demonState", 0); // Set to idle animation
         }
 
@@ -105,6 +107,9 @@ public class DemonsMainManagement : MonoBehaviour
         // Resume the previous state
         currentState = previousState;
         demonAgent.isStopped = false;
+        demonAnimator.SetLayerWeight(4, 0);
+        demonAnimator.SetBool("isStunned", false);
+        
 
         Debug.Log("Demon resumed");
     }
