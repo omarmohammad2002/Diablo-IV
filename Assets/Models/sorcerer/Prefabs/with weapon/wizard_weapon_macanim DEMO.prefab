@@ -17030,13 +17030,8 @@ GameObject:
   - component: {fileID: 1749769704563020045}
   - component: {fileID: -4929234701277282081}
   - component: {fileID: -2507115607403311123}
-<<<<<<< HEAD
   - component: {fileID: 1988304838464076319}
-=======
-  - component: {fileID: -6281302947936710165}
-  - component: {fileID: 2107827290852851528}
-  - component: {fileID: -729310789139903775}
->>>>>>> 3309acec371a413621cd46ab8d8365e22356d319
+  - component: {fileID: -8725795012466618623}
   m_Layer: 0
   m_Name: wizard_weapon_macanim DEMO
   m_TagString: Player
@@ -17129,22 +17124,23 @@ MonoBehaviour:
   healingPotions: 0
   abilityPoints: 0
   runeFragments: 0
+  healthSlider: {fileID: 0}
+  xpSlider: {fileID: 0}
   isInvincible: 0
   gameOverScreen: {fileID: 0}
   pauseScreen: {fileID: 0}
   enemiesFollowing: 0
-<<<<<<< HEAD
   drinkingSound: {fileID: 0}
   dyingSound: {fileID: 0}
   damagedSound: {fileID: 0}
   pickUpSound: {fileID: 0}
+  healthText: {fileID: 0}
+  xpText: {fileID: 0}
+  levelText: {fileID: 0}
+  healingPotionsText: {fileID: 0}
+  abilityPointsText: {fileID: 0}
+  RuneFragmentsText: {fileID: 0}
   bloodPrefab: {fileID: 0}
-=======
-  drinkingSound: {fileID: 8300000, guid: 6f6710944de458c43871c5898df0bad4, type: 3}
-  dyingSound: {fileID: 8300000, guid: 5f84bf4365456fb4c96ab29bd5f2b23a, type: 3}
-  damagedSound: {fileID: 8300000, guid: 75473ef153888fd41819e6e86ed5afd1, type: 3}
-  pickUpSound: {fileID: 8300000, guid: a79eed0cf86f7374587a0a46da8dd0fe, type: 3}
->>>>>>> 3309acec371a413621cd46ab8d8365e22356d319
 --- !u!114 &6229523725606427383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17310,6 +17306,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5201d05dba17c44a9a27af8c45b97e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &-8725795012466618623
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013586557078}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1000013699516860
 GameObject:
   m_ObjectHideFlags: 0
