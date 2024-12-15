@@ -8,7 +8,7 @@ public class DemonsAttacking : MonoBehaviour
 
     private Animator enemyAnimator;
     private DemonsMainManagement managementScript;
-    private readonly float attackRange = 3f;
+    private readonly float attackRange = 5f;
     private GameObject player;
     private BoxCollider swordCollider;
     private CapsuleCollider bombCollider;
@@ -19,10 +19,6 @@ public class DemonsAttacking : MonoBehaviour
         managementScript = GetComponent<DemonsMainManagement>();
         player = GameObject.FindGameObjectWithTag("Player");
         bombCollider = GetComponentInChildren<CapsuleCollider>();
-        if (bombCollider == null)
-        {
-            Debug.LogError("Bomb Collider not found");
-        }
         BoxCollider[] colliders = GetComponentsInChildren<BoxCollider>();
 
         foreach (BoxCollider collider in colliders)

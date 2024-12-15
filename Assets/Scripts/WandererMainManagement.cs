@@ -52,12 +52,16 @@ public class WandererMainManagement : MonoBehaviour
     public AudioClip damagedSound ;
     public AudioClip pickUpSound;
 
+
     public TextMeshProUGUI  healthText;
     public TextMeshProUGUI  xpText;
     public TextMeshProUGUI  levelText;
     public TextMeshProUGUI  healingPotionsText;
     public TextMeshProUGUI  abilityPointsText;
      public TextMeshProUGUI  RuneFragmentsText;
+
+    public GameObject bloodPrefab; // Prefab to instantiate
+
 
     // Start is called before the first frame update
     void Start()
@@ -232,25 +236,49 @@ public class WandererMainManagement : MonoBehaviour
     public void DealDamage(int amount)
     {
         // This function deals damage to the player by a specific amount, to be used in enemy attack logic scripts
-        if (!isInvincible)
+        if (currentHealth > 0)
         {
-            currentHealth -= amount;
-            TriggerDamageAnimation(); // Updated to use the new method
+           
+        
+            if (!isInvincible)
+          {
 
             if (healthSlider != null)
                 healthSlider.value = currentHealth; // Update the slider
 
-            if (currentHealth <= 0)
-            {
-                // Trigger death animation and game over logic
-                Animator.SetTrigger("Dead");
-                isDead = true;
-                gameOverScreen.SetActive(true);
+                currentHealth -= amount;
+                TriggerDamageAnimation(); // Updated to use the new method
 
-                // More gameover logic to be added here if needed, stop/change audio etc
+                // Activate blood effect
+                Transform blood = transform.Find("Blood"); // Finds the child named 'blood'
+                if (blood != null)
+                {
+                    StartCoroutine(ActivateBloodEffect(blood.gameObject, 1f)); // Activate for 2 seconds
+                }
+
+                if (currentHealth <= 0)
+                {
+                    // Trigger death animation and game over logic
+                    Animator.SetTrigger("Dead");
+                    isDead = true;
+                    gameOverScreen.SetActive(true);
+                    // More gameover logic to be added here if needed, stop/change audio etc
+                }
             }
         }
     }
+
+    // Coroutine to handle activating and deactivating the blood effect
+    private IEnumerator ActivateBloodEffect(GameObject bloodObject, float duration)
+    {
+        bloodObject.SetActive(true); // Activate the blood effect
+        yield return new WaitForSeconds(duration); // Wait for the specified duration
+        Vector3 spawnPosition = transform.position + transform.forward * 1f;
+        spawnPosition.y = 0; // Ensure it's on the ground (adjust if necessary)
+        Instantiate(bloodPrefab, spawnPosition, Quaternion.identity);
+        bloodObject.SetActive(false); // Deactivate the blood effect
+    }
+
 
     // New method to handle damage animation trigger
     private void TriggerDamageAnimation()

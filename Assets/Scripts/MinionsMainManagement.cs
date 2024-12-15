@@ -1,18 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MinionsMainManagement : MonoBehaviour
 {
-
-    public int maxHealth;     
-    public int currentHealth; 
-    public int attackPower;   
-    public int xpReward;      
-    public bool isDead=false;
-    public enum MinionState { Idle, Aggressive }
+    public int maxHealth;
+    public int currentHealth;
+    public int attackPower;
+    public int xpReward;
+    public bool isDead = false;
+    public enum MinionState { Idle, Aggressive, Stopped }
     public MinionState currentState;
+
     private Animator minionAnimator;
+    private NavMeshAgent minionAgent;
+
+    private MinionState previousState; // Store the state before stopping
 
     void Awake()
     {
@@ -21,12 +25,12 @@ public class MinionsMainManagement : MonoBehaviour
         attackPower = 5;
         xpReward = 10;
         currentState = MinionState.Idle;
-        
     }
 
     void Start()
     {
         minionAnimator = GetComponent<Animator>();
+        minionAgent = GetComponent<NavMeshAgent>();
     }
 
     public void TakeDamage(int damage)
@@ -35,48 +39,85 @@ public class MinionsMainManagement : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Max(currentHealth, 0);
         minionAnimator.SetLayerWeight(2, 0.5f);
+
         if (currentHealth == 0)
         {
             EnemyDeath();
         }
-
-       
     }
 
     public void EnemyDeath()
-{
-    // Search for the player object using the Player tag
-    GameObject player = GameObject.FindGameObjectWithTag("Player");
-    
-    if (player != null)
     {
-        // Get the WandererMainManagement component
-        WandererMainManagement wandererMM = player.GetComponent<WandererMainManagement>();
-        
-        if (wandererMM != null)
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player != null)
         {
-            // Add XP to the player
+            WandererMainManagement wandererMM = player.GetComponent<WandererMainManagement>();
             wandererMM.addXP(xpReward);
+
+            if (currentState == MinionState.Aggressive)
+            {
+                wandererMM.enemiesFollowing--;
+            }
         }
         else
         {
-            Debug.LogError("WandererMainManagement component not found on the player!");
+            Debug.LogError("Player object with tag 'Player' not found!");
         }
+
+        minionAnimator.SetLayerWeight(3, 1);
+        minionAnimator.SetBool("isDead", true);
+        isDead = true;
     }
-    else
+
+    public void DestroyMinion()
     {
-        Debug.LogError("Player object with tag 'Player' not found!");
-    }
-    
-    minionAnimator.SetLayerWeight(3, 1);
-    minionAnimator.SetBool("isDead", true);
-    isDead = true;
-    
-}
-
- public void DestroyMinion(){
         Destroy(gameObject);
+    }
+
+    public void StopMinion()
+    {
+        StartCoroutine(StopMinionTemporarily());
+    }
+
+    private IEnumerator StopMinionTemporarily()
+    {
+        Debug.Log("Minion stopped");
+
+        // Save the current state and set to Stopped
+        previousState = currentState;
+        currentState = MinionState.Stopped;
+
+        // Stop the NavMeshAgent and clear its path
+        minionAgent.isStopped = true;
+        minionAgent.ResetPath();
+        minionAgent.velocity = Vector3.zero;
+
+        // Update animations
+        if (minionAnimator != null)
+        {
+            minionAnimator.SetInteger("minionState", 0); // Idle animation
         }
 
+        yield return new WaitForSeconds(7f); // Stopping duration
 
+        // Restore the previous state
+        currentState = previousState;
+        Debug.Log("Minion resumed movement");
+    }
+
+    public void StunMinion()
+    {
+        StartCoroutine(StunMinionCoroutine());
+    }
+
+    private IEnumerator StunMinionCoroutine()
+    {
+        float originalSpeed = minionAgent.speed;
+        minionAgent.speed = originalSpeed / 4; // Reduce speed to simulate stun
+        Debug.Log("Minion stunned");
+        yield return new WaitForSeconds(3f); // Stun duration
+        minionAgent.speed = originalSpeed; // Restore original speed
+        Debug.Log("Minion stun ended");
+    }
 }

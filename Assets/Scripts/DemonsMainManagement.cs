@@ -1,23 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class DemonsMainManagement : MonoBehaviour
 {
-    
-    public int maxHealth;     
-    public int currentHealth; 
-    public int attackPower;   
-    public int xpReward;      
+    public int maxHealth;
+    public int currentHealth;
+    public int attackPower;
+    public int xpReward;
     public int explosivePower;
-    public bool demonIsDead=false;
-    public enum DemonState { Idle, Patrolling, Aggressive }
+    public bool demonIsDead = false;
+
+    public enum DemonState { Idle, Patrolling, Aggressive, Stopped }
     public DemonState currentState;
+
     private Animator demonAnimator;
+    private NavMeshAgent demonAgent;
+    private DemonState previousState; // Store state before stopping
 
-
-
-   void Awake()
+    void Awake()
     {
         maxHealth = 40;
         currentHealth = maxHealth;
@@ -25,15 +27,15 @@ public class DemonsMainManagement : MonoBehaviour
         explosivePower = 15;
         xpReward = 30;
         currentState = DemonState.Patrolling;
-        
     }
 
     void Start()
     {
         demonAnimator = GetComponent<Animator>();
+        demonAgent = GetComponent<NavMeshAgent>();
     }
 
-     public void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         demonAnimator.SetBool("isDamaged", true);
         currentHealth -= damage;
@@ -41,32 +43,22 @@ public class DemonsMainManagement : MonoBehaviour
         demonAnimator.SetLayerWeight(2, 0.5f);
         if (currentHealth == 0)
         {
-            enemyDeath();
+            EnemyDeath();
         }
-
-       
     }
 
-    
-
-    public void enemyDeath()
+    public void EnemyDeath()
     {
-        // Search for the player object using the Player tag
         GameObject player = GameObject.FindGameObjectWithTag("Player");
 
         if (player != null)
         {
-            // Get the WandererMainManagement component
             WandererMainManagement wandererMM = player.GetComponent<WandererMainManagement>();
+            wandererMM.addXP(xpReward);
 
-            if (wandererMM != null)
+            if (currentState == DemonState.Aggressive)
             {
-                // Add XP to the player
-                wandererMM.addXP(xpReward);
-            }
-            else
-            {
-                Debug.LogError("WandererMainManagement component not found on the player!");
+                wandererMM.enemiesFollowing--;
             }
         }
         else
@@ -78,9 +70,56 @@ public class DemonsMainManagement : MonoBehaviour
         demonIsDead = true;
         demonAnimator.SetBool("isDead", true);
     }
-    
-    public void DestroyDemon(){
+
+    public void DestroyDemon()
+    {
         Destroy(gameObject);
+    }
+
+    public void StopDemon()
+    {
+        StartCoroutine(StopDemonTemporarily());
+    }
+
+    private IEnumerator StopDemonTemporarily()
+    {
+        // Save the current state and switch to Stopped
+        previousState = currentState;
+        currentState = DemonState.Stopped;
+
+        // Stop the NavMeshAgent and animations
+        demonAgent.isStopped = true;
+        demonAgent.ResetPath();
+        demonAgent.velocity = Vector3.zero;
+
+        if (demonAnimator != null)
+        {
+            demonAnimator.SetInteger("demonState", 0); // Set to idle animation
         }
 
+        Debug.Log("Demon stopped");
+
+        // Wait for the stop duration
+        yield return new WaitForSeconds(5f);
+
+        // Resume the previous state
+        currentState = previousState;
+        demonAgent.isStopped = false;
+
+        Debug.Log("Demon resumed");
+    }
+
+    public void StunDemon()
+    {
+        Debug.Log("Demon stunned");
+        StartCoroutine(StunDemonCoroutine());
+    }
+
+    private IEnumerator StunDemonCoroutine()
+    {
+        float originalSpeed = demonAgent.speed;
+        demonAgent.speed = originalSpeed / 4; // Reduce speed
+        yield return new WaitForSeconds(3f); // Stun duration
+        demonAgent.speed = originalSpeed; // Restore speed
+    }
 }
