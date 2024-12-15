@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 public class RougeMovment : MonoBehaviour
 {
-    [SerializeField] private Camera camera;
+    private Camera camera;
     [SerializeField] private float stoppingThreshold = 1.7f; // Allowable distance to stop earlier
     private CustomActions input;
     private NavMeshAgent agent;
@@ -22,6 +22,7 @@ public class RougeMovment : MonoBehaviour
         input = new CustomActions();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        camera = Camera.main;
     }
 
     void OnEnable()

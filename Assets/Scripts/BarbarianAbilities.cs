@@ -35,6 +35,10 @@ public class BarbarianAbilities : MonoBehaviour
     public AudioClip chargeSound;
 
     [SerializeField] private GameObject destructionPrefab;
+
+    void Awake(){
+        camera = Camera.main;
+    }
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();

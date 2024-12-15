@@ -23,6 +23,7 @@ public class HealthPotions : MonoBehaviour
         // Check if the collided object has the "HealthPotion" tag
         if (other.CompareTag("HealthPotion"))
         {
+            Debug.Log("Health Potion collected!");  
             // Check if the player has room for another potion
             if (mainManagement.getHealingPotions() < 3)
             {
