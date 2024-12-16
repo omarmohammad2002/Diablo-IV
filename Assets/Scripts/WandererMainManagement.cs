@@ -25,15 +25,17 @@ public class WandererMainManagement : MonoBehaviour
     [SerializeField] private Slider healthSlider; // Reference to the slider
 
     [SerializeField] private Slider xpSlider; // Reference to the XP slider
+
     // Wanderer's Health
     // Wanderer's Inventory
     // Cheats and Gameplay Modifiers
     public bool isInvincible = false;
     private bool isSlowMotion = false;
     // abilties 
-    private bool ability1Unlock = true;
-    private bool ability2Unlock = true;
-    private bool ability3Unlock = true;
+
+    private bool ability1Unlock = false;
+    private bool ability2Unlock = false;
+    private bool ability3Unlock = false;
     // Pause Game
     private bool isGamePaused = false;
     private GameObject pauseScreen;
@@ -142,6 +144,7 @@ public class WandererMainManagement : MonoBehaviour
         if (xpText != null)
             xpText.text = $"XP:                              {XP}/{maxXP}";
 
+
         if (levelText != null)
             levelText.text = $"Level: {currentLevel}/{maxLevel}";
 
@@ -232,6 +235,10 @@ public class WandererMainManagement : MonoBehaviour
         {
             addXP(100);
         }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            addRuneFragment();
+        }
     }
     public void DealDamage(int amount)
     {
@@ -313,6 +320,7 @@ public class WandererMainManagement : MonoBehaviour
         if ((healingPotions > 0) && (currentHealth < maxHealth))
         {
             Animator.SetTrigger("Drinking");
+            Debug.Log("drinking");
 
             Heal((int)((50f / 100f) * maxHealth)); // Heal by 50 health points (adjust as needed)
             useHealingPotion(); // Reduce potion count

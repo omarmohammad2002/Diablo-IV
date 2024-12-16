@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class DemonsMainManagement : MonoBehaviour
 {
@@ -19,6 +20,10 @@ public class DemonsMainManagement : MonoBehaviour
     private NavMeshAgent demonAgent;
     private DemonState previousState; // Store state before stopping
 
+    [SerializeField] private Slider DemonHealthSlider; // Reference to the slider
+    private AudioSource AudioSource;
+    public AudioClip deathSound;
+
     void Awake()
     {
         maxHealth = 40;
@@ -27,6 +32,14 @@ public class DemonsMainManagement : MonoBehaviour
         explosivePower = 15;
         xpReward = 30;
         currentState = DemonState.Patrolling;
+
+        if (DemonHealthSlider != null)
+        {
+            DemonHealthSlider.maxValue = maxHealth;
+            DemonHealthSlider.value = currentHealth;
+        }
+        AudioSource = GetComponent<AudioSource>();
+
     }
 
     void Start()
@@ -41,6 +54,13 @@ public class DemonsMainManagement : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Max(currentHealth, 0);
         demonAnimator.SetLayerWeight(2, 0.5f);
+
+        // Update the slider to reflect the current health
+        if (DemonHealthSlider != null)
+        {
+            DemonHealthSlider.value = currentHealth;
+        }
+        
         if (currentHealth == 0)
         {
             EnemyDeath();
@@ -69,6 +89,8 @@ public class DemonsMainManagement : MonoBehaviour
         demonAnimator.SetLayerWeight(3, 1);
         demonIsDead = true;
         demonAnimator.SetBool("isDead", true);
+        AudioSource.PlayOneShot(deathSound);
+
     }
 
     public void DestroyDemon()
@@ -94,6 +116,8 @@ public class DemonsMainManagement : MonoBehaviour
 
         if (demonAnimator != null)
         {
+            demonAnimator.SetLayerWeight(4, 1);
+            demonAnimator.SetBool("isStunned", true);
             demonAnimator.SetInteger("demonState", 0); // Set to idle animation
         }
 
@@ -105,6 +129,9 @@ public class DemonsMainManagement : MonoBehaviour
         // Resume the previous state
         currentState = previousState;
         demonAgent.isStopped = false;
+        demonAnimator.SetLayerWeight(4, 0);
+        demonAnimator.SetBool("isStunned", false);
+        
 
         Debug.Log("Demon resumed");
     }

@@ -101,11 +101,14 @@ public class RougeAbilities : MonoBehaviour
         {
             if (currentTime >= lastUsedTime["Basic"] + basicCooldown)
             {
-                rotateToAttack();
-                animator.SetTrigger("Basic");
-                isBasicActive = true;
-                lastUsedTime["Basic"] = currentTime;
-                BasicAbility();
+                if (rotateToAttack())
+                {
+                    animator.SetTrigger("Basic");
+                    isBasicActive = true;
+                    lastUsedTime["Basic"] = currentTime;
+                    BasicAbility();
+                }
+                
             }
             else          
             {
@@ -256,17 +259,27 @@ public class RougeAbilities : MonoBehaviour
 
 
 
-    void rotateToAttack()
+    bool rotateToAttack()
     {
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit))
         {
-            Vector3 targetPosition = hit.point;
-            Vector3 direction = targetPosition - transform.position;
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 400 * Time.deltaTime);
+            GameObject targetHit = hit.transform.gameObject;
+            if (targetHit.CompareTag("Minion") || targetHit.CompareTag("Demon") || targetHit.CompareTag("Boss"))
+            {
+                Vector3 targetPosition = hit.point;
+                Vector3 direction = targetPosition - transform.position;
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 400 * Time.deltaTime);
+                return true;
+            }
+            return false;
+        }
+        else
+        {
+            return false;
         }
     }
     private void DefensiveAbility()
