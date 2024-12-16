@@ -47,7 +47,8 @@ private void SpawnCharacter()
 
             if (GameManager.Instance.SavedMaxHealth == 0) // Check if no previous state
             {
-                // Fresh start for the boss level
+                    // Fresh start for the boss level
+                Debug.Log("Fresh Boss Scene");
                 player.updateMaxHealth(400);
                 player.updatecurrentHealth(400);
                 player.unlockAbility1();

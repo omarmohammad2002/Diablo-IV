@@ -24,7 +24,6 @@ public class NormalToBossLevel : MonoBehaviour
                 mainManagement.useRuneFragment();
                 mainManagement.useRuneFragment();
                 mainManagement.useRuneFragment();
-
                 LoadBossLevel();
                
                
@@ -32,9 +31,10 @@ public class NormalToBossLevel : MonoBehaviour
 
     }
 
-    private void LoadBossLevel()
+    void LoadBossLevel()
     {
-         GameManager.Instance.SavePlayerState(FindObjectOfType<WandererMainManagement>());
+        GameManager.Instance.SavePlayerState(FindObjectOfType<WandererMainManagement>());
+        GameManager.Instance.IsBossLevel = true;
         SceneManager.LoadScene("BossLevel");
     }
 }
