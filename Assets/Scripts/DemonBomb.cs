@@ -7,11 +7,13 @@ public class DemonBomb : MonoBehaviour
 
     private CapsuleCollider bombCollider;
     private GameObject player;
+
+
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         bombCollider = GetComponent<CapsuleCollider>();
-
         
     }
     
