@@ -18,7 +18,7 @@ public class NormalToBossLevel : MonoBehaviour
     {
         if (other.CompareTag("Gate"))
         {
-            if (mainManagement.getRuneFragments() == 3)
+            if (mainManagement.getRuneFragments() >= 3)
             {
                 // Consume the rune fragments
                 mainManagement.useRuneFragment();

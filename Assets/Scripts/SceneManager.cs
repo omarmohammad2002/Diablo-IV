@@ -6,6 +6,7 @@ public class SceneManagerScript : MonoBehaviour
     public GameObject mainMenuPanel;
     public GameObject gameplayPanel;
     public GameObject optionsPanel;
+    public GameObject audioPanel;
     public GameObject developersPanel;
     public GameObject creditsPanel;
     public GameObject selectLevelPanel;
@@ -68,6 +69,12 @@ public class SceneManagerScript : MonoBehaviour
         if (gameplayPanel != null) gameplayPanel.SetActive(true);
     }
 
+    public void OnAudioButtonPressed()
+    {
+        optionsPanel.SetActive(false);
+        audioPanel.SetActive(true);
+    }
+
     public void OnDevelopersButtonPressed()
     {
         optionsPanel.SetActive(false);
@@ -98,6 +105,7 @@ public class SceneManagerScript : MonoBehaviour
     {
         if (developersPanel != null) developersPanel.SetActive(false);
         if (creditsPanel != null) creditsPanel.SetActive(false);
+        if (audioPanel != null) audioPanel.SetActive(false);
         if (optionsPanel != null) optionsPanel.SetActive(true);
 
         // Reset hover states for all buttons
