@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -29,7 +30,7 @@ public class GameOverHandler : MonoBehaviour
             {
                 if (mainManagement.getCurrentHealth() <= 0)
                 {
-                    gameOverPanel.SetActive(true);
+                    StartCoroutine(ShowGameOverWithDelay(5f));
                 }
             }
 
@@ -50,4 +51,12 @@ public class GameOverHandler : MonoBehaviour
         gameWinPanel.SetActive(true);
     }
 
+    private IEnumerator ShowGameOverWithDelay(float delay)
+    {
+        // Wait for the specified time
+        yield return new WaitForSeconds(delay);
+
+        // Show the Game Over panel
+        gameOverPanel.SetActive(true);
+    }
 }

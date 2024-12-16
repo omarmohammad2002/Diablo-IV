@@ -376,7 +376,7 @@ public class sorcererAbilities : MonoBehaviour
         isUltimateAbility = false;
     }
 
-    void DisableAgent()
+    /*void DisableAgent()
     {
         NavMeshAgent agent = GetComponent<NavMeshAgent>();
         if (agent != null)
@@ -384,5 +384,5 @@ public class sorcererAbilities : MonoBehaviour
             agent.enabled = false;
             Debug.Log("NavMeshAgent disabled");
         }
-    }
+    }*/
 }
