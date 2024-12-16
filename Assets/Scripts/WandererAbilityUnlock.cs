@@ -88,6 +88,7 @@ public class WandererAbilityUnlock : MonoBehaviour
             Debug.Log("Ability1unlocked");
             mainManagement.unlockAbility1();
             mainManagement.useabilityPoints();
+            Debug.Log("used ability poinyts");
         }
     }
 

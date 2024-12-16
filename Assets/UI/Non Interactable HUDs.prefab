@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3042118880333259098}
   m_Layer: 0
-  m_Name: Abilities and display Bar Prefab
+  m_Name: Non Interactable HUDs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

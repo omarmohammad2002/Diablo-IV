@@ -24,6 +24,7 @@ TagManager:
   - Ability 2 cover
   - Pick
   - GameOver
+  - ShieldHealthSlider
   layers:
   - Default
   - TransparentFX

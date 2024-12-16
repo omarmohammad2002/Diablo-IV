@@ -30,15 +30,16 @@ public class BarbarianAbilities : MonoBehaviour
     public float wildcardCooldown = 5f; //update
     public float ultimateCooldown = 1f; //update
 
+    // Cooldown UI sliders
+    [SerializeField] private Slider defensiveCooldownSlider;
+    [SerializeField] private Slider wildcardCooldownSlider;
+    [SerializeField] private Slider ultimateCooldownSlider;
+
     // for cooldown
     private Dictionary<string, float> lastUsedTime = new Dictionary<string, float>();
 
     private AudioSource AudioSource; 
     public AudioClip chargeSound;
-
-    [SerializeField] private Slider Cooldown1Slider;
-    [SerializeField] private Slider Cooldown2Slider;
-    [SerializeField] private Slider Cooldown3Slider;
 
     [SerializeField] private GameObject destructionPrefab;
 
@@ -57,6 +58,26 @@ public class BarbarianAbilities : MonoBehaviour
         lastUsedTime["Wildcard"] = -wildcardCooldown;
         lastUsedTime["Ultimate"] = -ultimateCooldown;
         AudioSource = GetComponent<AudioSource>();
+
+        // Initialize slider values
+        if (defensiveCooldownSlider != null)
+    {
+        defensiveCooldownSlider.maxValue = defensiveCooldown;
+        defensiveCooldownSlider.value = defensiveCooldown;
+        defensiveCooldownSlider.gameObject.SetActive(false); // Hide initially
+    }
+    if (wildcardCooldownSlider != null)
+    {
+        wildcardCooldownSlider.maxValue = wildcardCooldown;
+        wildcardCooldownSlider.value = wildcardCooldown;
+        wildcardCooldownSlider.gameObject.SetActive(false); // Hide initially
+    }
+    if (ultimateCooldownSlider != null)
+    {
+        ultimateCooldownSlider.maxValue = ultimateCooldown;
+        ultimateCooldownSlider.value = ultimateCooldown;
+        ultimateCooldownSlider.gameObject.SetActive(false); // Hide initially
+    }
     }
     public void PlaySound(string soundName)
     {
@@ -74,6 +95,9 @@ public class BarbarianAbilities : MonoBehaviour
     {
         
         float currentTime = Time.time;
+
+        // Update sliders to reflect remaining cooldown times
+        UpdateCooldownSliders(currentTime);
 
         if (!isUltimateActive && !isWildcardActive && Input.GetMouseButtonDown(1)) // Basic Ability
         {
@@ -144,6 +168,30 @@ public class BarbarianAbilities : MonoBehaviour
 
 
     }
+
+     void UpdateCooldownSliders(float currentTime)
+{
+    if (defensiveCooldownSlider != null)
+    {
+        float remainingDefensiveCooldown = Mathf.Max(0, defensiveCooldown - (currentTime - lastUsedTime["Defensive"]));
+        defensiveCooldownSlider.value = remainingDefensiveCooldown;
+        defensiveCooldownSlider.gameObject.SetActive(remainingDefensiveCooldown > 0); // Show slider during cooldown
+    }
+
+    if (wildcardCooldownSlider != null)
+    {
+        float remainingWildcardCooldown = Mathf.Max(0, wildcardCooldown - (currentTime - lastUsedTime["Wildcard"]));
+        wildcardCooldownSlider.value = remainingWildcardCooldown;
+        wildcardCooldownSlider.gameObject.SetActive(remainingWildcardCooldown > 0); // Show slider during cooldown
+    }
+
+    if (ultimateCooldownSlider != null)
+    {
+        float remainingUltimateCooldown = Mathf.Max(0, ultimateCooldown - (currentTime - lastUsedTime["Ultimate"]));
+        ultimateCooldownSlider.value = remainingUltimateCooldown;
+        ultimateCooldownSlider.gameObject.SetActive(remainingUltimateCooldown > 0); // Show slider during cooldown
+    }
+}
     
     void BasicAbility()
     {
