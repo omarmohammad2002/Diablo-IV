@@ -1,4 +1,4 @@
-using System;
+ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -22,6 +22,7 @@ public class BarbarianAbilities : MonoBehaviour
     private bool isCharging = false;
     private Vector3 targetPosition;
     private bool isLocked = false;
+    private bool bashBool = false;  
 
     // Cooldown timers
     public float basicCooldown = 1f;
@@ -102,7 +103,7 @@ public class BarbarianAbilities : MonoBehaviour
         {
             if (currentTime >= lastUsedTime["Basic"] + basicCooldown)
             {
-                animator.SetTrigger("Basic");
+                
                 isBasicActive = true;
                 lastUsedTime["Basic"] = currentTime;
                 BasicAbility();
@@ -195,7 +196,11 @@ public class BarbarianAbilities : MonoBehaviour
     void BasicAbility()
     {
         rotateToAttack();
-        StartCoroutine(AttackWithDelay(1f));
+        if (bashBool)
+        {
+            animator.SetTrigger("Basic");
+            StartCoroutine(AttackWithDelay(1f));
+        }
     }
 
     void rotateToAttack()
@@ -203,14 +208,50 @@ public class BarbarianAbilities : MonoBehaviour
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
+        float bashRange = 4f; // Define the maximum range for the bash ability
+
         if (Physics.Raycast(ray, out hit))
         {
-            Vector3 targetPosition = hit.point;
-            Vector3 direction = targetPosition - transform.position;
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 400 * Time.deltaTime);
+            GameObject targetHit = hit.transform.gameObject;
+            Debug.Log("Target hit: " + targetHit.name);
+
+            // Check if the target is a valid enemy and within range
+            if ((targetHit.CompareTag("Minion") || targetHit.CompareTag("Demon") || targetHit.CompareTag("Boss")) )
+            {
+                bashBool = true; // Set bashBool to true only if both conditions are met
+                Debug.Log("Valid enemy within range. BashBool set to true.");
+
+                // Rotate to face the target
+                Vector3 targetPosition = hit.point;
+                Vector3 direction = targetPosition - transform.position;
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 400 * Time.deltaTime);
+            }
+            else
+            {
+                // Either not a valid enemy or out of range
+                bashBool = false;
+                Debug.Log("Enemy is out of range or not valid. BashBool set to false.");
+                ResetAttack();
+            }
+        }
+        else
+        {
+            // Raycast didn't hit anything
+            bashBool = false;
+            Debug.Log("Attack failed: Nothing was hit.");
+            ResetAttack();
         }
     }
+
+    // Reset the cooldown and attack parameters
+    void ResetAttack()
+    {
+        isBasicActive = false; // Reset the attack active flag
+        lastUsedTime["Basic"] = -basicCooldown; //to reset the cooldown
+        Debug.Log("Attack cooldown and parameters have been reset.");
+    }
+
 
     IEnumerator AttackWithDelay(float delay)
     {
@@ -220,7 +261,8 @@ public class BarbarianAbilities : MonoBehaviour
 
     void bash()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2f);
+        Debug.Log("bashbool" + bashBool);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 4f);
         foreach (Collider hitCollider in hitColliders)
         {
             if (hitCollider.CompareTag("Boss"))
@@ -270,6 +312,7 @@ public class BarbarianAbilities : MonoBehaviour
             }
         }
         isBasicActive = false;
+        bashBool = false;
     }
 
     private void DefensiveAbility()
@@ -337,7 +380,7 @@ public class BarbarianAbilities : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         // Damage logic
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2f);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 4f);
         foreach (Collider hitCollider in hitColliders)
         {
             if (hitCollider.CompareTag("Boss"))
@@ -422,7 +465,7 @@ public class BarbarianAbilities : MonoBehaviour
         }
 
         // Move towards the target position while maintaining the original Y position
-        Vector3 newPosition = Vector3.MoveTowards(transform.position, targetPosition, 5 * Time.deltaTime);
+        Vector3 newPosition = Vector3.MoveTowards(transform.position, targetPosition, 10 * Time.deltaTime);
         newPosition.y = originalY; // Lock the Y-axis
         transform.position = newPosition;
 

@@ -14,7 +14,7 @@ public class BossMainManagement : MonoBehaviour
     public int currentHealth;
     public bool minionsAlive = false;
 
-    private int shieldHealth = 50;
+    public int shieldHealth = 50;
     public bool shieldActive = false;
     public bool reflectiveAuraActive = false;
     private int currentPhase;
@@ -248,9 +248,10 @@ public class BossMainManagement : MonoBehaviour
         // Instantiate the idle point and minion as children of arenaGround
         Transform idlePoint = Instantiate(minionIdlePointPrefab, spawnPosition, Quaternion.identity, arenaGround.transform);
         GameObject minion = Instantiate(minionPrefab, spawnPosition, Quaternion.identity, arenaGround.transform);
+        minion.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
-        // Assign the idle point to the minion
-        MinionsChasingPlayer minionScript = minion.GetComponent<MinionsChasingPlayer>();
+            // Assign the idle point to the minion
+            MinionsChasingPlayer minionScript = minion.GetComponent<MinionsChasingPlayer>();
         if (minionScript != null)
         {
             minionScript.idlePoint = idlePoint;
@@ -289,6 +290,7 @@ private void SpawnHealingPotions()
         yield return new WaitForSeconds(delay);
         animator.SetTrigger("Resurrected");
         Debug.Log("Lilith transitions to Phase 2!");
+        canRotate = true;
 
     }
     private void Resurrection()
@@ -302,7 +304,10 @@ private void SpawnHealingPotions()
         if (shieldPrefab != null)
         {
             // Instantiate the shield as a child of the boss
-            activeShield = Instantiate(shieldPrefab, transform.position, Quaternion.identity, transform);
+            Vector3 shieldPosition = transform.position; // Get current position
+            shieldPosition.y += 5f; // Increase Y position by +1
+
+            activeShield = Instantiate(shieldPrefab, shieldPosition, Quaternion.identity, transform);
             Debug.Log("Shield instantiated as a child of the boss.");
         }
         InvokeRepeating("Phase2Behavior", 0f, 30f);
@@ -377,7 +382,7 @@ private void SpawnHealingPotions()
     {
         if (reflectiveAuraActive)
         {
-            Player.GetComponent<WandererMainManagement>().DealDamage(reflectiveAuraDamage);
+            Player.GetComponent<WandererMainManagement>().DealDamage(reflectiveAuraDamage + damage);
             reflectiveAuraActive = false;
             Destroy(activeAura);
         }
@@ -401,10 +406,18 @@ private void SpawnHealingPotions()
                         Destroy(activeShield);
                         currentHealth -= damage;
                         TriggerDamageAnimation(); // Updated call to trigger the animation
+                        StartCoroutine(RegenerateShield());
                     }
                     else
                     {
                         shieldHealth -= damage;
+                        if(shieldHealth == 0 )
+                        {
+                            shieldActive = false;
+                            Destroy(activeShield);
+                            StartCoroutine(RegenerateShield());
+
+                        }
                     }
                 }
             }
@@ -413,6 +426,7 @@ private void SpawnHealingPotions()
             {
                 animator.SetTrigger("Dead");
                 CancelInvoke("Phase1Behavior");
+                canRotate = false;
                 StartCoroutine(TransitionToNextPhase(5f));
             }
             if (currentPhase == 2 && currentHealth <= 0)
@@ -421,6 +435,28 @@ private void SpawnHealingPotions()
             }
         }
     }
+    private IEnumerator RegenerateShield()
+    {
+        yield return new WaitForSeconds(10f); // Wait for 10 seconds before regenerating the shield
+
+        if (!shieldActive && currentHealth > 0) // Ensure the shield is still inactive and boss is alive
+        {
+            // Regenerate the shield
+            shieldHealth = 50;
+            shieldActive = true;
+
+            // Instantiate the shield prefab
+            if (shieldPrefab != null)
+            {
+                Vector3 shieldPosition = transform.position;
+                shieldPosition.y += 5f; // Position the shield slightly above the boss
+                activeShield = Instantiate(shieldPrefab, shieldPosition, Quaternion.identity, transform);
+
+                Debug.Log("Shield regenerated with full health!");
+            }
+        }
+    }
+
 
     // New method to handle damage animation trigger
     private void TriggerDamageAnimation()
@@ -440,6 +476,7 @@ private void SpawnHealingPotions()
     public void Die()
     {
         animator.SetTrigger("Dead");
+        canRotate = false ;
         //Game ends and studio credits roll
         //Destroy(gameObject);
     }

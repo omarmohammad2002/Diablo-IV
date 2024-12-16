@@ -21,6 +21,8 @@ public class DemonsMainManagement : MonoBehaviour
     private DemonState previousState; // Store state before stopping
 
     [SerializeField] private Slider DemonHealthSlider; // Reference to the slider
+    private AudioSource AudioSource;
+    public AudioClip deathSound;
 
     void Awake()
     {
@@ -36,6 +38,8 @@ public class DemonsMainManagement : MonoBehaviour
             DemonHealthSlider.maxValue = maxHealth;
             DemonHealthSlider.value = currentHealth;
         }
+        AudioSource = GetComponent<AudioSource>();
+
     }
 
     void Start()
@@ -85,6 +89,8 @@ public class DemonsMainManagement : MonoBehaviour
         demonAnimator.SetLayerWeight(3, 1);
         demonIsDead = true;
         demonAnimator.SetBool("isDead", true);
+        AudioSource.PlayOneShot(deathSound);
+
     }
 
     public void DestroyDemon()
@@ -110,6 +116,8 @@ public class DemonsMainManagement : MonoBehaviour
 
         if (demonAnimator != null)
         {
+            demonAnimator.SetLayerWeight(4, 1);
+            demonAnimator.SetBool("isStunned", true);
             demonAnimator.SetInteger("demonState", 0); // Set to idle animation
         }
 
@@ -121,6 +129,9 @@ public class DemonsMainManagement : MonoBehaviour
         // Resume the previous state
         currentState = previousState;
         demonAgent.isStopped = false;
+        demonAnimator.SetLayerWeight(4, 0);
+        demonAnimator.SetBool("isStunned", false);
+        
 
         Debug.Log("Demon resumed");
     }

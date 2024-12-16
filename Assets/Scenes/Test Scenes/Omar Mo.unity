@@ -130,6 +130,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3145120335346001346, guid: 2c7c246291187ce4682686bd09c736b7, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5641574392489605237, guid: 2c7c246291187ce4682686bd09c736b7, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -178,9 +182,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Minion
       objectReference: {fileID: 0}
+    - target: {fileID: 6488226982083608195, guid: 2c7c246291187ce4682686bd09c736b7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6795199169111567216, guid: 2c7c246291187ce4682686bd09c736b7, type: 3}
       propertyPath: currentHealth
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7379884821121016373, guid: 2c7c246291187ce4682686bd09c736b7, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -205,7 +217,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &313201584
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -672,7 +684,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1228201195
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -805,11 +817,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2544139645671837158, guid: 3be2cede3448c7b4b837f4143cc911d9, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2883791588217214812, guid: 3be2cede3448c7b4b837f4143cc911d9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.86
+      value: 7.06
       objectReference: {fileID: 0}
     - target: {fileID: 2883791588217214812, guid: 3be2cede3448c7b4b837f4143cc911d9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -817,7 +829,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2883791588217214812, guid: 3be2cede3448c7b4b837f4143cc911d9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -20.336
+      value: -7.08
       objectReference: {fileID: 0}
     - target: {fileID: 2883791588217214812, guid: 3be2cede3448c7b4b837f4143cc911d9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -850,6 +862,10 @@ PrefabInstance:
     - target: {fileID: 5117185819299158078, guid: 3be2cede3448c7b4b837f4143cc911d9, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5217145431311613020, guid: 3be2cede3448c7b4b837f4143cc911d9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8862343711514251246, guid: 3be2cede3448c7b4b837f4143cc911d9, type: 3}
       propertyPath: patrolPoints
@@ -1029,6 +1045,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss
       objectReference: {fileID: 0}
+    - target: {fileID: 6209314326536615914, guid: 3123c36074647c242a98cddd5aecf959, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6728442541894872400, guid: 3123c36074647c242a98cddd5aecf959, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5
@@ -1125,6 +1145,10 @@ PrefabInstance:
     - target: {fileID: 5613628036869185794, guid: 861b95d1cd3b2d94eb042c165d10964a, type: 3}
       propertyPath: m_Name
       value: Rubble Pile
+      objectReference: {fileID: 0}
+    - target: {fileID: 5613628036869185794, guid: 861b95d1cd3b2d94eb042c165d10964a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

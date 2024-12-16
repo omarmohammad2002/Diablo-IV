@@ -23,10 +23,10 @@ public class sorcererAbilities : MonoBehaviour
     bool isWildCardAbility = false;
     bool isUltimateAbility = false;
 
-    private float basicCooldown = 1f;
-    private float defensiveCooldown = 10f;
-    private float wildcardCooldown = 10f;
-    private float ultimateCooldown = 15f;
+    public float basicCooldown = 1f;
+    public float defensiveCooldown = 10f;
+    public float wildcardCooldown = 10f;
+    public float ultimateCooldown = 15f;
     // for cooldown
     private Dictionary<string, float> lastUsedTime = new Dictionary<string, float>();
 
