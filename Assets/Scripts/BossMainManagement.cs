@@ -304,10 +304,22 @@ public class BossMainManagement : MonoBehaviour
         {
             // Instantiate the shield as a child of the boss
             Vector3 shieldPosition = transform.position; // Get current position
-            shieldPosition.y += 5f; // Increase Y position by +1
+            shieldPosition.y += 5f; // Increase Y position by +5
 
             activeShield = Instantiate(shieldPrefab, shieldPosition, Quaternion.identity, transform);
             Debug.Log("Shield instantiated as a child of the boss.");
+
+            // Locate the Slider component within the instantiated shield
+            Slider shieldSlider = activeShield.GetComponentInChildren<Slider>();
+            if (shieldSlider != null)
+            {
+                shieldHealthSlider = shieldSlider;
+                Debug.Log("Shield slider dynamically assigned.");
+            }
+            else
+            {
+                Debug.LogWarning("No slider found in the shield prefab.");
+            }
         }
         InvokeRepeating("Phase2Behavior", 0f, 30f);
     }
