@@ -392,7 +392,7 @@ NavMeshAgent:
   m_Radius: 0.5
   m_Speed: 15
   m_Acceleration: 34
-  avoidancePriority: 50
+  avoidancePriority: 49
   m_AngularSpeed: 513
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
@@ -448,8 +448,6 @@ MonoBehaviour:
   healthSlider: {fileID: 0}
   xpSlider: {fileID: 0}
   isInvincible: 0
-  gameOverScreen: {fileID: 0}
-  pauseScreen: {fileID: 0}
   enemiesFollowing: 0
   drinkingSound: {fileID: 8300000, guid: 6f6710944de458c43871c5898df0bad4, type: 3}
   dyingSound: {fileID: 8300000, guid: 5f84bf4365456fb4c96ab29bd5f2b23a, type: 3}
@@ -482,6 +480,10 @@ MonoBehaviour:
   smokeBombRadius: 5
   stunDuration: 5
   camera: {fileID: 0}
+  basicCooldown: 1
+  defensiveCooldown: 10
+  wildcardCooldown: 5
+  ultimateCooldown: 10
   chargeSound: {fileID: 8300000, guid: 861732a2452f7da48b6d154271c9880a, type: 3}
   arrowSound: {fileID: 8300000, guid: cd5233fe141b9cdc182b94f5d007a175, type: 3}
 --- !u!114 &6614280493231009075
