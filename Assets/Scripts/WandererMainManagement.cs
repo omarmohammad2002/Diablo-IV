@@ -32,9 +32,9 @@ public class WandererMainManagement : MonoBehaviour
     public bool isInvincible = false;
     private bool isSlowMotion = false;
     // abilties 
-    private bool ability1Unlock = true;
-    private bool ability2Unlock = true;
-    private bool ability3Unlock = true;
+    private bool ability1Unlock = false;
+    private bool ability2Unlock = false;
+    private bool ability3Unlock = false;
     // Game Over Screen
     public GameObject gameOverScreen;
     // Pause Game
@@ -234,6 +234,10 @@ public class WandererMainManagement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.X))
         {
             addXP(100);
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            addRuneFragment();
         }
     }
     public void DealDamage(int amount)
