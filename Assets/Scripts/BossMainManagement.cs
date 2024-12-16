@@ -2,10 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+//using UnityEngine.UIElements;
+using UnityEngine.UI; // For UI elements like sliders
 
 public class BossMainManagement : MonoBehaviour
 {
+     [Header("UI Sliders")]
+    [SerializeField] private Slider bossHealthSlider; // Slider for boss health
+    [SerializeField] private Slider shieldHealthSlider; // Slider for shield health
     private int maxHealth = 50;
     public int currentHealth;
     public bool minionsAlive = false;
@@ -65,6 +69,8 @@ public class BossMainManagement : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         slowedSpeed = originalSpeed * 0.25f;
         SpawnHealingPotions();
+        // Initialize sliders
+        InitializeSliders();
 
     }
 
@@ -103,6 +109,7 @@ public class BossMainManagement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+         UpdateSliders();
         if (currentPhase == 0 && currentHealth < maxHealth && !inPhase) //this ensures wanderer attacks first
         {
             currentPhase = 1; 
@@ -129,6 +136,38 @@ public class BossMainManagement : MonoBehaviour
         {
             FacePlayer();
         } 
+    }
+
+    private void InitializeSliders()
+    {
+        // Initialize boss health slider
+        if (bossHealthSlider != null)
+        {
+            bossHealthSlider.maxValue = maxHealth;
+            bossHealthSlider.value = currentHealth;
+        }
+
+        // Initialize shield health slider
+        if (shieldHealthSlider != null)
+        {
+            shieldHealthSlider.value = shieldHealth;
+            shieldHealthSlider.gameObject.SetActive(false); // Hide initially
+        }
+    }
+     private void UpdateSliders()
+    {
+        // Update boss health slider
+        if (bossHealthSlider != null)
+        {
+            bossHealthSlider.value = currentHealth;
+        }
+
+        // Update shield health slider
+        if (shieldHealthSlider != null)
+        {
+            shieldHealthSlider.value = shieldHealth;
+            shieldHealthSlider.gameObject.SetActive(shieldActive); // Show/hide based on shield status
+        }
     }
 
     private void FacePlayer()

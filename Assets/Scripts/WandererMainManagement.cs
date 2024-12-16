@@ -32,9 +32,9 @@ public class WandererMainManagement : MonoBehaviour
     public bool isInvincible = false;
     private bool isSlowMotion = false;
     // abilties 
-    private bool ability1Unlock = true;
-    private bool ability2Unlock = true;
-    private bool ability3Unlock = true;
+    private bool ability1Unlock = false;
+    private bool ability2Unlock = false;
+    private bool ability3Unlock = false;
     // Game Over Screen
     public GameObject gameOverScreen;
     // Pause Game
@@ -140,19 +140,19 @@ public class WandererMainManagement : MonoBehaviour
       public void UpdateUI()
     {
         if (healthText != null)
-            healthText.text = $"HP:                        {currentHealth}/{maxHealth}";
+            healthText.text = $"HP:                    {currentHealth}/{maxHealth}";
         
         if (xpText != null)
-            xpText.text = $"XP:                            {XP}/{maxXP}";
+            xpText.text = $"XP:                   {XP}/{maxXP}";
         
         if (levelText != null)
-            levelText.text = $"Level: {currentLevel}/{maxLevel}";
+            levelText.text = $"{currentLevel}";
         
         if (healingPotionsText != null)
             healingPotionsText.text = $"Potions:                {healingPotions}";
         
         if (abilityPointsText != null)
-            abilityPointsText.text = $"Ability Points:      {abilityPoints}";
+            abilityPointsText.text = $"Ability Points:        {abilityPoints}";
 
         if (RuneFragmentsText != null)
             RuneFragmentsText.text = $"Fragments:           {runeFragments}";
