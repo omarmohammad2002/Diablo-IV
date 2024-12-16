@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class BarbarianAbilities : MonoBehaviour
 {
@@ -33,6 +34,10 @@ public class BarbarianAbilities : MonoBehaviour
 
     private AudioSource AudioSource; 
     public AudioClip chargeSound;
+
+    [SerializeField] private Slider Cooldown1Slider;
+    [SerializeField] private Slider Cooldown2Slider;
+    [SerializeField] private Slider Cooldown3Slider;
 
     [SerializeField] private GameObject destructionPrefab;
 
@@ -66,6 +71,7 @@ public class BarbarianAbilities : MonoBehaviour
 
     void Update()
     {
+        
         float currentTime = Time.time;
 
         if (!isUltimateActive && !isWildcardActive && Input.GetMouseButtonDown(1)) // Basic Ability

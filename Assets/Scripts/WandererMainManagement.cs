@@ -25,6 +25,7 @@ public class WandererMainManagement : MonoBehaviour
     [SerializeField] private Slider healthSlider; // Reference to the slider
 
     [SerializeField] private Slider xpSlider; // Reference to the XP slider
+
     // Wanderer's Health
     // Wanderer's Inventory
     // Cheats and Gameplay Modifiers
@@ -139,10 +140,10 @@ public class WandererMainManagement : MonoBehaviour
       public void UpdateUI()
     {
         if (healthText != null)
-            healthText.text = $"HP:                          {currentHealth}/{maxHealth}";
+            healthText.text = $"HP:                        {currentHealth}/{maxHealth}";
         
         if (xpText != null)
-            xpText.text = $"XP:                              {XP}/{maxXP}";
+            xpText.text = $"XP:                            {XP}/{maxXP}";
         
         if (levelText != null)
             levelText.text = $"Level: {currentLevel}/{maxLevel}";
@@ -317,6 +318,7 @@ public class WandererMainManagement : MonoBehaviour
         if ((healingPotions > 0) && (currentHealth < maxHealth))
         {
             Animator.SetTrigger("Drinking");
+            Debug.Log("drinking");
 
             Heal((int)((50f / 100f) * maxHealth)); // Heal by 50 health points (adjust as needed)
             useHealingPotion(); // Reduce potion count
