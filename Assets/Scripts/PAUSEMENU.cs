@@ -50,6 +50,7 @@ public class PAUSEMENU : MonoBehaviour
     // Function to quit the game and load the main menu
     public void QuitToMainMenu()
     {
+        Time.timeScale = 1f;  // Ensure the game time is running normally
         SceneManager.LoadScene("mainmenu");  // Replace with your actual Main Menu scene name
         Debug.Log(1);
     }

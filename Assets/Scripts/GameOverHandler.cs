@@ -18,11 +18,12 @@ public class GameOverHandler : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         boss = GameObject.FindGameObjectWithTag("Boss");
-        bossMainManagement = boss.GetComponent<BossMainManagement>();
+ 
     }
 
     void Update()
     {
+        
         if (player != null)
         {
             mainManagement = player.GetComponent<WandererMainManagement>();
@@ -33,7 +34,10 @@ public class GameOverHandler : MonoBehaviour
                     StartCoroutine(ShowGameOverWithDelay(5f));
                 }
             }
-
+            if (boss != null)
+            {
+                bossMainManagement = boss.GetComponent<BossMainManagement>();
+            }
             if (bossMainManagement != null)
             {
                 Debug.Log(bossMainManagement.Done);

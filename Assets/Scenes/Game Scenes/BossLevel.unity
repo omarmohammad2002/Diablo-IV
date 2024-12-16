@@ -3284,7 +3284,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_TargetDisplay: 0
 --- !u!224 &1062507177
 RectTransform:
@@ -5508,6 +5508,9 @@ MonoBehaviour:
   sorcererPrefab: {fileID: 1000013586557078, guid: 3c9c8a8bf50e6b5439ab9db67bc82586, type: 3}
   barbarianPrefab: {fileID: 8609651014790174503, guid: 22a81ba7c4a1d9a439741ff1ec5baa7d, type: 3}
   roguePrefab: {fileID: 3108186402533337602, guid: 694d828e349858b418bbf2a185c0a83d, type: 3}
+  sorcererHUDPrefab: {fileID: 0}
+  barbarianHUDPrefab: {fileID: 0}
+  rogueHUDPrefab: {fileID: 0}
   spawnPoint: {fileID: 1792017414}
 --- !u!4 &1462454821
 Transform:
@@ -6125,6 +6128,10 @@ PrefabInstance:
     - target: {fileID: 8119454539014316100, guid: 1151b8ba874f8b347b07587fcd72842f, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230513895261369488, guid: 1151b8ba874f8b347b07587fcd72842f, type: 3}
+      propertyPath: m_SortingOrder
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

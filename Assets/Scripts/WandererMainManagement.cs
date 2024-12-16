@@ -166,15 +166,21 @@ public class WandererMainManagement : MonoBehaviour
         {
             Time.timeScale = 0; // Pause the game
             // Open the pause screen
-            pauseScreen.SetActive(true);
-            Debug.Log("Game Paused");
+            if (pauseScreen != null)
+            {
+                pauseScreen.SetActive(true);
+                Debug.Log("Game Paused");
+            }
         }
         else
         {
             Time.timeScale = 1; // Resume the game
             // Close the pause screen
-            pauseScreen.SetActive(false);
-            Debug.Log("Game Resumed");
+            if (pauseScreen != null)
+            {
+                pauseScreen.SetActive(false);
+                Debug.Log("Game Resumed");
+            }
         }
     }
     void HandleCheatInputs()
