@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class WandererMainManagement : MonoBehaviour
 {
@@ -32,16 +32,15 @@ public class WandererMainManagement : MonoBehaviour
     public bool isInvincible = false;
     private bool isSlowMotion = false;
     // abilties 
+
     private bool ability1Unlock = false;
     private bool ability2Unlock = false;
     private bool ability3Unlock = false;
-    // Game Over Screen
-    public GameObject gameOverScreen;
     // Pause Game
     private bool isGamePaused = false;
-    public GameObject pauseScreen;
+    private GameObject pauseScreen;
 
-    private bool isDead = false; 
+    private bool isDead = false;
 
     // Enemies Following
     public int enemiesFollowing = 0;
@@ -50,18 +49,18 @@ public class WandererMainManagement : MonoBehaviour
 
     //audio
     private AudioSource AudioSource;
-    public AudioClip drinkingSound ;
+    public AudioClip drinkingSound;
     public AudioClip dyingSound;
-    public AudioClip damagedSound ;
+    public AudioClip damagedSound;
     public AudioClip pickUpSound;
 
 
-    public TextMeshProUGUI  healthText;
-    public TextMeshProUGUI  xpText;
-    public TextMeshProUGUI  levelText;
-    public TextMeshProUGUI  healingPotionsText;
-    public TextMeshProUGUI  abilityPointsText;
-     public TextMeshProUGUI  RuneFragmentsText;
+    public TextMeshProUGUI healthText;
+    public TextMeshProUGUI xpText;
+    public TextMeshProUGUI levelText;
+    public TextMeshProUGUI healingPotionsText;
+    public TextMeshProUGUI abilityPointsText;
+    public TextMeshProUGUI RuneFragmentsText;
 
     public GameObject bloodPrefab; // Prefab to instantiate
 
@@ -71,7 +70,7 @@ public class WandererMainManagement : MonoBehaviour
     {
         currentLevel = 1;
         maxHealth = 100 * currentLevel;
-        currentHealth = maxHealth ;
+        currentHealth = maxHealth;
         abilityPoints = 0;
         healingPotions = 0;
         runeFragments = 0;
@@ -81,28 +80,28 @@ public class WandererMainManagement : MonoBehaviour
         InitializeSlider(); // Set up the slider at the start
     }
 
-   private void InitializeSlider()
-{
-    if (healthSlider != null)
+    private void InitializeSlider()
     {
-        healthSlider.maxValue = maxHealth;
-        healthSlider.value = currentHealth;
-    }
-    else
-    {
-        Debug.LogWarning("Health slider is not assigned!");
-    }
+        if (healthSlider != null)
+        {
+            healthSlider.maxValue = maxHealth;
+            healthSlider.value = currentHealth;
+        }
+        else
+        {
+            Debug.LogWarning("Health slider is not assigned!");
+        }
 
-    if (xpSlider != null)
-    {
-        xpSlider.maxValue = maxXP;
-        xpSlider.value = XP;
+        if (xpSlider != null)
+        {
+            xpSlider.maxValue = maxXP;
+            xpSlider.value = XP;
+        }
+        else
+        {
+            Debug.LogWarning("XP slider is not assigned!");
+        }
     }
-    else
-    {
-        Debug.LogWarning("XP slider is not assigned!");
-    }
-}
     public void PlaySound(string soundName)
     {
         switch (soundName)
@@ -137,20 +136,21 @@ public class WandererMainManagement : MonoBehaviour
         UpdateUI(); // Update UI every frame
     }
 
-      public void UpdateUI()
+    public void UpdateUI()
     {
         if (healthText != null)
-            healthText.text = $"HP:                        {currentHealth}/{maxHealth}";
-        
+            healthText.text = $"HP:                          {currentHealth}/{maxHealth}";
+
         if (xpText != null)
-            xpText.text = $"XP:                            {XP}/{maxXP}";
-        
+            xpText.text = $"XP:                              {XP}/{maxXP}";
+
+
         if (levelText != null)
             levelText.text = $"Level: {currentLevel}/{maxLevel}";
-        
+
         if (healingPotionsText != null)
             healingPotionsText.text = $"Potions:                {healingPotions}";
-        
+
         if (abilityPointsText != null)
             abilityPointsText.text = $"Ability Points:      {abilityPoints}";
 
@@ -193,7 +193,7 @@ public class WandererMainManagement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             isInvincible = !isInvincible;
-            
+
         }
 
         // Toggle Slow Motion: Makes the gameplay in half speed by pressing �M�
@@ -245,13 +245,13 @@ public class WandererMainManagement : MonoBehaviour
         // This function deals damage to the player by a specific amount, to be used in enemy attack logic scripts
         if (currentHealth > 0)
         {
-           
-        
-            if (!isInvincible)
-          {
 
-            if (healthSlider != null)
-                healthSlider.value = currentHealth; // Update the slider
+
+            if (!isInvincible)
+            {
+
+                if (healthSlider != null)
+                    healthSlider.value = currentHealth; // Update the slider
 
                 currentHealth -= amount;
                 TriggerDamageAnimation(); // Updated to use the new method
@@ -274,8 +274,6 @@ public class WandererMainManagement : MonoBehaviour
                         agent.enabled = false;
                         Debug.Log("NavMeshAgent disabled");
                     }
-                    gameOverScreen.SetActive(true);
-                    // More gameover logic to be added here if needed, stop/change audio etc
                 }
             }
         }
@@ -336,7 +334,7 @@ public class WandererMainManagement : MonoBehaviour
     public void addHealingPotion()
     {
         healingPotions++;
-        Debug.Log("Health potion added to inventory. Total potions: " + healingPotions);    
+        Debug.Log("Health potion added to inventory. Total potions: " + healingPotions);
         PlaySound("PickUp");
     }
     public void useHealingPotion()
@@ -384,7 +382,7 @@ public class WandererMainManagement : MonoBehaviour
         //This function just updates the max health of the player to a specific amount, to be used in character leveling up script
         maxHealth = amount;
 
-         if (healthSlider != null)
+        if (healthSlider != null)
         {
             healthSlider.maxValue = maxHealth; // Update the slider max value
             healthSlider.value = currentHealth; // Update the slider value
@@ -397,17 +395,18 @@ public class WandererMainManagement : MonoBehaviour
         {
             XP += amount;
             if (xpSlider != null)
-            xpSlider.value = XP; // Update the XP slider
+                xpSlider.value = XP; // Update the XP slider
 
-            if (XP >= maxXP) { 
+            if (XP >= maxXP)
+            {
 
                 if (XP > maxXP)
                     XP = XP - maxXP;
-                else if (XP  == maxXP)
+                else if (XP == maxXP)
                     XP = 0;
 
-                 if (xpSlider != null)
-                xpSlider.value = XP; // Reset XP slider after leveling up
+                if (xpSlider != null)
+                    xpSlider.value = XP; // Reset XP slider after leveling up
 
                 increaseLevel();
                 updateMaxHealth(100 * currentLevel);
@@ -415,16 +414,16 @@ public class WandererMainManagement : MonoBehaviour
                 updatemaxXP(100 * currentLevel);
                 addabilityPoints();
             }
+        }
     }
-}
     public void updatemaxXP(int amount)
     {
         //This function just updates the max XP of the player to a specific amount, to be used in character leveling up script
         maxXP = amount;
-         if (xpSlider != null)
-    {
-        xpSlider.maxValue = maxXP; // Update the slider max value
-    }
+        if (xpSlider != null)
+        {
+            xpSlider.maxValue = maxXP; // Update the slider max value
+        }
     }
 
 
@@ -505,7 +504,7 @@ public class WandererMainManagement : MonoBehaviour
         return isInvincible;
     }
 
-    public void addEnemyFollowing ()
+    public void addEnemyFollowing()
     {
         enemiesFollowing++;
     }

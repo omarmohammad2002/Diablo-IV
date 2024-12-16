@@ -23,6 +23,7 @@ TagManager:
   - Ability 1 cover
   - Ability 2 cover
   - Pick
+  - GameOver
   layers:
   - Default
   - TransparentFX

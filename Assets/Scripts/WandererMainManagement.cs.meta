@@ -3,7 +3,22 @@ guid: 2b111613825bd9e4994bf7b67c4db312
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - healthSlider: {instanceID: 0}
+  - xpSlider: {instanceID: 0}
+  - gameOverScreen: {fileID: 6172929549870730549, guid: 1151b8ba874f8b347b07587fcd72842f, type: 3}
+  - pauseScreen: {instanceID: 0}
+  - drinkingSound: {instanceID: 0}
+  - dyingSound: {instanceID: 0}
+  - damagedSound: {instanceID: 0}
+  - pickUpSound: {instanceID: 0}
+  - healthText: {instanceID: 0}
+  - xpText: {instanceID: 0}
+  - levelText: {instanceID: 0}
+  - healingPotionsText: {instanceID: 0}
+  - abilityPointsText: {instanceID: 0}
+  - RuneFragmentsText: {instanceID: 0}
+  - bloodPrefab: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
