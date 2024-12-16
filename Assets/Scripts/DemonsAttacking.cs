@@ -12,6 +12,8 @@ public class DemonsAttacking : MonoBehaviour
     private GameObject player;
     private BoxCollider swordCollider;
     private CapsuleCollider bombCollider;
+    private GameObject explosiveEffect;
+
 
    void Start()
     {
@@ -20,6 +22,8 @@ public class DemonsAttacking : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         bombCollider = GetComponentInChildren<CapsuleCollider>();
         BoxCollider[] colliders = GetComponentsInChildren<BoxCollider>();
+        explosiveEffect = transform.Find("explosion_particle").gameObject;
+
 
         foreach (BoxCollider collider in colliders)
         {
@@ -59,6 +63,17 @@ public class DemonsAttacking : MonoBehaviour
     void DisableBombCollider()
     {
         bombCollider.enabled = false;
+    }
+
+    
+    void EnableExplosionEffect()
+    {
+        explosiveEffect.SetActive(true);
+    }
+
+    void DisableExplosionEffect()
+    {
+        explosiveEffect.SetActive(false);
     }
 
 

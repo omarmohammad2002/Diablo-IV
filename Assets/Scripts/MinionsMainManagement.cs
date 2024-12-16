@@ -20,6 +20,8 @@ public class MinionsMainManagement : MonoBehaviour
     private MinionState previousState; // Store the state before stopping
 
     [SerializeField] private Slider MinionHealthSlider; // Reference to the slider
+    private AudioSource AudioSource;
+    public AudioClip deathSound;
 
     void Awake()
     {
@@ -28,6 +30,7 @@ public class MinionsMainManagement : MonoBehaviour
         attackPower = 5;
         xpReward = 10;
         currentState = MinionState.Idle;
+        AudioSource = GetComponent<AudioSource>();
 
          if (MinionHealthSlider != null)
         {
@@ -82,6 +85,7 @@ public class MinionsMainManagement : MonoBehaviour
 
         minionAnimator.SetLayerWeight(3, 1);
         minionAnimator.SetBool("isDead", true);
+        AudioSource.PlayOneShot(deathSound);
         isDead = true;
     }
 
