@@ -46,6 +46,7 @@ public class WandererMainManagement : MonoBehaviour
     public int enemiesFollowing = 0;
 
     private Animator Animator;
+    public bool animationPlayed;
 
     //audio
     private AudioSource AudioSource;
@@ -289,6 +290,7 @@ public class WandererMainManagement : MonoBehaviour
                     // Trigger death animation and game over logic
                     Animator.SetTrigger("Dead");
                     isDead = true;
+                    animationPlayed = true;
                     NavMeshAgent agent = GetComponent<NavMeshAgent>();
                     if (agent != null)
                     {
