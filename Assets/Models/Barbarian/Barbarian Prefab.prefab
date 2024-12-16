@@ -425,7 +425,6 @@ MonoBehaviour:
   abilityPointsText: {fileID: 0}
   RuneFragmentsText: {fileID: 0}
   bloodPrefab: {fileID: 8645706117533444389, guid: 238fc41f11bf41e4d8fb8a3e936b7366, type: 3}
-  gameOverCanvas: {fileID: 6172929549870730549, guid: 1151b8ba874f8b347b07587fcd72842f, type: 3}
 --- !u!114 &8240539341964832337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,6 +443,9 @@ MonoBehaviour:
   wildcardCooldown: 5
   ultimateCooldown: 4
   chargeSound: {fileID: 8300000, guid: 861732a2452f7da48b6d154271c9880a, type: 3}
+  Cooldown1Slider: {fileID: 0}
+  Cooldown2Slider: {fileID: 0}
+  Cooldown3Slider: {fileID: 0}
   destructionPrefab: {fileID: 5613628036869185794, guid: 861b95d1cd3b2d94eb042c165d10964a, type: 3}
 --- !u!65 &4835398029704341498
 BoxCollider:
@@ -478,7 +480,7 @@ NavMeshAgent:
   m_Radius: 0.5
   m_Speed: 15
   m_Acceleration: 99999
-  avoidancePriority: 50
+  avoidancePriority: 49
   m_AngularSpeed: 0
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
