@@ -5,8 +5,12 @@ public class GameStart : MonoBehaviour
 {
     public void OnBossLevelButtonPressed()
     {
-        Debug.Log("Boss Level Button Pressed");
         GameManager.Instance.IsBossLevel = true;
+    }
+
+    public void OnNormalLevelButtonPressed()
+    {
+        GameManager.Instance.IsBossLevel = false;
     }
 
     public void OnSorcererSelected()
