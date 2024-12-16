@@ -145,14 +145,8 @@ public class BossMainManagement : MonoBehaviour
         {
             bossHealthSlider.maxValue = maxHealth;
             bossHealthSlider.value = currentHealth;
-        }
-
-        // Initialize shield health slider
-        if (shieldHealthSlider != null)
-        {
-            shieldHealthSlider.value = shieldHealth;
-            shieldHealthSlider.gameObject.SetActive(false); // Hide initially
-        }
+        }      
+        
     }
      private void UpdateSliders()
     {
@@ -165,7 +159,11 @@ public class BossMainManagement : MonoBehaviour
         // Update shield health slider
         if (shieldHealthSlider != null)
         {
+            shieldHealthSlider.maxValue = 50;
             shieldHealthSlider.value = shieldHealth;
+            Debug.Log("UPDATE VALUE shieldhealth" + shieldHealthSlider.value );
+            Debug.Log("UPDATE SHIELDHEALTH VAL" + shieldHealth);
+            Debug.Log("UPDATE Max VAL" + shieldHealthSlider.maxValue);
             shieldHealthSlider.gameObject.SetActive(shieldActive); // Show/hide based on shield status
         }
     }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4964495952019158544}
   m_Layer: 0
   m_Name: barbarian_shield_aura
-  m_TagString: Untagged
+  m_TagString: ShieldHealthSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -346,6 +346,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slider
       objectReference: {fileID: 0}
+    - target: {fileID: 6593089475368026944, guid: c88010a945f4b2749bd91666fa47d29b, type: 3}
+      propertyPath: m_TagString
+      value: ShieldHealthSlider
+      objectReference: {fileID: 0}
     - target: {fileID: 9121473820355109088, guid: c88010a945f4b2749bd91666fa47d29b, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -400,11 +404,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9121473820355109088, guid: c88010a945f4b2749bd91666fa47d29b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.91
+      value: -3.1395953
       objectReference: {fileID: 0}
     - target: {fileID: 9121473820355109088, guid: c88010a945f4b2749bd91666fa47d29b, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.8601193
+      value: 0.04430777
       objectReference: {fileID: 0}
     - target: {fileID: 9121473820355109088, guid: c88010a945f4b2749bd91666fa47d29b, type: 3}
       propertyPath: m_LocalRotation.x
@@ -412,7 +416,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9121473820355109088, guid: c88010a945f4b2749bd91666fa47d29b, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.51009285
+      value: -0.99901795
       objectReference: {fileID: 0}
     - target: {fileID: 9121473820355109088, guid: c88010a945f4b2749bd91666fa47d29b, type: 3}
       propertyPath: m_LocalRotation.z
@@ -420,7 +424,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9121473820355109088, guid: c88010a945f4b2749bd91666fa47d29b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.38000488
+      value: 1.0635376
       objectReference: {fileID: 0}
     - target: {fileID: 9121473820355109088, guid: c88010a945f4b2749bd91666fa47d29b, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -432,7 +436,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9121473820355109088, guid: c88010a945f4b2749bd91666fa47d29b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -61.34
+      value: -174.921
       objectReference: {fileID: 0}
     - target: {fileID: 9121473820355109088, guid: c88010a945f4b2749bd91666fa47d29b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -470,8 +474,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 8036533896910978690}
-  colorStart: {r: 1, g: 0, b: 0, a: 1}
-  colorEnd: {r: 0, g: 1, b: 0, a: 1}
+  colorStart: {r: 0.5346912, g: 0.5136703, b: 0.8867924, a: 1}
+  colorEnd: {r: 0.014845048, g: 0.08182889, b: 0.5245282, a: 1}
 --- !u!114 &8036533896910978690 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 850017668238408490, guid: c88010a945f4b2749bd91666fa47d29b, type: 3}
