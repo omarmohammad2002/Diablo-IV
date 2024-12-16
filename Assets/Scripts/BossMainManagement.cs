@@ -209,9 +209,10 @@ public class BossMainManagement : MonoBehaviour
         // Instantiate the idle point and minion as children of arenaGround
         Transform idlePoint = Instantiate(minionIdlePointPrefab, spawnPosition, Quaternion.identity, arenaGround.transform);
         GameObject minion = Instantiate(minionPrefab, spawnPosition, Quaternion.identity, arenaGround.transform);
+        minion.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
-        // Assign the idle point to the minion
-        MinionsChasingPlayer minionScript = minion.GetComponent<MinionsChasingPlayer>();
+            // Assign the idle point to the minion
+            MinionsChasingPlayer minionScript = minion.GetComponent<MinionsChasingPlayer>();
         if (minionScript != null)
         {
             minionScript.idlePoint = idlePoint;
