@@ -30,7 +30,7 @@ public class BossMainManagement : MonoBehaviour
     public GameObject arenaGround;
     private GameObject activeShield;
     private Animator animator;
-    
+
     private GameObject Player;
     private GameObject activeAura;
 
@@ -43,7 +43,7 @@ public class BossMainManagement : MonoBehaviour
     public AudioClip damagingSound;
 
     private AudioSource audioSource;
-    
+
     // for stunnning
     private bool isStunned = false; // Track if the boss is stunned
     private Coroutine stunCoroutine; // Reference to the active stun coroutine
@@ -54,6 +54,7 @@ public class BossMainManagement : MonoBehaviour
     private Coroutine slowCoroutine; // Reference to the active slow coroutine
     private float originalSpeed = 5f; // Original rotation speed
     private float slowedSpeed; // Slowed rotation speed
+    public bool Done;
 
     // Start is called before the first frame update
     void Start()
@@ -74,7 +75,7 @@ public class BossMainManagement : MonoBehaviour
         {
             case "Summon":
                 audioSource.PlayOneShot(summonSound);
-                Debug.Log("Summon sound played");   
+                Debug.Log("Summon sound played");
                 break;
             case "DiveBomb":
                 audioSource.PlayOneShot(diveBombSound);
@@ -105,7 +106,7 @@ public class BossMainManagement : MonoBehaviour
     {
         if (currentPhase == 0 && currentHealth < maxHealth && !inPhase) //this ensures wanderer attacks first
         {
-            currentPhase = 1; 
+            currentPhase = 1;
             StartCoroutine(StartCombat());
             inPhase = true;
 
@@ -128,7 +129,7 @@ public class BossMainManagement : MonoBehaviour
         if (canRotate)
         {
             FacePlayer();
-        } 
+        }
     }
 
     private void FacePlayer()
@@ -161,7 +162,7 @@ public class BossMainManagement : MonoBehaviour
                 break;
 
             case "Spikes":
-                StartCoroutine(Spikes());   
+                StartCoroutine(Spikes());
                 break;
 
             case "Aura":
@@ -197,45 +198,45 @@ public class BossMainManagement : MonoBehaviour
 
 
     private void SummonMinions()
-{
-    Debug.Log("Lilith summons Minions!");
-
-    for (int i = 0; i < 3; i++)
     {
-        // Calculate a random relative position around the boss
-        Vector3 relativePosition = new Vector3(UnityEngine.Random.Range(-10, 10), 0, UnityEngine.Random.Range(-10, 10));
-        Vector3 spawnPosition = transform.position + relativePosition;
+        Debug.Log("Lilith summons Minions!");
 
-        // Instantiate the idle point and minion as children of arenaGround
-        Transform idlePoint = Instantiate(minionIdlePointPrefab, spawnPosition, Quaternion.identity, arenaGround.transform);
-        GameObject minion = Instantiate(minionPrefab, spawnPosition, Quaternion.identity, arenaGround.transform);
-        minion.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        for (int i = 0; i < 3; i++)
+        {
+            // Calculate a random relative position around the boss
+            Vector3 relativePosition = new Vector3(UnityEngine.Random.Range(-10, 10), 0, UnityEngine.Random.Range(-10, 10));
+            Vector3 spawnPosition = transform.position + relativePosition;
+
+            // Instantiate the idle point and minion as children of arenaGround
+            Transform idlePoint = Instantiate(minionIdlePointPrefab, spawnPosition, Quaternion.identity, arenaGround.transform);
+            GameObject minion = Instantiate(minionPrefab, spawnPosition, Quaternion.identity, arenaGround.transform);
+            minion.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
             // Assign the idle point to the minion
             MinionsChasingPlayer minionScript = minion.GetComponent<MinionsChasingPlayer>();
-        if (minionScript != null)
+            if (minionScript != null)
+            {
+                minionScript.idlePoint = idlePoint;
+            }
+        }
+
+        minionsAlive = true;
+    }
+
+    private void SpawnHealingPotions()
+    {
+        Debug.Log("Lilith spawns healing potions!");
+
+        for (int i = 0; i < 10; i++)
         {
-            minionScript.idlePoint = idlePoint;
+            // Calculate a random position within the arena
+            Vector3 randomPosition = new Vector3(UnityEngine.Random.Range(-50, 50), 1.5f, UnityEngine.Random.Range(-50, 50));
+            Vector3 spawnPosition = arenaGround.transform.position + randomPosition;
+
+            // Instantiate the healing potion as a child of arenaGround
+            Instantiate(healingPotionPrefab, spawnPosition, Quaternion.identity, arenaGround.transform);
         }
     }
-
-    minionsAlive = true;
-}
-
-private void SpawnHealingPotions()
-{
-    Debug.Log("Lilith spawns healing potions!");
-
-    for (int i = 0; i < 10; i++)
-    {
-        // Calculate a random position within the arena
-        Vector3 randomPosition = new Vector3(UnityEngine.Random.Range(-50, 50), 1.5f, UnityEngine.Random.Range(-50, 50));
-        Vector3 spawnPosition = arenaGround.transform.position + randomPosition;
-
-        // Instantiate the healing potion as a child of arenaGround
-        Instantiate(healingPotionPrefab, spawnPosition, Quaternion.identity, arenaGround.transform);
-    }
-}
 
 
     private void DiveBombAttack()
@@ -372,7 +373,7 @@ private void SpawnHealingPotions()
                     else
                     {
                         shieldHealth -= damage;
-                        if(shieldHealth == 0 )
+                        if (shieldHealth == 0)
                         {
                             shieldActive = false;
                             Destroy(activeShield);
@@ -437,7 +438,8 @@ private void SpawnHealingPotions()
     public void Die()
     {
         animator.SetTrigger("Dead");
-        canRotate = false ;
+        canRotate = false;
+        Done = true;
         //Game ends and studio credits roll
         //Destroy(gameObject);
     }
