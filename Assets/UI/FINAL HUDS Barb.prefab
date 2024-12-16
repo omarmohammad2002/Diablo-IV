@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 853055413234280834}
   m_Layer: 0
   m_Name: FINAL HUDS Barb
-  m_TagString: Untagged
+  m_TagString: BarbarianHUD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

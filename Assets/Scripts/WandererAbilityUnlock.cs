@@ -11,7 +11,6 @@ public class WandererAbilityUnlock : MonoBehaviour
     private GameObject ability1Cover; // Ability 1 UI cover
     private GameObject ability2Cover; // Ability 2 UI cover
     private GameObject ability3Cover; // Ability 3 UI cover
-    private GameObject pickText;
 
 
     void Start()
@@ -22,9 +21,6 @@ public class WandererAbilityUnlock : MonoBehaviour
         ability1Cover = GameObject.FindWithTag("Ability 1 cover");
         ability2Cover = GameObject.FindWithTag("Ability 2 cover");
         ability3Cover = GameObject.FindWithTag("Ability 3 cover");
-        pickText = GameObject.FindWithTag("Pick");
-
-        pickText.SetActive(false);
     }
 
     // Update is called once per frame
@@ -37,7 +33,6 @@ public class WandererAbilityUnlock : MonoBehaviour
     {
         if (mainManagement.getAbilityPoints() > 0)
         {
-        pickText.SetActive(true);
 
             if (ability1Cover != null)
         {
@@ -83,8 +78,6 @@ public class WandererAbilityUnlock : MonoBehaviour
                 ability3Cover.SetActive(true);
             }
 
-            pickText.SetActive(false);
-
             Debug.Log("Ability1unlocked");
             mainManagement.unlockAbility1();
             mainManagement.useabilityPoints();
@@ -112,7 +105,6 @@ public class WandererAbilityUnlock : MonoBehaviour
                 ability3Cover.SetActive(true);
             }
 
-            pickText.SetActive(false);
         }
         
     }
@@ -136,7 +128,6 @@ public class WandererAbilityUnlock : MonoBehaviour
                 ability2Cover.SetActive(true);
             }
 
-            pickText.SetActive(false);
     }
     }
 

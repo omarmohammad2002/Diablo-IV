@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 4792622323053191892}
   m_Layer: 0
   m_Name: FINAL HUDS Sorc
-  m_TagString: Untagged
+  m_TagString: SorcererHUD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

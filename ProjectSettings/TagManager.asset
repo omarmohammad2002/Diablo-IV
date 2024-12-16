@@ -25,6 +25,9 @@ TagManager:
   - Pick
   - GameOver
   - ShieldHealthSlider
+  - BarbarianHUD
+  - SorcererHUD
+  - RogueHUD
   layers:
   - Default
   - TransparentFX

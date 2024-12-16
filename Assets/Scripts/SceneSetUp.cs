@@ -6,6 +6,9 @@ public class SceneSetUp : MonoBehaviour
     public GameObject sorcererPrefab;
     public GameObject barbarianPrefab;
     public GameObject roguePrefab;
+    public GameObject sorcererHUDPrefab;
+    public GameObject barbarianHUDPrefab;
+    public GameObject rogueHUDPrefab;
     public Transform spawnPoint; // Set this in the Inspector
 
     private void Awake()
@@ -34,6 +37,18 @@ private void SpawnCharacter()
     if (characterPrefab != null)
     {
         GameObject character = Instantiate(characterPrefab, spawnPoint.position, spawnPoint.rotation);
+        // switch (characterName)
+        // {
+        //     case "Sorcerer":
+        //         GameObject sorcererHUD = Instantiate(sorcererHUDPrefab, Vector3.zero, Quaternion.identity);
+        //         break;
+        //     case "Barbarian":
+        //         GameObject barbarianHUD = Instantiate(barbarianHUDPrefab, Vector3.zero, Quaternion.identity);
+        //         break;
+        //     case "Rogue":
+        //         GameObject rogueHUD = Instantiate(rogueHUDPrefab, Vector3.zero, Quaternion.identity);
+        //         break;
+        // }
 
         // Configure Cinemachine camera
         CinemachineVirtualCamera vCam = FindObjectOfType<CinemachineVirtualCamera>();
