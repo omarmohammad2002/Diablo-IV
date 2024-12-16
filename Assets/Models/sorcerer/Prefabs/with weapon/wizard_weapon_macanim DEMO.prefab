@@ -17131,13 +17131,11 @@ MonoBehaviour:
   healthSlider: {fileID: 0}
   xpSlider: {fileID: 0}
   isInvincible: 0
-  gameOverScreen: {fileID: 6172929549870730549, guid: 1151b8ba874f8b347b07587fcd72842f, type: 3}
-  pauseScreen: {fileID: 0}
   enemiesFollowing: 0
-  drinkingSound: {fileID: 0}
-  dyingSound: {fileID: 0}
-  damagedSound: {fileID: 0}
-  pickUpSound: {fileID: 0}
+  drinkingSound: {fileID: 8300000, guid: 6f6710944de458c43871c5898df0bad4, type: 3}
+  dyingSound: {fileID: 8300000, guid: 5f84bf4365456fb4c96ab29bd5f2b23a, type: 3}
+  damagedSound: {fileID: 8300000, guid: 75473ef153888fd41819e6e86ed5afd1, type: 3}
+  pickUpSound: {fileID: 8300000, guid: a79eed0cf86f7374587a0a46da8dd0fe, type: 3}
   healthText: {fileID: 0}
   xpText: {fileID: 0}
   levelText: {fileID: 0}
@@ -17175,6 +17173,10 @@ MonoBehaviour:
   inferno: {fileID: 5215231338370126180, guid: 28e3595dc42d6804bb45739ee0b76174, type: 3}
   sorcerer: {fileID: 1000013586557078}
   clone: {fileID: 1000013586557078, guid: 62b822564fc67ec4d8b0a1453d9599db, type: 3}
+  basicCooldown: 1
+  defensiveCooldown: 10
+  wildcardCooldown: 10
+  ultimateCooldown: 15
   fireballThrow: {fileID: 8300000, guid: c67071f8affcf0c4e861dfc8eb9ad676, type: 3}
   explode: {fileID: 8300000, guid: 9574081176de1c746b147a2c9c5300cd, type: 3}
   cloneAudio: {fileID: 8300000, guid: 81fb69b8d4b96bc4da539ea137baa5d6, type: 3}
