@@ -9408,7 +9408,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1702453806}
   - component: {fileID: 1702453805}
-  - component: {fileID: 1702453807}
   m_Layer: 0
   m_Name: Background Audio Source
   m_TagString: Untagged
