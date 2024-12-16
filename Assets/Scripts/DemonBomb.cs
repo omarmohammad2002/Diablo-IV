@@ -7,6 +7,10 @@ public class DemonBomb : MonoBehaviour
 
     private CapsuleCollider bombCollider;
     private GameObject player;
+    private AudioSource AudioSource;
+    public AudioClip explosionSound;
+ 
+
 
 
 
@@ -14,6 +18,7 @@ public class DemonBomb : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         bombCollider = GetComponent<CapsuleCollider>();
+        AudioSource = GetComponent<AudioSource>();
         
     }
     
@@ -22,7 +27,8 @@ public class DemonBomb : MonoBehaviour
         if (other.CompareTag("Player") && bombCollider.enabled)
         {
             player.GetComponent<WandererMainManagement>().DealDamage(15);
-            Debug.Log("Player hit By Demon Bomb");
+            AudioSource.PlayOneShot(explosionSound);
+            // Debug.Log("Player hit By Demon Bomb");
           
         }
     }
