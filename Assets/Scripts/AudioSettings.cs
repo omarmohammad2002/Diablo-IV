@@ -3,19 +3,28 @@ using UnityEngine.UI;
 
 public class AudioSettings : MonoBehaviour
 {
-    public Slider volumeSlider;
+    public Slider musicSlider;
+    public Slider effectsSlider;
 
     void Start()
     {
         if (AudioManager.Instance != null)
         {
-            volumeSlider.value = AudioManager.Instance.musicSource.volume;
-            volumeSlider.onValueChanged.AddListener(UpdateVolume);
+            musicSlider.value = AudioManager.Instance.GetMusicVolume();
+            effectsSlider.value = AudioManager.Instance.GetEffectsVolume();
+
+            musicSlider.onValueChanged.AddListener(SetMusicVolume);
+            effectsSlider.onValueChanged.AddListener(SetEffectsVolume);
         }
     }
 
-    public void UpdateVolume(float volume)
+    public void SetMusicVolume(float volume)
     {
         AudioManager.Instance.SetMusicVolume(volume);
+    }
+
+    public void SetEffectsVolume(float volume)
+    {
+        AudioManager.Instance.SetEffectsVolume(volume);
     }
 }
