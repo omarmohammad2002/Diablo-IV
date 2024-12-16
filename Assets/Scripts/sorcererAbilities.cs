@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class sorcererAbilities : MonoBehaviour
 {
@@ -39,6 +40,10 @@ public class sorcererAbilities : MonoBehaviour
     [SerializeField] GameObject smoke;
     private Animator animator;
 
+    [SerializeField] private Slider defensiveCooldownSlider;
+    [SerializeField] private Slider wildcardCooldownSlider;
+    [SerializeField] private Slider ultimateCooldownSlider;
+
 
     // Start is called before the first frame update
     void Start()
@@ -54,12 +59,34 @@ public class sorcererAbilities : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         animator = GetComponent<Animator>();
+
+        // Initialize slider values
+        if (defensiveCooldownSlider != null)
+    {
+        defensiveCooldownSlider.maxValue = defensiveCooldown;
+        defensiveCooldownSlider.value = defensiveCooldown;
+        defensiveCooldownSlider.gameObject.SetActive(false); // Hide initially
+    }
+    if (wildcardCooldownSlider != null)
+    {
+        wildcardCooldownSlider.maxValue = wildcardCooldown;
+        wildcardCooldownSlider.value = wildcardCooldown;
+        wildcardCooldownSlider.gameObject.SetActive(false); // Hide initially
+    }
+    if (ultimateCooldownSlider != null)
+    {
+        ultimateCooldownSlider.maxValue = ultimateCooldown;
+        ultimateCooldownSlider.value = ultimateCooldown;
+        ultimateCooldownSlider.gameObject.SetActive(false); // Hide initially
+    }
     }
 
     // Update is called once per frame
     void Update()
     {
         float currentTime = Time.time;
+        // Update sliders to reflect remaining cooldown times
+        UpdateCooldownSliders(currentTime);
 
         //basic: fireball
         if (Input.GetMouseButtonDown(1) && !isDefensiveAbility && !isUltimateAbility && !isWildCardAbility)
@@ -139,6 +166,30 @@ public class sorcererAbilities : MonoBehaviour
         }
         
     }
+
+    void UpdateCooldownSliders(float currentTime)
+{
+    if (defensiveCooldownSlider != null)
+    {
+        float remainingDefensiveCooldown = Mathf.Max(0, defensiveCooldown - (currentTime - lastUsedTime["Defensive"]));
+        defensiveCooldownSlider.value = remainingDefensiveCooldown;
+        defensiveCooldownSlider.gameObject.SetActive(remainingDefensiveCooldown > 0); // Show slider during cooldown
+    }
+
+    if (wildcardCooldownSlider != null)
+    {
+        float remainingWildcardCooldown = Mathf.Max(0, wildcardCooldown - (currentTime - lastUsedTime["Wildcard"]));
+        wildcardCooldownSlider.value = remainingWildcardCooldown;
+        wildcardCooldownSlider.gameObject.SetActive(remainingWildcardCooldown > 0); // Show slider during cooldown
+    }
+
+    if (ultimateCooldownSlider != null)
+    {
+        float remainingUltimateCooldown = Mathf.Max(0, ultimateCooldown - (currentTime - lastUsedTime["Ultimate"]));
+        ultimateCooldownSlider.value = remainingUltimateCooldown;
+        ultimateCooldownSlider.gameObject.SetActive(remainingUltimateCooldown > 0); // Show slider during cooldown
+    }
+}
 
 
 
@@ -383,6 +434,6 @@ public class sorcererAbilities : MonoBehaviour
         {
             agent.enabled = false;
             Debug.Log("NavMeshAgent disabled");
-        }
-    }*/
+        }
+    }*/
 }
