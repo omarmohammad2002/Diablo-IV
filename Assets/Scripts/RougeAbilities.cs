@@ -273,8 +273,9 @@ public class RougeAbilities : MonoBehaviour
                 Vector3 direction = targetPosition - transform.position;
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 400 * Time.deltaTime);
+                return true;
             }
-            return true;
+            return false;
         }
         else
         {
