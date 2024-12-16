@@ -321,6 +321,10 @@ PrefabInstance:
       value: Barbarian Prefab
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: dfc33f3febaf3fa4ab432772180939a4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: dfc33f3febaf3fa4ab432772180939a4, type: 3}
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
@@ -409,8 +413,6 @@ MonoBehaviour:
   healthSlider: {fileID: 0}
   xpSlider: {fileID: 0}
   isInvincible: 0
-  gameOverScreen: {fileID: 0}
-  pauseScreen: {fileID: 0}
   enemiesFollowing: 0
   drinkingSound: {fileID: 8300000, guid: 6f6710944de458c43871c5898df0bad4, type: 3}
   dyingSound: {fileID: 8300000, guid: 5f84bf4365456fb4c96ab29bd5f2b23a, type: 3}
@@ -423,6 +425,7 @@ MonoBehaviour:
   abilityPointsText: {fileID: 0}
   RuneFragmentsText: {fileID: 0}
   bloodPrefab: {fileID: 8645706117533444389, guid: 238fc41f11bf41e4d8fb8a3e936b7366, type: 3}
+  gameOverCanvas: {fileID: 6172929549870730549, guid: 1151b8ba874f8b347b07587fcd72842f, type: 3}
 --- !u!114 &8240539341964832337
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17129,7 +17129,7 @@ MonoBehaviour:
   healthSlider: {fileID: 0}
   xpSlider: {fileID: 0}
   isInvincible: 0
-  gameOverScreen: {fileID: 0}
+  gameOverScreen: {fileID: 6172929549870730549, guid: 1151b8ba874f8b347b07587fcd72842f, type: 3}
   pauseScreen: {fileID: 0}
   enemiesFollowing: 0
   drinkingSound: {fileID: 0}
