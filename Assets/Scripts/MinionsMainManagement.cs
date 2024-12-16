@@ -111,12 +111,16 @@ public class MinionsMainManagement : MonoBehaviour
         // Update animations
         if (minionAnimator != null)
         {
+            minionAnimator.SetLayerWeight(4, 1);
+            minionAnimator.SetBool("isStunned", true);
             minionAnimator.SetInteger("minionState", 0); // Idle animation
         }
 
-        yield return new WaitForSeconds(7f); // Stopping duration
+        yield return new WaitForSeconds(5f); // Stopping duration
 
         // Restore the previous state
+        minionAnimator.SetLayerWeight(4, 0);
+        minionAnimator.SetBool("isStunned", false);
         currentState = previousState;
         Debug.Log("Minion resumed movement");
     }
