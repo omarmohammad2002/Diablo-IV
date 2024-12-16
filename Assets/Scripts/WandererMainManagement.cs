@@ -78,6 +78,7 @@ public class WandererMainManagement : MonoBehaviour
         Animator = GetComponent<Animator>();
         AudioSource = GetComponent<AudioSource>();
         InitializeSlider(); // Set up the slider at the start
+        
     }
 
     private void InitializeSlider()
@@ -207,12 +208,32 @@ public class WandererMainManagement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C))
         {
             // Add your ability cooldown logic here and set cooldown to 0, probably in the ability script
-            BarbarianAbilities script = GetComponent<BarbarianAbilities>();
-            script.basicCooldown = 0;
-            script.wildcardCooldown = 0;
-            script.defensiveCooldown = 0;
-            script.ultimateCooldown = 0;
+            string name = GameManager.Instance.SelectedCharacterName;
+            if (name.Equals("Sorcerer"))
+            {
+                sorcererAbilities script = GetComponent<sorcererAbilities>();
+                script.basicCooldown = 0;
+                script.wildcardCooldown = 0;
+                script.defensiveCooldown = 0;
+                script.ultimateCooldown = 0;
+            }
+            else if (name.Equals("Rogue"))
+            {
+                RougeAbilities script = GetComponent<RougeAbilities>();
+                script.basicCooldown = 0;
+                script.wildcardCooldown = 0;
+                script.defensiveCooldown = 0;
+                script.ultimateCooldown = 0;
+            }
+            else if (name.Equals("Barbarian"))
+            {
+                BarbarianAbilities script = GetComponent<BarbarianAbilities>();
+                script.basicCooldown = 0;
+                script.wildcardCooldown = 0;
+                script.defensiveCooldown = 0;
+                script.ultimateCooldown = 0;
 
+            }
         }
 
         // Unlock Abilities: Unlocks all locked abilities by pressing �U�

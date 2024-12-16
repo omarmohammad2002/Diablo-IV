@@ -33,10 +33,10 @@ public class RougeAbilities : MonoBehaviour
     private bool isLocked = false;
 
     // Cooldown timers
-    private float basicCooldown = 1f;
-    private float defensiveCooldown = 10f;
-    private float wildcardCooldown = 5f;
-    private float ultimateCooldown = 10f;
+    public float basicCooldown = 1f;
+    public float defensiveCooldown = 10f;
+    public float wildcardCooldown = 5f;
+    public float ultimateCooldown = 10f;
     // for cooldown
     private Dictionary<string, float> lastUsedTime = new Dictionary<string, float>();
     

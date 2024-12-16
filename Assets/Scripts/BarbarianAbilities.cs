@@ -1,4 +1,4 @@
-using System;
+ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -417,7 +417,7 @@ public class BarbarianAbilities : MonoBehaviour
         }
 
         // Move towards the target position while maintaining the original Y position
-        Vector3 newPosition = Vector3.MoveTowards(transform.position, targetPosition, 5 * Time.deltaTime);
+        Vector3 newPosition = Vector3.MoveTowards(transform.position, targetPosition, 10 * Time.deltaTime);
         newPosition.y = originalY; // Lock the Y-axis
         transform.position = newPosition;
 
