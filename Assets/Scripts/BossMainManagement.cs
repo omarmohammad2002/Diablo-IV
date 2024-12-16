@@ -342,7 +342,7 @@ private void SpawnHealingPotions()
     {
         if (reflectiveAuraActive)
         {
-            Player.GetComponent<WandererMainManagement>().DealDamage(reflectiveAuraDamage);
+            Player.GetComponent<WandererMainManagement>().DealDamage(reflectiveAuraDamage + damage);
             reflectiveAuraActive = false;
             Destroy(activeAura);
         }
@@ -366,10 +366,18 @@ private void SpawnHealingPotions()
                         Destroy(activeShield);
                         currentHealth -= damage;
                         TriggerDamageAnimation(); // Updated call to trigger the animation
+                        StartCoroutine(RegenerateShield());
                     }
                     else
                     {
                         shieldHealth -= damage;
+                        if(shieldHealth == 0 )
+                        {
+                            shieldActive = false;
+                            Destroy(activeShield);
+                            StartCoroutine(RegenerateShield());
+
+                        }
                     }
                 }
             }
@@ -387,6 +395,28 @@ private void SpawnHealingPotions()
             }
         }
     }
+    private IEnumerator RegenerateShield()
+    {
+        yield return new WaitForSeconds(10f); // Wait for 10 seconds before regenerating the shield
+
+        if (!shieldActive && currentHealth > 0) // Ensure the shield is still inactive and boss is alive
+        {
+            // Regenerate the shield
+            shieldHealth = 50;
+            shieldActive = true;
+
+            // Instantiate the shield prefab
+            if (shieldPrefab != null)
+            {
+                Vector3 shieldPosition = transform.position;
+                shieldPosition.y += 5f; // Position the shield slightly above the boss
+                activeShield = Instantiate(shieldPrefab, shieldPosition, Quaternion.identity, transform);
+
+                Debug.Log("Shield regenerated with full health!");
+            }
+        }
+    }
+
 
     // New method to handle damage animation trigger
     private void TriggerDamageAnimation()
