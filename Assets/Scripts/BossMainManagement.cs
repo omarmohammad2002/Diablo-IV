@@ -10,7 +10,7 @@ public class BossMainManagement : MonoBehaviour
     public int currentHealth;
     public bool minionsAlive = false;
 
-    private int shieldHealth = 50;
+    public int shieldHealth = 50;
     public bool shieldActive = false;
     public bool reflectiveAuraActive = false;
     private int currentPhase;
@@ -250,6 +250,7 @@ private void SpawnHealingPotions()
         yield return new WaitForSeconds(delay);
         animator.SetTrigger("Resurrected");
         Debug.Log("Lilith transitions to Phase 2!");
+        canRotate = true;
 
     }
     private void Resurrection()
@@ -263,7 +264,10 @@ private void SpawnHealingPotions()
         if (shieldPrefab != null)
         {
             // Instantiate the shield as a child of the boss
-            activeShield = Instantiate(shieldPrefab, transform.position, Quaternion.identity, transform);
+            Vector3 shieldPosition = transform.position; // Get current position
+            shieldPosition.y += 5f; // Increase Y position by +1
+
+            activeShield = Instantiate(shieldPrefab, shieldPosition, Quaternion.identity, transform);
             Debug.Log("Shield instantiated as a child of the boss.");
         }
         InvokeRepeating("Phase2Behavior", 0f, 30f);
@@ -374,6 +378,7 @@ private void SpawnHealingPotions()
             {
                 animator.SetTrigger("Dead");
                 CancelInvoke("Phase1Behavior");
+                canRotate = false;
                 StartCoroutine(TransitionToNextPhase(5f));
             }
             if (currentPhase == 2 && currentHealth <= 0)
@@ -401,6 +406,7 @@ private void SpawnHealingPotions()
     public void Die()
     {
         animator.SetTrigger("Dead");
+        canRotate = false ;
         //Game ends and studio credits roll
         //Destroy(gameObject);
     }

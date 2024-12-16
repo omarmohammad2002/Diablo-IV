@@ -172,7 +172,7 @@ public class BarbarianAbilities : MonoBehaviour
 
     void bash()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2f);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 4f);
         foreach (Collider hitCollider in hitColliders)
         {
             if (hitCollider.CompareTag("Boss"))
@@ -289,7 +289,7 @@ public class BarbarianAbilities : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         // Damage logic
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2f);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 4f);
         foreach (Collider hitCollider in hitColliders)
         {
             if (hitCollider.CompareTag("Boss"))
